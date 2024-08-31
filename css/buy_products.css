@@ -1,0 +1,27 @@
+.nav {
+    height: 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .show {
+    left: 0;
+  }
+  
+  
+  .active {
+    position: relative;
+  }
+  
+  .active::before {
+    content: "";
+    position: absolute;
+    bottom: -0.5rem;
+    left: 45%;
+    width: 4px;
+    height: 4px;
+    background-color: #141414;
+    border-radius: 50%;
+  }
+  

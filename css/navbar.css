@@ -1,0 +1,113 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
+
+}
+body {
+  font-family: "Trirong", serif;
+}
+/* Styles for the video section */
+.video {
+  position: relative;
+
+  /* overflow: hidden; Ensure video and overlay stay contained */
+}
+
+.video video {
+  width: 100%;
+  height: auto; /* Responsive video height */
+  object-fit: cover; /* Cover entire container */
+}
+
+.video .text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-self: center;
+  justify-content: center;
+  /* max-width: 600px;  */
+  padding: 40px;
+  background-color: var(--transparent-color); 
+  color: #ffffff;
+  width: 100%; 
+  height: 100%;
+}
+
+.video .text h2 {
+  margin: 0;
+  font-size: 30px; 
+  text-transform: uppercase;
+  font-weight: normal;
+}
+
+.video .text h1 {
+  margin: 10px 0;
+  font-size: 56px; /* Adjust font size */
+}
+
+.video .text p {
+  margin-bottom: 30px;
+  font-size: 28px;
+}
+
+.video .text button {
+  background-color: black;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 300px;
+  height: 70px;
+}
+
+.video .text button:hover {
+  background-color: #333; /* Darken button on hover */
+}
+.navbar {
+  padding: 15px 0;
+  border-radius: 0px;
+}
+
+.navbar-nav > li > a {
+  padding: 15px 20px;
+}
+
+.navbar-form .form-control {
+  padding: 10px;
+}
+
+.navbar-form .input-group-addon {
+  padding: 10px;
+}
+
+.dropdown-menu {
+  padding: 10px;
+}
+
+.navbar-toggle {
+  padding: 10px;
+}
+/* ///////////////////////////////////////////////////// */
+.category-home{
+  display: flex;
+  padding: 30px;
+  margin: 30px;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+  background-color: #ffffff;
+  gap: 30px;
+
+}
+.section{
+  padding: 30px;
+}
