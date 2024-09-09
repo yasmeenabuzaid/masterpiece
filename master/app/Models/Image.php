@@ -1,0 +1,15 @@
+<?php
+
+namespace App\Models;
+use App\Models\SubSalon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Image extends Model
+{
+    use HasFactory;
+    public function subsalon()
+    {
+        return $this->belongsTo(SubSalon::class, 'sub_salons_id');
+    }
+}
