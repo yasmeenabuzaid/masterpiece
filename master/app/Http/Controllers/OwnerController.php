@@ -101,7 +101,7 @@ class OwnerController extends Controller
             'email' => 'required|email|unique:owners,email,' . $owner->id,
             'password' => 'nullable|string|min:6', // Password is optional during update
             'salons_id' => 'required|exists:salons,id',
-            // 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         // Update the Owner object

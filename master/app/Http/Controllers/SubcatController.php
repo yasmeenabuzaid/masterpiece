@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Categorie;
 use App\Models\Subcat;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,12 @@ class SubcatController extends Controller
      */
     public function index()
     {
-        //
+        $categories = Categorie::all();
+        $subcategories = Subcat::all();
+        return view('dashboard/subcategory/index', [
+            'subcategories' => $subcategories,
+            'categories' => $categories
+        ]);
     }
 
     /**
@@ -20,7 +26,9 @@ class SubcatController extends Controller
      */
     public function create()
     {
-        //
+        
+        $categories = Categorie::all(); // Fetch categories for the create view
+        return view('dashboard/subcategory/create', ['categories' => $categories]);
     }
 
     /**
@@ -28,15 +36,20 @@ class SubcatController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'categories_id' => 'required|exists:categories,id', // Correct table name 'categories'
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Subcat $subcat)
-    {
-        //
+        $subcategorie = new Categorie();
+        $subcategorie->name = $validatedData['name'];
+        $subcategorie->description = $validatedData['description'];
+        $subcategorie->categories_id = $validatedData['categories_id'];
+
+        $subcategorie->save();
+        // subcategorie
+        return redirect()->route('subcategories.index')->with('success', 'Subcategory created successfully.');
     }
 
     /**
@@ -44,7 +57,11 @@ class SubcatController extends Controller
      */
     public function edit(Subcat $subcat)
     {
-        //
+        $categories = Categorie::all(); // Fetch categories for the edit view
+        return view('dashboard/subcategory/edit', [
+            'subcategorie' => $subcat,
+            'categories' => $categories
+        ]);
     }
 
     /**
@@ -52,7 +69,15 @@ class SubcatController extends Controller
      */
     public function update(Request $request, Subcat $subcat)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'category_id' => 'required|exists:categories,id',
+        ]);
+
+        $subcat->update($validatedData);
+
+        return redirect()->route('subcategories.index')->with('success', 'Subcategory updated successfully.');
     }
 
     /**
@@ -60,6 +85,8 @@ class SubcatController extends Controller
      */
     public function destroy(Subcat $subcat)
     {
-        //
+        $subcat->delete();
+
+        return redirect()->route('subcategories.index')->with('success', 'Subcategory deleted successfully.');
     }
 }

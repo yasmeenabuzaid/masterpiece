@@ -17,7 +17,8 @@ class Salon extends Model
         return $this->hasMany(Owner::class,'owners_id');
         
     }
-    public function subSalons(){
-        return $this->hasMany(SabSalon::class,'SabSalon_id');
+    public function subsalon(){
+        return $this->hasMany(SabSalon::class,'sub_salons_id');
        }
+     
 }

@@ -1,6 +1,5 @@
 @extends('layouts.dashboard_master')
 
-{{-- @section('headTitle', 'Categories') --}}
 
 @section('content')
 <div class="container">
@@ -28,6 +27,7 @@
                         <th scope="col">name</th>
                         <th scope="col">images</th>
                         <th scope="col">address</th>
+                        <th scope="col">description</th>
                         <th scope="col">phone</th>
                         <th scope="col">Date</th>
                         <th scope="col">Actions</th>
@@ -47,6 +47,7 @@
                                 @endif
                             </td>
                             <th scope="row">{{ $salon->address }}</th>
+                            <th scope="row">{{ $salon->description }}</th>
                             <th scope="row">{{ $salon->phone }}</th>
                             <td>{{ $salon->created_at->format('Y-m-d') }}</td>
                             <th scope="row">

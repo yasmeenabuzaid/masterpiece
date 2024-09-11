@@ -27,7 +27,13 @@
                             <div class="alert alert-danger mt-2">{{ $message }}</div>
                         @enderror
                     </div>
-
+                    <div class="form-group">
+                        <label for="description">description</label>
+                        <input type="text" class="form-control" id="description" name="description" placeholder="Insert description number" value="{{ old('description', $subsalon->description) }}" required>
+                        @error('phone')
+                            <div class="alert alert-danger mt-2">{{ $message }}</div>
+                        @enderror
+                    </div>
                     <div class="form-group">
                         <label for="phone">Phone</label>
                         <input type="text" class="form-control" id="phone" name="phone" placeholder="Insert phone number" value="{{ old('phone', $subsalon->phone) }}" required>

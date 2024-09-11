@@ -13,7 +13,7 @@ class SubSalon extends Model
     use HasFactory;
     public function salon()
     {
-        return $this->belongsTo(Salon::class, 'salons_id');
+        return $this->belongsTo(Salon::class,'salons_id');
     }
     public function Image(){
         return $this->hasMany(Image::class,'Images_id');
@@ -21,4 +21,8 @@ class SubSalon extends Model
        public function service(){
         return $this->hasMany(Service::class,'service_id');
        }
+       public function employee(){
+        return $this->hasMany(Employee::class,'employees_id');
+       }
+
 }

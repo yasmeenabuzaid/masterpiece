@@ -1,6 +1,5 @@
 @extends('layouts.dashboard_master')
 
-{{-- @section('headTitle', 'Categories') --}}
 
 @section('content')
 <div class="container">
@@ -8,10 +7,10 @@
        
 
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="title-1">sub-salons</h2>
+        <h2 class="title-1">sub salons</h2>
         <a href="{{ route('subsalons.create') }}">
             <button type="button" class="btn btn-primary">
-                <i class="zmdi zmdi-plus"></i> Add New sub-salon
+                <i class="zmdi zmdi-plus"></i> Add New sub salon
             </button>
         </a>
     </div>
@@ -26,7 +25,9 @@
                     <tr>
                         <th scope="col">ID</th>
                         <th scope="col">salon name</th>
+                        <th scope="col">image</th>
                         <th scope="col">name</th>
+                        <th scope="col">description</th>
                         <th scope="col">address</th>
                         <th scope="col">phone</th>
                         <th scope="col">Date</th>
@@ -38,7 +39,15 @@
                         <tr>
                             <th scope="row">{{ $subsalon->id }}</th>
                             <th scope="row">{{ $subsalon->salon->name}}</th>
+                            <td>
+                                @if($subsalon->image)
+                                    <img src="{{ asset($subsalon->image) }}" alt="owner Image" style="width: 100px; border-radius: 0px;">
+                                @else
+                                    <span>No Image</span>
+                                @endif
+                            </td>
                             <th scope="row">{{ $subsalon->name }}</th>
+                            <th scope="row">{{ $subsalon->description }}</th>
                             <th scope="row">{{ $subsalon->address }}</th>
                             <th scope="row">{{ $subsalon->phone }}</th>
                             <td>{{ $subsalon->created_at->format('Y-m-d') }}</td>

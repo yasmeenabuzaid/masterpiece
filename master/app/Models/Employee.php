@@ -8,7 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Employee extends Model
 {
     use HasFactory;
-    public function service(){
-        return $this->hasMany(Service::class,'services_id');
+    public function booking(){
+        return $this->hasMany(Booking::class,'bookings_id');
        }
-}
+       public function sub_salon()
+       {
+           return $this->belongsTo(SubSalon::class, 'sub_salon_id');
+       }
+      }       

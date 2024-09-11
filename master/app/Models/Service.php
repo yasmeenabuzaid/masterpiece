@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Service extends Model
 {
     use HasFactory;
-    public function sub_salon()
+    public function subsalon()
     {
         return $this->belongsTo(SubSalon::class, 'sub_salons_id');
     }

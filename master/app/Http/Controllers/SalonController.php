@@ -35,7 +35,8 @@ class SalonController extends Controller
         // Validate the data
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'address' => 'required|string', // Remove extra space
+            'address' => 'required|string', 
+            'description' => 'required|string',
             'phone' => 'required|integer',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
@@ -44,8 +45,9 @@ class SalonController extends Controller
         $salon = new Salon();
         $salon->name = $validatedData['name'];
         $salon->address = $validatedData['address'];
+        $salon->description = $validatedData['description'];
         $salon->phone = $validatedData['phone'];
-    
+
         // Handle the image if it exists
         if ($request->hasFile('image')) {
             $file = $request->file('image');
@@ -82,6 +84,7 @@ class SalonController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'address' => 'required|string',
+            'description' => 'required|string',
             'phone' => 'required|integer',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
@@ -89,6 +92,7 @@ class SalonController extends Controller
         // Update the salon attributes
         $salon->name = $validatedData['name'];
         $salon->address = $validatedData['address'];
+        $salon->description = $validatedData['description'];
         $salon->phone = $validatedData['phone'];
 
         // Handle the image if it exists

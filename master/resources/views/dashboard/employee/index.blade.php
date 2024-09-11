@@ -1,6 +1,5 @@
 @extends('layouts.dashboard_master')
 
-{{-- @section('headTitle', 'Categories') --}}
 
 @section('content')
 <div class="container">
@@ -8,10 +7,10 @@
        
 
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="title-1">owners</h2>
-        <a href="{{ route('owners.create') }}">
+        <h2 class="title-1">employees</h2>
+        <a href="{{ route('employees.create') }}">
             <button type="button" class="btn btn-primary">
-                <i class="zmdi zmdi-plus"></i> Add New owner
+                <i class="zmdi zmdi-plus"></i> Add New employee
             </button>
         </a>
     </div>
@@ -23,46 +22,38 @@
           
                 <table class="table table-bordered bg-white">
                     <thead class="thead-light">
+                        
                     <tr>
                         <th scope="col">ID</th>
-                        <th scope="col">salon name</th>
-                        <th scope="col">images</th>
                         <th scope="col">first_name</th>
                         <th scope="col">last_name</th>
-                        <th scope="col">phone</th>
+                        <th scope="col">images</th>
                         <th scope="col">email</th>
                         <th scope="col">password</th>
+                        <th scope="col">sub salons name</th>
                         <th scope="col">Date</th>
                         <th scope="col">Actions</th>
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($owners as $owner)
+                    @foreach($employees as $employee)
                         <tr>
-                            <th scope="row">{{ $owner->id }}</th>
-                            <th scope="row">{{ $owner->salon->name }}</th>
-                            <td>
-                                @if($owner->image)
-                                    <img src="{{ asset($owner->image) }}" alt="owner Image" style="width: 100px; border-radius: 0px;">
-                                    {{-- تُستخدم الدالة asset للحصول على URL كامل للملفات الموجودة في مجلد public --}}
-                                @else
-                                    <span>No Image</span>
-                                @endif
-                            </td>
-                            <th scope="row">{{ $owner->first_name }}</th>
-                            <th scope="row">{{ $owner->last_name }}</th>
-                            <th scope="row"></th>
-                            {{-- {{ $owner->phone }} --}}
-                            <th scope="row">{{ $owner->email }}</th>
-                            <th scope="row">{{ $owner->password }}</th>
-                            <td>{{ $owner->created_at->format('Y-m-d') }}</td>
-                            <th scope="row">
-                                <a href="{{ route('owners.edit', $owner->id) }}">
+                            <th scope="row">{{ $employee->id }}</th>
+                            <th scope="row">{{ $employee->first_name }}</th>
+                            <th scope="row">{{ $employee->last_name }}</th>
+            
+                            <th scope="row">{{ $employee->email }}</th>
+                            <th scope="row">{{ $employee->password }}</th>
+                            {{-- <th scope="row">{{ $employee->sub_salon->id }}</th> --}}
+
+                            <td>{{ $employee->created_at->format('Y-m-d') }}</td>
+                             <th scope="row">
+                                <a href="{{ route('employees.edit', $employee->id) }}">
                                     <button type="button" class="btn btn-secondary"><i class="fa-solid fa-pen-to-square"></i></button>
                       
-                                </a> 
+                                </a>
                                
-                                <button type="button" class="btn btn-danger" onclick="confirmDeletion(event, '{{ route('owners.destroy', $owner->id) }}')"><i class="fa-solid fa-trash"></i></button>
+                                <button type="button" class="btn btn-danger" onclick="confirmDeletion(event, '{{ route('employees.destroy', $employees->id) }}')"><i class="fa-solid fa-trash"></i></button>
                             </th>
                         </tr>
                     @endforeach

@@ -24,6 +24,11 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="description">Salon description</label>
+                        <input type="text" class="form-control" id="description" name="description" placeholder="description" value="{{ old('description', $salon->description) }}" required>
+                    </div>
+
+                    <div class="form-group">
                         <label for="phone">Salon Phone</label>
                         <input type="text" class="form-control" id="phone" name="phone" placeholder="Phone" value="{{ old('phone', $salon->phone) }}" required>
                     </div>
