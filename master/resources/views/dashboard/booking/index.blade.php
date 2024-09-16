@@ -7,10 +7,10 @@
 
 
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="title-1">employees</h2>
-        <a href="{{ route('employees.create') }}">
+        <h2 class="title-1">bookings</h2>
+        <a href="{{ route('bookings.create') }}">
             <button type="button" class="btn btn-primary">
-                <i class="zmdi zmdi-plus"></i> Add New employee
+                <i class="zmdi zmdi-plus"></i> Add New booking
             </button>
         </a>
     </div>
@@ -25,34 +25,34 @@
 
                     <tr>
                         <th scope="col">ID</th>
-                        <th scope="col">first_name</th>
-                        <th scope="col">last_name</th>
-                        <th scope="col">email</th>
-                        <th scope="col">password</th>
-                        <th scope="col">sub salons name</th>
+                        <th scope="col">name</th>
+                        <th scope="col">description</th>
+                        <th scope="col">employee name</th>
+                        <th scope="col">castomors name</th>
+                        <th scope="col">Services name</th>
+                        <th scope="col">appointment_date</th>
                         <th scope="col">Date</th>
                         <th scope="col">Actions</th>
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($employees as $employee)
+                    @foreach($bookings as $booking)
                         <tr>
-        
-                            <th scope="row">{{ $employee->id }}</th>
-                            <th scope="row">{{ $employee->first_name }}</th>
-                            <th scope="row">{{ $employee->last_name }}</th>
-                            <th scope="row">{{ $employee->email }}</th>
-                            <th scope="row">{{ $employee->password }}</th>
-                            <td scope="row">{{ $employee->subsalon->name }}</td>
-
-                            <td>{{ $employee->created_at->format('Y-m-d') }}</td>
+                            <th scope="row">{{ $booking->id }}</th>
+                            <th scope="row">{{ $booking->name }}</th>
+                            <th scope="row">{{ $booking->description }}</th>
+                            <th scope="row">{{ $booking->employee->first_name }} {{ $booking->employee->last_name }}</th>
+                            <th scope="row">{{ $booking->service->name }}</th>
+                            <th scope="row">{{ $booking->castomor->first_name }} {{ $booking->castomor->last_name }}</th>
+                            <th scope="row">{{ $booking->appointment_date }}</th>
+                            <td>{{ $booking->created_at->format('Y-m-d') }}</td>
                              <th scope="row">
-                                <a href="{{ route('employees.edit', $employee->id) }}">
+                                <a href="{{ route('bookings.edit', $booking->id) }}">
                                     <button type="button" class="btn btn-secondary"><i class="fa-solid fa-pen-to-square"></i></button>
 
                                 </a>
 
-                                <button type="button" class="btn btn-danger" onclick="confirmDeletion(event, '{{ route('employees.destroy', $employee->id) }}')"><i class="fa-solid fa-trash"></i></button>
+                                <button type="button" class="btn btn-danger" onclick="confirmDeletion(event, '{{ route('bookings.destroy', $booking->id) }}')"><i class="fa-solid fa-trash"></i></button>
                             </th>
                         </tr>
                     @endforeach

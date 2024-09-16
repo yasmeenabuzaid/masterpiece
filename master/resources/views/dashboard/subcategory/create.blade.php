@@ -5,7 +5,7 @@
         <div class="col-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">create category</h4>
+                    <h4 class="card-title">create sub categories</h4>
                     <form class="forms-sample" action="{{ route('subcategories.store') }}" method="POST" enctype="multipart/form-data">
                         {{-- enctype="multipart/form-data" -> بتخليني ابعت انواع داتا مختلفه --}}
 
@@ -14,7 +14,7 @@
                             <label for="name"> name</label>
                             <input type="text" class="form-control" id="name" name="name" placeholder="insert salon name" required>
                         </div>
-   
+
                         <div class="form-group">
                             <label for="description"> description</label>
                             <input type="text" class="form-control" id="description" name="description" placeholder="description" required>

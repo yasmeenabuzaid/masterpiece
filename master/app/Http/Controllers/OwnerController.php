@@ -26,7 +26,7 @@ class OwnerController extends Controller
         $salons = Salon::all();
         return view('dashboard/owner/create', ['salons' => $salons]);
     }
-    
+
 
     /**
      * Store a newly created resource in storage.
@@ -39,7 +39,7 @@ class OwnerController extends Controller
             'email' => 'required|email|unique:owners,email',
             'password' => 'required|string|min:6',
             'salons_id' => 'required|exists:salons,id',
-            // 'phone' => 'required|string|max:15',
+            'phone' => 'required|string|max:15',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
@@ -48,9 +48,9 @@ class OwnerController extends Controller
         $owner->first_name = $validatedData['first_name'];
         $owner->last_name = $validatedData['last_name'];
         $owner->email = $validatedData['email'];
-        // $owner->phone = $validatedData['phone'];
+        $owner->phone = $validatedData['phone'];
         $owner->salons_id = $validatedData['salons_id'];
-        $owner->password =$validatedData['password']; 
+        $owner->password =$validatedData['password'];
 
         // التعامل مع الصورة إذا كانت موجودة
         if ($request->hasFile('image')) {
@@ -58,7 +58,7 @@ class OwnerController extends Controller
             $filename = time() . '.' . $file->getClientOriginalExtension();
             $path = public_path('uploads/owner/');
             $file->move($path, $filename);
-    
+
             // حفظ مسار الصورة في قاعدة البيانات
             $owner->image = 'uploads/owner/' . $filename;
         }
@@ -69,7 +69,7 @@ class OwnerController extends Controller
         // إعادة التوجيه بعد الحفظ
         return redirect()->route('owners.index')->with('success', 'Owner created successfully.');
     }
-    
+
     /**
      * Display the specified resource.
      */
@@ -109,7 +109,7 @@ class OwnerController extends Controller
         $owner->last_name = $validatedData['last_name'];
         $owner->email = $validatedData['email'];
         $owner->salons_id = $validatedData['salons_id'];
-        
+
         // Handle the password update
         if ($request->filled('password')) {
             $owner->password = bcrypt($validatedData['password']); // Encrypt password
@@ -132,7 +132,7 @@ class OwnerController extends Controller
         // Redirect after updating
         return redirect()->route('owners.index')->with('success', 'Owner updated successfully.');
     }
-  
+
 
     /**
      * Remove the specified resource from storage.
@@ -140,7 +140,7 @@ class OwnerController extends Controller
     public function destroy(Owner $owner)
     {
         $owner->delete();
-        
+
         // Redirect to the salons index page
         return redirect()->route('owners.index')->with('success', 'Salon deleted successfully.');
     }

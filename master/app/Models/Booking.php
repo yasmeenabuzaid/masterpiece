@@ -13,8 +13,20 @@ class Booking extends Model
        {
 
            return $this->belongsTo(Service::class, 'services_id');
+
+       }
+       public function employee()
+       {
+
            return $this->belongsTo(Employee::class, 'employees_id');
+
+       }
+       public function castomor()
+       {
+
            return $this->belongsTo(Castomor::class, 'castomors_id');
 
        }
+       protected $fillable = ['name', 'description', 'castomors_id', 'employees_id', 'services_id','appointment_date'];
+
 }

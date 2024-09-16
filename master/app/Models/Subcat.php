@@ -11,4 +11,8 @@ class Subcat extends Model
     public function service(){
         return $this->hasMany(Service::class,'services_id');
        }
+       public function categorie()
+       {
+           return $this->belongsTo(Categorie::class, 'categories_id');
+       }
 }

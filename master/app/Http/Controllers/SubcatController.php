@@ -17,7 +17,7 @@ class SubcatController extends Controller
         $subcategories = Subcat::all();
         return view('dashboard/subcategory/index', [
             'subcategories' => $subcategories,
-            'categories' => $categories
+            'categories' => $categories,
         ]);
     }
 
@@ -26,7 +26,6 @@ class SubcatController extends Controller
      */
     public function create()
     {
-        
         $categories = Categorie::all(); // Fetch categories for the create view
         return view('dashboard/subcategory/create', ['categories' => $categories]);
     }
@@ -42,13 +41,13 @@ class SubcatController extends Controller
             'categories_id' => 'required|exists:categories,id', // Correct table name 'categories'
         ]);
 
-        $subcategorie = new Categorie();
-        $subcategorie->name = $validatedData['name'];
-        $subcategorie->description = $validatedData['description'];
-        $subcategorie->categories_id = $validatedData['categories_id'];
+        $subcat = new Subcat(); // Create a new Subcat instance
+        $subcat->name = $validatedData['name'];
+        $subcat->description = $validatedData['description'];
+        $subcat->categories_id = $validatedData['categories_id'];
 
-        $subcategorie->save();
-        // subcategorie
+        $subcat->save();
+
         return redirect()->route('subcategories.index')->with('success', 'Subcategory created successfully.');
     }
 
@@ -57,36 +56,22 @@ class SubcatController extends Controller
      */
     public function edit(Subcat $subcat)
     {
-        $categories = Categorie::all(); // Fetch categories for the edit view
-        return view('dashboard/subcategory/edit', [
-            'subcategorie' => $subcat,
-            'categories' => $categories
-        ]);
+
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Subcat $subcat)
     {
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'category_id' => 'required|exists:categories,id',
-        ]);
-
-        $subcat->update($validatedData);
-
-        return redirect()->route('subcategories.index')->with('success', 'Subcategory updated successfully.');
+     
     }
-
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Subcat $subcat)
+    public function destroy(Subcat $subcategory)
     {
-        $subcat->delete();
-
+        $subcategory->delete();
         return redirect()->route('subcategories.index')->with('success', 'Subcategory deleted successfully.');
     }
+
+
+
 }

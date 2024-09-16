@@ -1,19 +1,13 @@
 @extends('layouts.dashboard_master')
 
+{{-- @section('headTitle', 'Categories') --}}
 
 @section('content')
 <div class="container">
 
 
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="title-1">employees</h2>
-        <a href="{{ route('employees.create') }}">
-            <button type="button" class="btn btn-primary">
-                <i class="zmdi zmdi-plus"></i> Add New employee
-            </button>
-        </a>
-    </div>
+
 
 
     <div class="row">
@@ -22,37 +16,27 @@
 
                 <table class="table table-bordered bg-white">
                     <thead class="thead-light">
-
                     <tr>
                         <th scope="col">ID</th>
-                        <th scope="col">first_name</th>
-                        <th scope="col">last_name</th>
-                        <th scope="col">email</th>
-                        <th scope="col">password</th>
-                        <th scope="col">sub salons name</th>
+                        <th scope="col">feedback</th>
+                        <th scope="col">castomor name</th>
+                        <th scope="col">service name</th>
                         <th scope="col">Date</th>
                         <th scope="col">Actions</th>
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($employees as $employee)
+                    @foreach($feedbacks as $feedback)
                         <tr>
-        
-                            <th scope="row">{{ $employee->id }}</th>
-                            <th scope="row">{{ $employee->first_name }}</th>
-                            <th scope="row">{{ $employee->last_name }}</th>
-                            <th scope="row">{{ $employee->email }}</th>
-                            <th scope="row">{{ $employee->password }}</th>
-                            <td scope="row">{{ $employee->subsalon->name }}</td>
-
-                            <td>{{ $employee->created_at->format('Y-m-d') }}</td>
-                             <th scope="row">
-                                <a href="{{ route('employees.edit', $employee->id) }}">
-                                    <button type="button" class="btn btn-secondary"><i class="fa-solid fa-pen-to-square"></i></button>
-
-                                </a>
-
-                                <button type="button" class="btn btn-danger" onclick="confirmDeletion(event, '{{ route('employees.destroy', $employee->id) }}')"><i class="fa-solid fa-trash"></i></button>
+                            <th scope="row">{{ $feedback->id }}</th>
+                            <th scope="row">{{ $feedback->feedback }}</th>
+                            <th scope="row">{{ $feedback->castomor->first_name }}</th>
+                            {{-- <th scope="row">{{ $owner->last_name }}</th> --}}
+                            {{-- <th scope="row">{{ $feedback->service-> }}</th> --}}
+                            <th scope="row"></th>
+                            <td>{{ $feedback->created_at->format('Y-m-d') }}</td>
+                            <th scope="row">
+                                <button type="button" class="btn btn-danger" onclick="confirmDeletion(event, '{{ route('feedbacks.destroy', $feedback->id) }}')"><i class="fa-solid fa-trash"></i></button>
                             </th>
                         </tr>
                     @endforeach

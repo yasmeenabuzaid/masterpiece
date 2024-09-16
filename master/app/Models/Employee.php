@@ -11,8 +11,11 @@ class Employee extends Model
     public function booking(){
         return $this->hasMany(Booking::class,'bookings_id');
        }
-       public function sub_salon()
+       public function subsalon()
        {
-           return $this->belongsTo(SubSalon::class, 'sub_salon_id');
+           return $this->belongsTo(SubSalon::class, 'sub_salons_id');
        }
-      }       
+       protected $fillable = [
+        'first_name', 'last_name', 'email', 'password', 'sub_salons_id',
+    ];
+      }

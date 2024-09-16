@@ -12,7 +12,9 @@ class FeedController extends Controller
      */
     public function index()
     {
-        //
+
+        $feedbacks = Feed::all();
+        return view('dashboard/feedback/index', ['feedbacks' => $feedbacks]);
     }
 
     /**
@@ -20,7 +22,7 @@ class FeedController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -28,7 +30,10 @@ class FeedController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'feedback' => 'required|string',
+        ]);
+
     }
 
     /**
@@ -58,8 +63,15 @@ class FeedController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Feed $feed)
-    {
-        //
-    }
+  /**
+ * Remove the specified resource from storage.
+ */
+public function destroy(Feed $feedback)
+{
+    $feedback->delete();
+
+    // Redirect to the feedbacks index page
+    return redirect()->route('feedbacks.index')->with('success', 'Feedback deleted successfully.');
+}
+
 }

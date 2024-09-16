@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('subcats_id')->constrained('subcats');
             $table->foreignId('categories_id')->constrained('categories');
             $table->string('image')->nullable();
-            $table->string('description');
+            $table->text('description')->nullable();
             $table->string('name');
             $table->timestamps();
         });

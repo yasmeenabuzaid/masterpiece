@@ -18,6 +18,10 @@
                         <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Insert last name" value="{{ old('last_name') }}" required>
                     </div>
                     <div class="form-group">
+                        <label for="phone">phone</label>
+                        <input type="tel" class="form-control" id="phone" name="phone" placeholder="Insert phone" value="{{ old('phone') }}" required>
+                    </div>
+                    <div class="form-group">
                         <label for="email">Email</label>
                         <input type="email" class="form-control" id="email" name="email" placeholder="Insert email" value="{{ old('email') }}" required>
                     </div>

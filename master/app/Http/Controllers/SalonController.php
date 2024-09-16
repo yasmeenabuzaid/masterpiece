@@ -35,12 +35,12 @@ class SalonController extends Controller
         // Validate the data
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'address' => 'required|string', 
+            'address' => 'required|string',
             'description' => 'required|string',
             'phone' => 'required|integer',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
-    
+
         // Create a new Salon object
         $salon = new Salon();
         $salon->name = $validatedData['name'];
@@ -54,18 +54,18 @@ class SalonController extends Controller
             $filename = time() . '.' . $file->getClientOriginalExtension();
             $path = public_path('uploads/salon/');
             $file->move($path, $filename);
-    
+
             // Save the image path in the database
             $salon->image = 'uploads/salon/' . $filename;
         }
-    
+
         // Save the data in the database
         $salon->save();
-    
+
         // Redirect after saving
         return redirect()->route('salons.index')->with('success', 'Salon created successfully.');
     }
-    
+
 
     /**
      * Show the form for editing the specified resource.
@@ -117,7 +117,7 @@ class SalonController extends Controller
         // Redirect to the salons index page
         return redirect()->route('salons.index')->with('success', 'Salon updated successfully.');
     }
-    
+
 
     /**
      * Remove the specified resource from storage.
@@ -128,10 +128,10 @@ class SalonController extends Controller
         if ($salon->image && File::exists(public_path($salon->image))) {
             File::delete(public_path($salon->image));
         }
-        
+
         // Delete the salon
         $salon->delete();
-        
+
         // Redirect to the salons index page
         return redirect()->route('salons.index')->with('success', 'Salon deleted successfully.');
     }

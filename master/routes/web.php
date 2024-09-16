@@ -6,7 +6,10 @@ use App\Http\Controllers\SubSalonController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\CategorieController;
 use App\Http\Controllers\SubcatController;
-
+use App\Http\Controllers\BookingController;
+use App\Http\Controllers\FeedController;
+use App\Http\Controllers\CastomorController;
+use App\Http\Controllers\ServiceController;
 use  App\Http\Middleware\Admin;
 Route::get('/', function () {
     return view('welcome');
@@ -27,8 +30,14 @@ Route::middleware(['auth', 'admin'])->group(function () {
 Route::resource('salons', SalonController::class);
 Route::resource('subsalons', SubSalonController::class);
 Route::resource('owners', OwnerController::class);
+Route::resource('services', ServiceController::class);
 Route::resource('employees', EmployeeController::class);
 Route::resource('categories', CategorieController::class);
 Route::resource('subcategories', SubcatController::class);
+Route::resource('bookings', BookingController::class);
+Route::resource('feedbacks', FeedController::class);
+Route::resource('castomors', CastomorController::class);
+Route::delete('/subcategories/{subcat}', [SubcatController::class, 'destroy'])->name('subcategories.destroy');
 
 });
+

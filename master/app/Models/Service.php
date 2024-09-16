@@ -4,7 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use App\Models\SubSalon;
+use App\Models\Subcat;
 class Service extends Model
 {
     use HasFactory;
@@ -14,7 +15,7 @@ class Service extends Model
     }
     public function subcat()
     {
-        return $this->belongsTo(Subcats::class, 'subcats_id');
+        return $this->belongsTo(Subcat::class, 'subcats_id');
     }
     public function categorie()
     {
@@ -26,4 +27,7 @@ class Service extends Model
        public function feed(){
         return $this->hasMany(Feed::class,'feeds_id');
        }
+     // In Service.php model
+protected $fillable = ['name', 'description', 'sub_salons_id', 'subcats_id', 'categories_id'];
+
 }
