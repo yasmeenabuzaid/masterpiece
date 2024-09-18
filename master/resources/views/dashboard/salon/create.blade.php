@@ -1,3 +1,4 @@
+
 @extends("layouts.dashboard_master")
 @section("headTitle", "One")
 @section("content")
@@ -40,3 +41,4 @@
             </div>
         </div>
 @endsection
+

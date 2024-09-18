@@ -1,10 +1,10 @@
 <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
     <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
         <a class="navbar-brand brand-logo" href="index.html">
-            <img src="../img/logo.png" alt="logo"  style="width: 200px; height:60px"/>
+            {{-- <img src="../img/logo.png" alt="logo"  style="width: 200px; height:60px"/> --}}
         </a>
         <a class="navbar-brand brand-logo-mini" href="index.html">
-            <img src="../img/logo.png" alt="logo"  style="width: 200px; height:60px"/>
+            {{-- <img src="../img/logo.png" alt="logo"  style="width: 200px; height:60px"/> --}}
         </a>
     </div>
     <div class="navbar-menu-wrapper d-flex align-items-stretch">
@@ -41,11 +41,14 @@
                 <li class="nav-item nav-profile dropdown">
                     <a class="nav-link dropdown-toggle" id="profileDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">
                         <div class="nav-profile-img">
-                            <img src="/assets/images/faces/face1.jpg" alt="image">
-                            <span class="availability-status online"></span>
+                            @if(Auth::user()->image)
+                                <img src="{{ asset(Auth::user()->image) }}" alt="User Image" style="width: 100px; border-radius: 0px;">
+                            @else
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFvhHHWt5ZltpPstG1g7kT1ezfr9S0uQ4axS8oWqXVtX2qk9mLaiRblJwLkvheKaTKPq8&usqp=CAU" alt="image">
+                            @endif
                         </div>
                         <div class="nav-profile-text">
-                            <p class="mb-1 text-black">{{ Auth::user()->name }}</p>
+                            <p class="mb-1 text-black">{{ Auth::user()->name }} ({{ Auth::user()->usertype }})</p>
                         </div>
                     </a>
                     <div class="dropdown-menu navbar-dropdown" aria-labelledby="profileDropdown">
@@ -63,12 +66,18 @@
                     </div>
                 </li>
             @endguest
+            <li class="nav-item dropdown">
+                <a class="nav-link" href="#" data-bs-toggle="dropdown">
+                    <i class="fa-regular fa-user"></i>
+                  <span class="count-symbol bg-danger"></span>
+                </a>
 
-            <li class="nav-item d-none d-lg-block full-screen-link">
+            </li>
+            {{-- <li class="nav-item d-none d-lg-block full-screen-link">
                 <a class="nav-link">
                     <i class="mdi mdi-fullscreen" id="fullscreen-button"></i>
                 </a>
-            </li>
+            </li> --}}
 
             <li class="nav-item dropdown">
                 <a class="nav-link count-indicator dropdown-toggle" id="messageDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">
@@ -110,11 +119,11 @@
                             <p class="text-gray ellipsis mb-0">Just a reminder that you have an event today</p>
                         </div>
                     </a>
-                    <!-- Additional notifications -->
+
                 </div>
             </li>
 
-            <li class="nav-item nav-logout d-none d-lg-block">
+            {{-- <li class="nav-item nav-logout d-none d-lg-block">
                 <a class="nav-link" href="#">
                     <i class="mdi mdi-power"></i>
                 </a>
@@ -123,7 +132,7 @@
                 <a class="nav-link" href="#">
                     <i class="mdi mdi-format-line-spacing"></i>
                 </a>
-            </li>
+            </li> --}}
         </ul>
         <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
             <span class="mdi mdi-menu"></span>

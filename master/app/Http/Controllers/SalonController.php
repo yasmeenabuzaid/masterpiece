@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Salon;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 
@@ -19,20 +20,20 @@ class SalonController extends Controller
         return view('dashboard/salon/index', ['salons' => $salons]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+
     public function create()
     {
-        return view('dashboard/salon/create');
+        if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner())) {
+            return view('dashboard/salon/create');
+        }
+
+        return redirect()->route('salons.index')->with('error', 'Unauthorized access.');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+
+
     public function store(Request $request)
     {
-        // Validate the data
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'address' => 'required|string',
@@ -41,46 +42,34 @@ class SalonController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        // Create a new Salon object
         $salon = new Salon();
         $salon->name = $validatedData['name'];
         $salon->address = $validatedData['address'];
         $salon->description = $validatedData['description'];
         $salon->phone = $validatedData['phone'];
 
-        // Handle the image if it exists
         if ($request->hasFile('image')) {
             $file = $request->file('image');
             $filename = time() . '.' . $file->getClientOriginalExtension();
             $path = public_path('uploads/salon/');
             $file->move($path, $filename);
 
-            // Save the image path in the database
             $salon->image = 'uploads/salon/' . $filename;
         }
 
-        // Save the data in the database
         $salon->save();
 
-        // Redirect after saving
         return redirect()->route('salons.index')->with('success', 'Salon created successfully.');
     }
 
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Salon $salon)
     {
         return view('dashboard/salon/edit', ['salon' => $salon]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Salon $salon)
     {
-        // Validate the data
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'address' => 'required|string',
@@ -89,7 +78,6 @@ class SalonController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        // Update the salon attributes
         $salon->name = $validatedData['name'];
         $salon->address = $validatedData['address'];
         $salon->description = $validatedData['description'];

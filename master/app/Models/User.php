@@ -41,4 +41,18 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    // In your User model
+public function isSuperAdmin()
+{
+    return $this->usertype === 'super_admin';
+}
+public function isOwner()
+{
+    return $this->usertype === 'owner';
+}
+public function isEmployee()
+{
+    return $this->usertype === 'employee';
+}
+
 }

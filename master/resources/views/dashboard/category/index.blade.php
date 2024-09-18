@@ -3,8 +3,8 @@
 
 @section('content')
 <div class="container">
-        
-       
+
+
 
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="title-1">categories</h2>
@@ -12,17 +12,18 @@
             <button type="button" class="btn btn-primary">
                 <i class="zmdi zmdi-plus"></i> Add New employee
             </button>
+            
         </a>
     </div>
-  
+
 
     <div class="row">
         <div class="col-lg-12">
             <div class="table-responsive table--no-card m-b-40">
-          
+
                 <table class="table table-bordered bg-white">
                     <thead class="thead-light">
-                        
+
                     <tr>
                         <th scope="col">ID</th>
                         <th scope="col">name</th>
@@ -41,9 +42,9 @@
                              <th scope="row">
                                 <a href="{{ route('categories.edit', $categorie->id) }}">
                                     <button type="button" class="btn btn-secondary"><i class="fa-solid fa-pen-to-square"></i></button>
-                      
+
                                 </a>
-                               
+
                                 <button type="button" class="btn btn-danger" onclick="confirmDeletion(event, '{{ route('categories.destroy', $categorie->id) }}')"><i class="fa-solid fa-trash"></i></button>
                             </th>
                         </tr>

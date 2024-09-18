@@ -1,3 +1,4 @@
+
 @extends("layouts.dashboard_master")
 @section("headTitle", "Edit Salon")
 @section("content")
@@ -6,7 +7,7 @@
     <div class="col-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title">Edit Info of Salon</h4>
+                <h4 class="card-title">edit this salon</h4>
 
                 <form action="{{ route('salons.update', $salon->id) }}" method="POST" enctype="multipart/form-data">
                     {{-- enctype="multipart/form-data" -> يسمح بإرسال أنواع متعددة من البيانات --}}
@@ -50,3 +51,4 @@
 </div>
 
 @endsection
+

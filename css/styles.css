@@ -325,119 +325,69 @@ main {
 
 
 
-section{
 
-margin: 0px;
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-gap: 10px;
-
-}
 
 /* =================================================================== */
-/* Section Styling */
 section {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
   background: linear-gradient(rgb(242, 242, 242));
-  padding: 20px;
-}
-
-/* Card List Styling */
-.card-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-/* Card Item Styling */
-
-section {
-  font-family: Arial, sans-serif;
-  background-color: #f3f3f3;
-  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  padding: 20px;
-}
-.card-btn:hover{
-background-color: #fec195;
-color: #141414;
+  padding: 10px;
+  margin-top: 20px;
 }
 
+/* Slider Styling */
 .slider {
-  /* display: flex;
-  width: 100%; */
-  /* max-width: 1200px; */
-  /* overflow: hidden; */
-  /* position: relative; */
-}
-.card-text{
-  margin: 20px 0px;
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  padding: 20px;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
 }
+
+/* Grid Layout for Slides */
 .slider-wrapper {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 5 columns */
+  gap: 10px; /* space between slides */
   transition: transform 0.5s ease-in-out;
 }
 
 .slide {
-  min-width: 300px;
-  max-width: 300px;
-  margin: 0 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   background-color: #fff;
   padding: 20px;
   text-align: center;
-  flex-shrink: 0;
 }
 
 .slide img {
   width: 100%;
-  height: 200px; /* تحديد ارتفاع ثابت */
-  object-fit: cover; /* قص الصورة لتناسب الأبعاد */
+  height: 250px; /* Fixed height */
+  object-fit: cover; /* Crop image to fit dimensions */
   border-radius: 10px;
 }
 
-.slide h2 {
-  margin: 10px 0;
+.slide h3 {
+  margin:0px ;
   font-size: 1.5rem;
+  
 }
 
 .slide p {
   color: #666;
-  margin: 10px 0;
+  margin: 0;
   text-align: start;
 }
 
-.slide .role {
-  padding: 5px 10px;
-  border-radius: 15px;
-  display: inline-block;
+.card-text {
+  margin: 10px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
-
-/* .designer {
-  background-color: #ffd5e5;
-  color: #d13576;
-}
-
-.developer {
-  background-color: #d5e5ff;
-  color: #3576d1;
-}
-
-.marketer {
-  background-color: #ffe5d5;
-  color: #d17a35;
-} */
 
 .controls {
   position: absolute;
@@ -466,7 +416,6 @@ color: #141414;
   background-color: rgba(0, 0, 0, 0.2);
   cursor: not-allowed;
 }
-
 
 
 
@@ -554,4 +503,120 @@ color: #141414;
       text-align: center;
       margin: 1rem 0;
   }
+}
+/* From Uiverse.io by catraco */ 
+.heart-container {
+  --heart-color: rgb(255, 91, 137);
+  position: relative;
+  width: 30px;
+  height: 50px;
+  transition: .3s;
+}
+
+.heart-container .checkbox {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  z-index: 20;
+  cursor: pointer;
+}
+
+.heart-container .svg-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.heart-container .svg-outline,
+        .heart-container .svg-filled {
+  fill: var(--heart-color);
+  position: absolute;
+}
+
+.heart-container .svg-filled {
+  animation: keyframes-svg-filled 1s;
+  display: none;
+}
+
+.heart-container .svg-celebrate {
+  position: absolute;
+  animation: keyframes-svg-celebrate .5s;
+  animation-fill-mode: forwards;
+  display: none;
+  stroke: var(--heart-color);
+  fill: var(--heart-color);
+  stroke-width: 2px;
+}
+
+.heart-container .checkbox:checked~.svg-container .svg-filled {
+  display: block
+}
+
+.heart-container .checkbox:checked~.svg-container .svg-celebrate {
+  display: block
+}
+
+@keyframes keyframes-svg-filled {
+  0% {
+    transform: scale(0);
+  }
+
+  25% {
+    transform: scale(1.2);
+  }
+
+  50% {
+    transform: scale(1);
+    filter: brightness(1.5);
+  }
+}
+
+@keyframes keyframes-svg-celebrate {
+  0% {
+    transform: scale(0);
+  }
+
+  50% {
+    opacity: 1;
+    filter: brightness(1.5);
+  }
+
+  100% {
+    transform: scale(1.4);
+    opacity: 0;
+    display: none;
+  }
+}
+.card-btns{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  gap: 10px;
+  padding: 10px;
+}
+.card-btn{
+  display: flex;
+  align-items: start;
+  justify-content: start;
+  align-self: center;
+  gap: 10px;
+  padding: 10px;
+}
+.filters{
+ 
+  display: flex;
+  gap: 30px;
+}
+.filter{
+border: #666 solid 1px;}
+.firstdiv{
+  display: flex;
+  flex-direction: column;
+  margin-top: 60px;
+  margin-left: 35px;
+  gap:10px
 }

@@ -2,6 +2,12 @@
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
     <ul class="nav">
         <li class="nav-item">
+            <a class="nav-link" href="{{route('count')}}">
+                <span class="menu-title">home</span>
+                <i class="mdi mdi-home menu-icon"></i>
+            </a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link" href="{{route('salons.index')}}">
                 <span class="menu-title">salons</span>
                 <i class="mdi mdi-home menu-icon"></i>

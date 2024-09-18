@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Models;                                
-use App\Models\owner;    
-use App\Models\SubSalon;                                                       
+namespace App\Models;
+use App\Models\owner;
+use App\Models\SubSalon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 // -------------------------------------------------------
 use Illuminate\Database\Eloquent\Model;
@@ -15,10 +15,10 @@ class Salon extends Model
     public function owners()
     {
         return $this->hasMany(Owner::class,'owners_id');
-        
+
     }
     public function subsalon(){
-        return $this->hasMany(SabSalon::class,'sub_salons_id');
+        return $this->hasMany(SubSalon::class,'sub_salons_id');
        }
-     
+
 }

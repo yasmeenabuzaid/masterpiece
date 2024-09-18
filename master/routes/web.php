@@ -10,6 +10,7 @@ use App\Http\Controllers\BookingController;
 use App\Http\Controllers\FeedController;
 use App\Http\Controllers\CastomorController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\DashboardController;
 use  App\Http\Middleware\Admin;
 Route::get('/', function () {
     return view('welcome');
@@ -19,14 +20,16 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('/dash', function () {
-    return view('index');
-});
+// Route::get('/dash', function () {
+//     return view('index');
+// });
 
 Route::get('/user', function () {
     return view('user_side/index');
 });
 Route::middleware(['auth', 'admin'])->group(function () {
+
+Route::get('/dashboard',  [DashboardController::class, 'index'])->name('count');
 Route::resource('salons', SalonController::class);
 Route::resource('subsalons', SubSalonController::class);
 Route::resource('owners', OwnerController::class);

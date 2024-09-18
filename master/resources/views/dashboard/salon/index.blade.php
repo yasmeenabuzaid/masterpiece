@@ -3,34 +3,40 @@
 
 @section('content')
 <div class="container">
-        
-       
+
+
 
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="title-1">salons</h2>
+       @if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()))
         <a href="{{ route('salons.create') }}">
             <button type="button" class="btn btn-primary">
                 <i class="zmdi zmdi-plus"></i> Add New salon
             </button>
         </a>
+    @endif
     </div>
-  
+
+
+
 
     <div class="row">
         <div class="col-lg-12">
             <div class="table-responsive table--no-card m-b-40">
-          
+
                 <table class="table table-bordered bg-white">
                     <thead class="thead-light">
                     <tr>
                         <th scope="col">ID</th>
                         <th scope="col">name</th>
-                        <th scope="col">images</th>
-                        <th scope="col">address</th>
+                        <th scope="col">image</th>
+                        <th scope="col">addres</th>
                         <th scope="col">description</th>
                         <th scope="col">phone</th>
                         <th scope="col">Date</th>
+                        @if (auth()->check() && (auth()->user()->isSuperAdmin()))
                         <th scope="col">Actions</th>
+                        @endif
                     </tr>
                     </thead>
                     <tbody>
@@ -50,14 +56,16 @@
                             <th scope="row">{{ $salon->description }}</th>
                             <th scope="row">{{ $salon->phone }}</th>
                             <td>{{ $salon->created_at->format('Y-m-d') }}</td>
+                            @if (auth()->check() && (auth()->user()->isSuperAdmin()))
                             <th scope="row">
                                 <a href="{{ route('salons.edit', $salon->id) }}">
                                     <button type="button" class="btn btn-secondary"><i class="fa-solid fa-pen-to-square"></i></button>
-                      
+
                                 </a>
-                               
+
                                 <button type="button" class="btn btn-danger" onclick="confirmDeletion(event, '{{ route('salons.destroy', $salon->id) }}')"><i class="fa-solid fa-trash"></i></button>
                             </th>
+                            @endif
                         </tr>
                     @endforeach
                     </tbody>
