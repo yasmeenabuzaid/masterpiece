@@ -1,33 +1,43 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\Salon;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 
+if(auth()->check() && (auth()->user()->isSuperAdmin() ||auth()->user()->isOwner() )) {
 class SalonController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
+
     public function index()
     {
-        $salons = Salon::all();
-        // all() method = select *;
-        // used to retrieve all records from a database table
-        return view('dashboard/salon/index', ['salons' => $salons]);
+        $user = auth()->user();
+
+        if ($user->isSuperAdmin()) {
+            $salons = Salon::all();
+        } elseif ($user->isOwner()) {
+            $salons = $user->salon()->get();
+
+        } else {
+            abort(403, 'Unauthorized access.');
+        }
+
+        return view('dashboard.salon.index', ['salons' => $salons]);
     }
+
 
 
     public function create()
     {
-        if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner())) {
+        if (auth()->check() && (auth()->user()->isSuperAdmin() )) {
             return view('dashboard/salon/create');
         }
+        else{
+            abort(403, 'You do not have permission to access this page.');
 
-        return redirect()->route('salons.index')->with('error', 'Unauthorized access.');
+        }
     }
 
 
@@ -61,11 +71,24 @@ class SalonController extends Controller
 
         return redirect()->route('salons.index')->with('success', 'Salon created successfully.');
     }
-
+    public function show()
+    {
+        $salons = Salon::all();
+        return view('dashboard/salon/index', ['salons' => $salons]);
+    }
 
     public function edit(Salon $salon)
     {
-        return view('dashboard/salon/edit', ['salon' => $salon]);
+        if (auth()->check() && (auth()->user()->isSuperAdmin())){
+            return view('dashboard/salon/edit', ['salon' => $salon]);
+        }
+        else{
+            abort(403, 'You do not have permission to access this page.');
+
+        }
+        //
+    //    return view('dashboard/salon/edit', ['salon' => $salon]);
+
     }
 
     public function update(Request $request, Salon $salon)
@@ -83,9 +106,7 @@ class SalonController extends Controller
         $salon->description = $validatedData['description'];
         $salon->phone = $validatedData['phone'];
 
-        // Handle the image if it exists
         if ($request->hasFile('image')) {
-            // Delete the old image if it exists
             if ($salon->image && File::exists(public_path($salon->image))) {
                 File::delete(public_path($salon->image));
             }
@@ -95,32 +116,25 @@ class SalonController extends Controller
             $path = public_path('uploads/salon/');
             $file->move($path, $filename);
 
-            // Update the image path in the database
             $salon->image = 'uploads/salon/' . $filename;
         }
 
-        // Save the changes in the database
         $salon->save();
 
-        // Redirect to the salons index page
         return redirect()->route('salons.index')->with('success', 'Salon updated successfully.');
     }
 
 
-    /**
-     * Remove the specified resource from storage.
-     */
+
     public function destroy(Salon $salon)
     {
-        // Delete the associated image file if it exists
         if ($salon->image && File::exists(public_path($salon->image))) {
             File::delete(public_path($salon->image));
         }
 
-        // Delete the salon
         $salon->delete();
 
-        // Redirect to the salons index page
         return redirect()->route('salons.index')->with('success', 'Salon deleted successfully.');
     }
+}
 }

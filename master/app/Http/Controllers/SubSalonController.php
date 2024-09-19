@@ -11,16 +11,39 @@ class SubSalonController extends Controller
 
     public function index()
     {
-        $salons = Salon::all();
-        $subsalons = SubSalon::all();
-        return view('dashboard/subsalon/index', ['subsalons' => $subsalons, 'salons' => $salons]);
-    }
+
+            $user = auth()->user();
+
+            if ($user->isSuperAdmin()) {
+                $salons = Salon::all();
+                $subsalons = SubSalon::all();
+                return view('dashboard/subsalon/index', ['subsalons' => $subsalons, 'salons' => $salons]);
+            } elseif ($user->isOwner()) {
+                $subsalons = SubSalon::where('salons_id', $user->salon_id)->get();
+                return view('dashboard/subsalon/index', ['subsalons' => $subsalons]); // إرجاع عرض الأونر
+            } else {
+                abort(403, 'Unauthorized access.');
+            }
+
+        }
+
 
     public function create()
     {
-        $salons = Salon::all();
-        return view('dashboard/subsalon/create', ['salons' => $salons]);
+
+    $user = auth()->user();
+
+    // تحقق إذا كان المستخدم مالكاً
+    if ($user->isOwner()) {
+        $salon = Salon::find($user->salon_id); // احصل على الصالون الخاص بالمالك
+        return view('dashboard.subsalon.create', ['salons' => [$salon]]); // اجعل المصفوفة تحتوي على الصالون فقط
     }
+
+    // إذا كان سوبر أدمن، اجلب كل الصالونات
+    $salons = Salon::all();
+    return view('dashboard.subsalon.create', ['salons' => $salons]);
+}
+
 
 
     public function store(Request $request)
@@ -61,14 +84,27 @@ class SubSalonController extends Controller
 
 
     public function edit(SubSalon $subsalon)
-    {
-        $salons = Salon::all();
+{
+    $user = auth()->user();
 
-        return view('dashboard/subsalon/edit', [
+    // تحقق إذا كان المستخدم مالكاً
+    if ($user->isOwner()) {
+        $salon = Salon::find($user->salon_id); // احصل على الصالون الخاص بالمالك
+        return view('dashboard.subsalon.edit', [
             'subsalon' => $subsalon,
-            'salons' => $salons
+            'salons' => [$salon] // اجعل المصفوفة تحتوي على الصالون فقط
         ]);
     }
+
+    // إذا كان سوبر أدمن، اجلب كل الصالونات
+    $salons = Salon::all();
+
+    return view('dashboard.subsalon.edit', [
+        'subsalon' => $subsalon,
+        'salons' => $salons
+    ]);
+}
+
 
 
     public function update(Request $request, SubSalon $subsalon)

@@ -22,7 +22,7 @@ class Admin
             return $next($request);
         }
 
-        return response()->view('erorr/erorr-login');
+        abort(403, 'Unauthorized access.');
     }
 
 }

@@ -4,6 +4,21 @@
 <div class="container">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="title-1">Sub Salons</h2>
+
+        @if(auth()->user()->isSuperAdmin())
+            <form method="GET" action="{{ route('subsalons.index') }}" class="form-inline">
+                <div class="form-group">
+                    <label for="salon_id">Filter by Salon:</label>
+                    <select name="salon_id" id="salon_id" class="form-control" onchange="this.form.submit()">
+                        <option value="">All Salons</option>
+                        @foreach($salons as $salon)
+                            <option value="{{ $salon->id }}" {{ request('salon_id') == $salon->id ? 'selected' : '' }}>{{ $salon->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </form>
+        @endif
+
         <a href="{{ route('subsalons.create') }}">
             <button type="button" class="btn btn-primary">
                 <i class="zmdi zmdi-plus"></i> Add New Sub Salon
@@ -75,16 +90,14 @@
 
 <script>
     function confirmDeletion(event, url) {
-        event.preventDefault(); // Prevent the default action (like form submission)
+        event.preventDefault();
 
         var modal = document.getElementById('confirmationModal');
         var confirmButton = document.getElementById('confirmButton');
         var cancelButton = document.getElementById('cancelButton');
 
-        // Show the custom confirmation dialog
         modal.style.display = 'flex';
 
-        // Set up the confirm button to submit the form
         confirmButton.onclick = function() {
             var form = document.createElement('form');
             form.method = 'POST';
@@ -93,7 +106,7 @@
             var csrfToken = document.createElement('input');
             csrfToken.type = 'hidden';
             csrfToken.name = '_token';
-            csrfToken.value = '{{ csrf_token() }}'; // Laravel CSRF token
+            csrfToken.value = '{{ csrf_token() }}';
             form.appendChild(csrfToken);
 
             var methodField = document.createElement('input');
@@ -106,7 +119,6 @@
             form.submit();
         };
 
-        // Set up the cancel button to hide the modal
         cancelButton.onclick = function() {
             modal.style.display = 'none';
         };

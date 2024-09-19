@@ -13,12 +13,9 @@ return new class extends Migration
     {
         Schema::create('owners', function (Blueprint $table) {
             $table->id();
-            $table->string('first_name'); 
-            $table->string('last_name');
-            $table->string('phone');
-            $table->string('email')->unique();
-            $table->string('password');
-            $table->foreignId('salons_id')->constrained('salons');
+
+            $table->foreignId('user_id')->unique()->constrained()->onDelete('cascade');
+            $table->foreignId('salon_id')->constrained()->onDelete('cascade'); // العمود للإشارة إلى الصالون
             $table->string('image')->nullable();
             $table->timestamps();
         });

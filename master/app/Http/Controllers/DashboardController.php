@@ -19,16 +19,16 @@ class DashboardController extends Controller
     //
     public function index()
     {
-        $feedbacks = Feed::all();
-        $subcategories = Subcat::all();
-        $subsalons = SubSalon::all();
-        $categories = Categorie::all();
-        $castomors = Castomor::all();
-        $bookings = Booking::all();
-        $employees = Employee::all();
-        $services = Service::all();
-        $salons = Salon::all();
-        $owners = Owner::all();
+        $feedbacks = Feed::all()?? [];
+        $subcategories = Subcat::all()?? [];
+        $subsalons = SubSalon::all()?? [];
+        $categories = Categorie::all()?? [];
+        $castomors = Castomor::all()?? [];
+        $bookings = Booking::all()?? [];
+        $employees = Employee::all()?? [];
+        $services = Service::all()?? [];
+        $salons = Salon::all()?? [];
+        $owners = Owner::all()??[];
 
         //$data
         return view('dashboard\index',[

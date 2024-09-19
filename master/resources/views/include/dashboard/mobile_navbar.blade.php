@@ -1,7 +1,7 @@
 <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
     <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
         <a class="navbar-brand brand-logo" href="index.html">
-            {{-- <img src="../img/logo.png" alt="logo"  style="width: 200px; height:60px"/> --}}
+            {{-- <img src="../assets/images/logo2.png" alt="logo"  style="width: 200px; height:60px"/> --}}
         </a>
         <a class="navbar-brand brand-logo-mini" href="index.html">
             {{-- <img src="../img/logo.png" alt="logo"  style="width: 200px; height:60px"/> --}}
@@ -52,8 +52,9 @@
                         </div>
                     </a>
                     <div class="dropdown-menu navbar-dropdown" aria-labelledby="profileDropdown">
-                        <a class="dropdown-item" href="#">
-                            <i class="mdi mdi-cached me-2 text-success"></i> Activity Log
+                        <a class="dropdown-item" href="{{route('profile.index')}}">
+                            <i class="fa-solid fa-circle-user mdi-cached me-2"></i>
+                           profile
                         </a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="{{ route('logout') }}"

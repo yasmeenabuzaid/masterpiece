@@ -11,6 +11,8 @@ use App\Http\Controllers\FeedController;
 use App\Http\Controllers\CastomorController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ProfileController;
+
 use  App\Http\Middleware\Admin;
 Route::get('/', function () {
     return view('welcome');
@@ -40,6 +42,8 @@ Route::resource('subcategories', SubcatController::class);
 Route::resource('bookings', BookingController::class);
 Route::resource('feedbacks', FeedController::class);
 Route::resource('castomors', CastomorController::class);
+Route::resource('profile', ProfileController::class);
+Route::resource('castomors',  CastomorController::class);
 Route::delete('/subcategories/{subcat}', [SubcatController::class, 'destroy'])->name('subcategories.destroy');
 
 });

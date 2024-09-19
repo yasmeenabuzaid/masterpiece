@@ -12,10 +12,9 @@ class Salon extends Model
 {
     use HasFactory;
 
-    public function owners()
+    public function users()
     {
-        return $this->hasMany(Owner::class,'owners_id');
-
+        return $this->hasMany(User::class);
     }
     public function subsalon(){
         return $this->hasMany(SubSalon::class,'sub_salons_id');

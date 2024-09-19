@@ -8,7 +8,7 @@
 
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="title-1">salons</h2>
-       @if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()))
+       @if (auth()->check() && (auth()->user()->isSuperAdmin()))
         <a href="{{ route('salons.create') }}">
             <button type="button" class="btn btn-primary">
                 <i class="zmdi zmdi-plus"></i> Add New salon
@@ -40,34 +40,38 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($salons as $salon)
-                        <tr>
-                            <th scope="row">{{ $salon->id }}</th>
-                            <th scope="row">{{ $salon->name }}</th>
-                            <td>
-                                @if($salon->image)
-                                    <img src="{{ asset($salon->image) }}" alt="salon Image" style="width: 100px; border-radius: 0px;">
-                                    {{-- تُستخدم الدالة asset للحصول على URL كامل للملفات الموجودة في مجلد public --}}
-                                @else
-                                    <span>No Image</span>
-                                @endif
-                            </td>
-                            <th scope="row">{{ $salon->address }}</th>
-                            <th scope="row">{{ $salon->description }}</th>
-                            <th scope="row">{{ $salon->phone }}</th>
-                            <td>{{ $salon->created_at->format('Y-m-d') }}</td>
-                            @if (auth()->check() && (auth()->user()->isSuperAdmin()))
-                            <th scope="row">
-                                <a href="{{ route('salons.edit', $salon->id) }}">
-                                    <button type="button" class="btn btn-secondary"><i class="fa-solid fa-pen-to-square"></i></button>
+                        @if($salons->isNotEmpty())
+                            @foreach($salons as $salon)
+                                <tr>
+                                    <th scope="row">{{ $salon->id }}</th>
+                                    <th scope="row">{{ $salon->name }}</th>
+                                    <td>
+                                        @if($salon->image)
+                                            <img src="{{ asset($salon->image) }}" alt="salon Image" style="width: 100px; border-radius: 0px;">
+                                        @else
+                                            <span>No Image</span>
+                                        @endif
+                                    </td>
+                                    <th scope="row">{{ $salon->address }}</th>
+                                    <th scope="row">{{ $salon->description }}</th>
+                                    <th scope="row">{{ $salon->phone }}</th>
+                                    <td>{{ $salon->created_at->format('Y-m-d') }}</td>
+                                    @if (auth()->check() && auth()->user()->isSuperAdmin())
+                                        <th scope="row">
+                                            <a href="{{ route('salons.edit', $salon->id) }}">
+                                                <button type="button" class="btn btn-secondary"><i class="fa-solid fa-pen-to-square"></i></button>
+                                            </a>
+                                            <button type="button" class="btn btn-danger" onclick="confirmDeletion(event, '{{ route('salons.destroy', $salon->id) }}')"><i class="fa-solid fa-trash"></i></button>
+                                        </th>
+                                    @endif
+                                </tr>
+                            @endforeach
+                        @else
+                            <tr>
+                                <td colspan="7" class="text-center">لا توجد صالونات متاحة.</td>
+                            </tr>
+                        @endif
 
-                                </a>
-
-                                <button type="button" class="btn btn-danger" onclick="confirmDeletion(event, '{{ route('salons.destroy', $salon->id) }}')"><i class="fa-solid fa-trash"></i></button>
-                            </th>
-                            @endif
-                        </tr>
-                    @endforeach
                     </tbody>
                 </table>
             </div>
