@@ -24,10 +24,7 @@
                             <label for="description">salon description</label>
                             <input type="text" class="form-control" id="description" name="description" placeholder="description" required>
                         </div>
-                        <div class="form-group">
-                            <label for="phone">salon phone</label>
-                            <input type="text" class="form-control" id="phone" name="phone" placeholder="phone" required>
-                        </div>
+                     
                         <div class="form-group">
                             <label for="image">File Upload</label>
                             <input type="file" name="image" id="fileUpload" class="form-control">

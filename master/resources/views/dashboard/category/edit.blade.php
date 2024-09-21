@@ -22,6 +22,25 @@
                             <input type="text" class="form-control" id="description" name="description" value="{{ old('description', $categorie->description) }}" placeholder="Description" required>
                         </div>
 
+                        @if (auth()->user()->isSuperAdmin())
+                            <div class="form-group">
+                                <label for="salons_id">Salon</label>
+                                <select class="form-control form-control-sm" name="salons_id" id="salons_id" required>
+                                    @foreach ($salons as $salon)
+                                        <option value="{{ $salon->id }}" {{ $salon->id == $categorie->salons_id ? 'selected' : '' }}>
+                                            {{ $salon->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        @else
+                            <input type="hidden" name="salons_id" value="{{ $categorie->salons_id }}">
+                            <div class="form-group">
+                                {{-- <label>Salon</label>
+                                <p class="form-control-plaintext">{{ $categorie->salon->name }}</p> --}}
+                            </div>
+                        @endif
+
                         <button type="submit" class="btn btn-gradient-primary me-2">Update Category</button>
                         <a href="{{ route('categories.index') }}" class="btn btn-light">Cancel</a>
                     </form>

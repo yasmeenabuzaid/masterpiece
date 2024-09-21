@@ -14,4 +14,10 @@ class Categorie extends Model
        public function subcat(){
         return $this->hasMany(Subcat::class,'subcats_id');
        }
+
+    public function salon()
+    {
+        return $this->belongsTo(Salon::class,'salons_id');
+    }
+    
 }

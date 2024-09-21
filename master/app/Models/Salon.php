@@ -1,8 +1,9 @@
 <?php
 
 namespace App\Models;
-use App\Models\owner;
+use App\Models\users;
 use App\Models\SubSalon;
+use App\Models\Categorie;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 // -------------------------------------------------------
 use Illuminate\Database\Eloquent\Model;
@@ -18,6 +19,9 @@ class Salon extends Model
     }
     public function subsalon(){
         return $this->hasMany(SubSalon::class,'sub_salons_id');
+       }
+    public function categorie(){
+        return $this->hasMany(Categorie::class,'salons_id');
        }
 
 }

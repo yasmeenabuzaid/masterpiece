@@ -5,7 +5,7 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="title-1">Sub Salons</h2>
 
-        @if(auth()->user()->isSuperAdmin())
+        {{-- @if(auth()->user()->isSuperAdmin())
             <form method="GET" action="{{ route('subsalons.index') }}" class="form-inline">
                 <div class="form-group">
                     <label for="salon_id">Filter by Salon:</label>
@@ -17,7 +17,7 @@
                     </select>
                 </div>
             </form>
-        @endif
+        @endif --}}
 
         <a href="{{ route('subsalons.create') }}">
             <button type="button" class="btn btn-primary">

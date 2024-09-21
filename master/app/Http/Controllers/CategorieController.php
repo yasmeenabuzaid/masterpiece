@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Categorie;
+use App\Models\Salon;
 use Illuminate\Http\Request;
 
 class CategorieController extends Controller
@@ -11,8 +12,18 @@ class CategorieController extends Controller
      */
     public function index()
     {
+
+    $user = auth()->user();
+
+    if ($user->isSuperAdmin()) {
         $categories = Categorie::all();
-        return view('dashboard/category/index', ['categories' => $categories]);
+    } else {
+        $categories = Categorie::where('salons_id', $user->salon_id)->get();
+    }
+
+    return view('dashboard/category/index', ['categories' => $categories]);
+
+
     }
 
     /**
@@ -20,7 +31,8 @@ class CategorieController extends Controller
      */
     public function create()
     {
-        return view('dashboard/category/create');
+           $salons=Salon::all();
+        return view('dashboard/category/create' ,['salons'=>$salons]);
     }
 
     /**
@@ -31,11 +43,14 @@ class CategorieController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
+            'salons_id' => 'required|exists:salons,id',
+
         ]);
 
         $categorie = new Categorie();
         $categorie->name = $validatedData['name'];
         $categorie->description = $validatedData['description'];
+        $categorie->salons_id = $validatedData['salons_id'];
         $categorie->save();
 
         return redirect()->route('categories.index')->with('success', 'Category created successfully.');
@@ -46,8 +61,9 @@ class CategorieController extends Controller
      */
     public function edit($id)
     {
+        $salons=Salon::all();
         $categorie = Categorie::findOrFail($id);
-        return view('dashboard/category/edit', ['categorie' => $categorie]);
+        return view('dashboard/category/edit', ['categorie' => $categorie ,'salons' =>$salons]);
     }
 
     /**
@@ -58,11 +74,15 @@ class CategorieController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
+            'salons_id' => 'required|exists:salons,id',
+
         ]);
 
         $categorie = Categorie::findOrFail($id);
         $categorie->name = $validatedData['name'];
         $categorie->description = $validatedData['description'];
+        $categorie->salons_id = $validatedData['salons_id'];
+
         $categorie->save();
 
         return redirect()->route('categories.index')->with('success', 'Category updated successfully.');

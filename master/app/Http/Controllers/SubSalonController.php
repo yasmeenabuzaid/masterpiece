@@ -20,7 +20,7 @@ class SubSalonController extends Controller
                 return view('dashboard/subsalon/index', ['subsalons' => $subsalons, 'salons' => $salons]);
             } elseif ($user->isOwner()) {
                 $subsalons = SubSalon::where('salons_id', $user->salon_id)->get();
-                return view('dashboard/subsalon/index', ['subsalons' => $subsalons]); // إرجاع عرض الأونر
+                return view('dashboard/subsalon/index', ['subsalons' => $subsalons]);
             } else {
                 abort(403, 'Unauthorized access.');
             }
@@ -52,7 +52,7 @@ class SubSalonController extends Controller
             'name' => 'required|string|max:255',
             'address' => 'required|string|max:255',
             'description' => 'required|string|max:255',
-            'phone' => 'required|string|max:15',
+            'phone' => 'required|string|max:10',
             'salons_id' => 'required|exists:salons,id',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);

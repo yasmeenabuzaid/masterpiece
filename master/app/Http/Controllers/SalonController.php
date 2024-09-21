@@ -48,7 +48,7 @@ class SalonController extends Controller
             'name' => 'required|string|max:255',
             'address' => 'required|string',
             'description' => 'required|string',
-            'phone' => 'required|integer',
+
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
@@ -56,7 +56,7 @@ class SalonController extends Controller
         $salon->name = $validatedData['name'];
         $salon->address = $validatedData['address'];
         $salon->description = $validatedData['description'];
-        $salon->phone = $validatedData['phone'];
+
 
         if ($request->hasFile('image')) {
             $file = $request->file('image');
@@ -97,14 +97,13 @@ class SalonController extends Controller
             'name' => 'required|string|max:255',
             'address' => 'required|string',
             'description' => 'required|string',
-            'phone' => 'required|integer',
+
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $salon->name = $validatedData['name'];
         $salon->address = $validatedData['address'];
         $salon->description = $validatedData['description'];
-        $salon->phone = $validatedData['phone'];
 
         if ($request->hasFile('image')) {
             if ($salon->image && File::exists(public_path($salon->image))) {

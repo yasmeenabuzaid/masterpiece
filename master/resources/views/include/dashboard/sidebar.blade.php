@@ -7,7 +7,7 @@
                 <i class="mdi mdi-home menu-icon"></i>
             </a>
         </li>
-        @if (auth()->check() && (auth()->user()->isSuperAdmin()||auth()->user()->isOwner() ))
+        @if (auth()->check() && (auth()->user()->isSuperAdmin() ))
         <li class="nav-item">
             <a class="nav-link" href="{{route('salons.index')}}">
                 <span class="menu-title">salons</span>

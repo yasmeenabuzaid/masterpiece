@@ -12,14 +12,24 @@ class SubcatController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
+{
+    $user = auth()->user();
+
+    if ($user->isSuperAdmin()) {
         $categories = Categorie::all();
         $subcategories = Subcat::all();
         return view('dashboard/subcategory/index', [
             'subcategories' => $subcategories,
             'categories' => $categories,
         ]);
+    } else {
+        $subcategories = Subcat::where('categories_id', $user->categories)->get();
+        return view('dashboard/subcategory/index', [
+            'subcategories' => $subcategories,
+            'categories' => [], 
+        ]);
     }
+}
 
     /**
      * Show the form for creating a new resource.
@@ -61,7 +71,7 @@ class SubcatController extends Controller
 
     public function update(Request $request, Subcat $subcat)
     {
-     
+
     }
     /**
      * Remove the specified resource from storage.
