@@ -17,7 +17,7 @@
 
         </li>
         @endif
-        @if (auth()->check() && (auth()->user()->isSuperAdmin() ))
+        {{-- @if (auth()->check() && (auth()->user()->isSuperAdmin() ))
         <li class="nav-item">
             <a class="nav-link" href="{{route('owners.index')}}">
                 <span class="menu-title">owners</span>
@@ -26,7 +26,7 @@
             </a>
         </li>
 
-    @endif
+    @endif --}}
     @if (auth()->check() && (auth()->user()->isSuperAdmin()||auth()->user()->isOwner() ))
         <li class="nav-item">
             <a class="nav-link" href="{{route('subsalons.index')}}">
@@ -41,14 +41,14 @@
                 <i class="mdi mdi-collage menu-icon"></i>
             </a>
         </li>
-        @if (auth()->check() && (auth()->user()->isSuperAdmin() ||auth()->user()->isOwner() ))
+        {{-- @if (auth()->check() && (auth()->user()->isSuperAdmin() ||auth()->user()->isOwner() ))
         <li class="nav-item">
             <a class="nav-link" href="{{route('employees.index')}}">
                 <span class="menu-title">employees</span>
                 <i class="fa-solid fa-users-gear  menu-icon"></i>
             </a>
         </li>
-    @endif
+    @endif --}}
         <li class="nav-item">
             <a class="nav-link" href="{{route('subcategories.index')}}">
                 <span class="menu-title">sub categories</span>
@@ -61,13 +61,12 @@
                 <i class="fa-solid fa-calendar-days menu-icon"></i>
             </a>
         </li>
-        <li class="nav-item">
+        {{-- <li class="nav-item">
             <a class="nav-link" href="{{route('castomors.index')}}">
                 <span class="menu-title">castomors</span>
-                {{-- <i class="fa-solid fa-users-rectangle menu-icon"></i> --}}
                 <i class="fa-solid fa-users  menu-icon"></i>
             </a>
-        </li>
+        </li> --}}
         @if (auth()->check() && (auth()->user()->isSuperAdmin() ||auth()->user()->isOwner() ))
         <li class="nav-item">
             <a class="nav-link" href="{{route('feedbacks.index')}}">

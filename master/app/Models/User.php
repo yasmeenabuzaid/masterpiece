@@ -20,6 +20,7 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Salon::class);
     }
+    
     /**
      * The attributes that are mass assignable.
      *

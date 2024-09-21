@@ -8,28 +8,28 @@ use Illuminate\Http\Request;
 
 class SubcatController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
-{
+    {
+
     $user = auth()->user();
 
     if ($user->isSuperAdmin()) {
-        $categories = Categorie::all();
         $subcategories = Subcat::all();
-        return view('dashboard/subcategory/index', [
-            'subcategories' => $subcategories,
-            'categories' => $categories,
-        ]);
     } else {
-        $subcategories = Subcat::where('categories_id', $user->categories)->get();
-        return view('dashboard/subcategory/index', [
-            'subcategories' => $subcategories,
-            'categories' => [], 
-        ]);
+        $subcategories = Subcat::where('categories_id', $user->categories_id)
+                            //    ->where('owner_id', $user->id)
+                               ->get();
     }
-}
+
+
+    return view('dashboard/subcategory/index', [
+        'subcategories' => $subcategories,
+
+    ]);
+
+    }
+
 
     /**
      * Show the form for creating a new resource.

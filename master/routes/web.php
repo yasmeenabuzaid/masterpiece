@@ -22,9 +22,9 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-// Route::get('/dash', function () {
-//     return view('index');
-// });
+Route::get('/dash', function () {
+    return view('welcome');
+});
 
 Route::get('/user', function () {
     return view('user_side/index');
@@ -38,13 +38,13 @@ Route::resource('owners', OwnerController::class);
 Route::resource('services', ServiceController::class);
 Route::resource('employees', EmployeeController::class);
 Route::resource('categories', CategorieController::class);
-Route::resource('subcategories', SubcatController::class);
+// Route::resource('subcategories', SubcatController::class);
 Route::resource('bookings', BookingController::class);
 Route::resource('feedbacks', FeedController::class);
 Route::resource('castomors', CastomorController::class);
 Route::resource('profile', ProfileController::class);
 Route::resource('castomors',  CastomorController::class);
-Route::delete('/subcategories/{subcat}', [SubcatController::class, 'destroy'])->name('subcategories.destroy');
+Route::resource('subcategories', SubcatController::class);
 
 });
 

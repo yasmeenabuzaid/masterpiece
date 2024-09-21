@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('address');
             $table->integer('phone');
             $table->string('image')->nullable();
-            $table->foreignId('salons_id')->constrained('salons');
+            $table->foreignId('salons_id')->constrained('salons')->onDelete('cascade');
             $table->timestamps();
         });
     }

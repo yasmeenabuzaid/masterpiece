@@ -64,7 +64,7 @@
                         @else
                             <tr>
                                 <td colspan="{{ auth()->check() && auth()->user()->isSuperAdmin() ? '7' : '6' }}" class="text-center">
-                                    No available salons. If you believe you have the necessary permissions, please contact us at: <a href="mailto:bc@gmail.com">bc@gmail.com</a>
+                                    No available salons.
                                 </td>
                             </tr>
                         @endif
@@ -76,48 +76,52 @@
 </div>
 
 <!-- Custom Confirmation Modal -->
-<div id="confirmationModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); justify-content: center; align-items: center; z-index: 1000;">
-    <div style="background: #fff; padding: 20px; border-radius: 5px; text-align: center;">
-        <p>Are you sure you want to delete this salon?</p>
-        <button id="confirmButton" class="btn btn-danger">Confirm</button>
-        <button id="cancelButton" class="btn btn-secondary">Cancel</button>
+<div id="confirmationModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); justify-content: center; align-items: center; z-index: 1000;">
+    <div style="background: #fff; padding: 40px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); text-align: center;">
+        <i class="fa-solid fa-exclamation-triangle" style="color: red; font-size: 50px; margin-bottom: 20px;"></i>
+        <p style="font-size: 18px; margin-bottom: 30px;">If you delete this salon, all associated data will also be removed. Are you sure?</p>
+        <button id="confirmButton" class="btn btn-danger" style=" color: white; border: none; border-radius: 5px; padding: 20px 40px; cursor: pointer; transition: background-color 0.3s; margin-right: 10px;" onmouseover="this.style.backgroundColor='#c82333';" onmouseout="this.style.backgroundColor='#dc3545';">Yes, Delete</button>
+        <button id="cancelButton" class="btn btn-secondary" style=" color: white; border: none; border-radius: 5px; padding: 20px 40px; cursor: pointer;">Cancel</button>
     </div>
 </div>
 
+
+
 <script>
-    function confirmDeletion(event, url) {
-        event.preventDefault();
-        var modal = document.getElementById('confirmationModal');
-        var confirmButton = document.getElementById('confirmButton');
-        var cancelButton = document.getElementById('cancelButton');
+function confirmDeletion(event, url) {
+    event.preventDefault();
+    var modal = document.getElementById('confirmationModal');
+    var confirmButton = document.getElementById('confirmButton');
+    var cancelButton = document.getElementById('cancelButton');
 
-        modal.style.display = 'flex';
+    modal.style.display = 'flex';
 
-        confirmButton.onclick = function() {
-            var form = document.createElement('form');
-            form.method = 'POST';
-            form.action = url;
+    confirmButton.onclick = function() {
+        var form = document.createElement('form');
+        form.method = 'POST';
+        form.action = url;
 
-            var csrfToken = document.createElement('input');
-            csrfToken.type = 'hidden';
-            csrfToken.name = '_token';
-            csrfToken.value = '{{ csrf_token() }}';
-            form.appendChild(csrfToken);
+        var csrfToken = document.createElement('input');
+        csrfToken.type = 'hidden';
+        csrfToken.name = '_token';
+        csrfToken.value = '{{ csrf_token() }}';
+        form.appendChild(csrfToken);
 
-            var methodField = document.createElement('input');
-            methodField.type = 'hidden';
-            methodField.name = '_method';
-            methodField.value = 'DELETE';
-            form.appendChild(methodField);
+        var methodField = document.createElement('input');
+        methodField.type = 'hidden';
+        methodField.name = '_method';
+        methodField.value = 'DELETE';
+        form.appendChild(methodField);
 
-            document.body.appendChild(form);
-            form.submit();
-        };
+        document.body.appendChild(form);
+        form.submit();
+    };
 
-        cancelButton.onclick = function() {
-            modal.style.display = 'none';
-        };
-    }
+    cancelButton.onclick = function() {
+        modal.style.display = 'none';
+    };
+}
+
 </script>
 @endif
 @endsection
