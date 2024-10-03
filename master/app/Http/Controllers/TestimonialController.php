@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Testimonial;
+use App\Models\Salon;
+
 use Illuminate\Http\Request;
 
 class TestimonialController extends Controller
@@ -12,7 +14,10 @@ class TestimonialController extends Controller
      */
     public function index()
     {
-        //
+        $salons = Salon::all();
+
+        $testimonials = Testimonial::all();
+        return view('welcome',['salons'=>$salons ,'testimonials'=>$testimonials]);
     }
 
     /**
@@ -28,9 +33,21 @@ class TestimonialController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        dd($request);
+        $validatedData = $request->validate([
+            'testimonial' => 'required|string|max:255',
+            'user_id' => 'required|integer', // Changed to integer for user ID
+            'sub_salons_id' => 'required|integer', // Fixed whitespace and changed to integer
+        ]);
 
+        $testimonial = new Testimonial();
+        $testimonial->testimonial = $validatedData['testimonial'];
+        $testimonial->user_id = $validatedData['user_id'];
+        $testimonial->sub_salons_id = $validatedData['sub_salons_id'];
+        $testimonial->save();
+
+        return redirect()->route('testimonials.index')->with('success', 'Testimonial created successfully.'); // Updated success message
+    }
     /**
      * Display the specified resource.
      */

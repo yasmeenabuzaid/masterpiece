@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Salon;
+use App\Models\Testimonial;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -26,7 +27,8 @@ class HomeController extends Controller
     public function index()
     {
         // return view('home');
+        $testimonial=Testimonial::all();
         $salons = Salon::all();
-        return view('welcome',['salons'=>$salons]);
+        return view('welcome',['salons'=>$salons ,'testimonial'=>$testimonial]);
     }
 }

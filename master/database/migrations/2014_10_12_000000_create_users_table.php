@@ -12,11 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->engine = 'InnoDB'; // Ensure InnoDB
+            $table->engine = 'InnoDB'; 
             $table->id();
             $table->string('name');
-            // $table->string('usertype')->default('user');
-            // $table->foreignId('salon_id')->constrained()->onDelete('cascade');
             $table->foreignId('salon_id')->nullable();
             $table->enum('usertype', ['super_admin', 'owner', 'employee','user'])->default('user');
             $table->string('email')->unique();

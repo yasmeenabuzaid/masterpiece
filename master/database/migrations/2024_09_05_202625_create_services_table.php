@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('services', function (Blueprint $table) {
             $table->id();
             $table->foreignId('sub_salons_id')->constrained('sub_salons');
-            $table->foreignId('subcats_id')->constrained('subcats');
+            $table->foreignId('users_id')->constrained('users');
             $table->foreignId('categories_id')->constrained('categories');
             $table->string('image')->nullable();
             $table->text('description')->nullable();

@@ -27,6 +27,16 @@
         </li>
 
     @endif --}}
+        @if (auth()->check() && (auth()->user()->isSuperAdmin() ))
+        <li class="nav-item">
+            <a class="nav-link" href="{{route('users.index')}}">
+                <span class="menu-title">users</span>
+                <i class="fa-solid fa-user-group  menu-icon "></i>
+
+            </a>
+        </li>
+
+    @endif
     @if (auth()->check() && (auth()->user()->isSuperAdmin()||auth()->user()->isOwner() ))
         <li class="nav-item">
             <a class="nav-link" href="{{route('subsalons.index')}}">

@@ -2,16 +2,14 @@
 
 @section('content')
 <div class="container">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="title-1">Services</h2>
-        @if (auth()->check() && auth()->user()->isSuperAdmin()||auth()->user()->isOwner())
 
-        <a href="{{ route('services.create') }}">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="title-1">Users</h2>
+        <a href="{{ route('users.create') }}">
             <button type="button" class="btn btn-primary">
-                <i class="zmdi zmdi-plus"></i> Add New Service
+                <i class="zmdi zmdi-plus"></i> Add New Owner
             </button>
         </a>
-        @endif
     </div>
 
     <div class="row">
@@ -21,33 +19,36 @@
                     <thead class="thead-light">
                         <tr>
                             <th scope="col">ID</th>
+                            <th scope="col">Salon Name</th>
+                            <th scope="col">Images</th>
                             <th scope="col">Name</th>
-                            <th scope="col">Description</th>
-                            <th scope="col">sub salon name</th>
-                            <th scope="col">category name</th>
-                            <th scope="col">sub category name</th>
-                            <th scope="col">Created At</th>
+                            <th scope="col">user type</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Date</th>
                             <th scope="col">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($services as $service)
+                        @foreach($users as $user)
                             <tr>
-                                <th scope="row">{{ $service->id }}</th>
-                                <td>{{ $service->name }}</td>
-                                <td>{{ $service->description }}</td>
-                                <td>{{ $service->subsalon->name }}</td>
-                                <td>{{ $service->categorie->name }}</td>
-                                <td>{{ $service->subcat->name }}</td>
-
-                                <td>{{ $service->created_at->format('Y-m-d') }}</td>
+                                <th scope="row">{{ $user->id }}</th>
+                                <td>{{ $user->salon ? $user->salon->name : 'null' }}</td>
                                 <td>
-                                    <a href="{{ route('services.edit', $service->id) }}">
-                                        <button type="button" class="btn btn-secondary">
-                                            <i class="fa-solid fa-pen-to-square"></i>
-                                        </button>
+                                    @if($user->image)
+                                    <img src="{{ asset($user->image) }}" alt="User Image" style="width: 100px; border-radius: 0px;">
+                                    @else
+                                        <span>No Image</span>
+                                    @endif
+                                </td>
+                                <td>{{ $user->name }}</td>
+                                <td>{{ $user->usertype }}</td>
+                                <td>{{ $user->email }}</td>
+                                <td>{{ $user->created_at->format('Y-m-d') }}</td>
+                                <td>
+                                    <a href="{{ route('users.edit', $user->id) }}" class="btn btn-secondary">
+                                        <i class="fa-solid fa-pen-to-square"></i>
                                     </a>
-                                    <button type="button" class="btn btn-danger" onclick="confirmDeletion(event, '{{ route('services.destroy', $service->id) }}')">
+                                    <button type="button" class="btn btn-danger" onclick="confirmDeletion(event, '{{ route('users.destroy', $user->id) }}')">
                                         <i class="fa-solid fa-trash"></i>
                                     </button>
                                 </td>
@@ -63,7 +64,7 @@
 <!-- Custom Confirmation Modal -->
 <div id="confirmationModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); justify-content: center; align-items: center; z-index: 1000;">
     <div style="background: #fff; padding: 20px; border-radius: 5px; text-align: center;">
-        <p>Are you sure you want to delete this service?</p>
+        <p>Are you sure you want to delete this user?</p>
         <button id="confirmButton" class="btn btn-danger">Confirm</button>
         <button id="cancelButton" class="btn btn-secondary">Cancel</button>
     </div>

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-
+use App\Http\Controllers\UserController;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -20,7 +20,13 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Salon::class);
     }
-    
+
+    public function testimonial(){
+        return $this->hasMany(Testimonial::class,'testimonial_id');
+       }
+       public function service(){
+        return $this->hasMany(Service::class,'services_id');
+       }
     /**
      * The attributes that are mass assignable.
      *

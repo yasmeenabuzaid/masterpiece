@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('testimonials', function (Blueprint $table) {
             $table->id();
+            $table->string('testimonial');
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('sub_salons_id')->constrained('sub_salons');
             $table->timestamps();
         });
     }

@@ -1,3 +1,5 @@
+@if (auth()->check() && auth()->user()->isSuperAdmin()||auth()->user()->isOwner())
+
 @extends('layouts.dashboard_master')
 
 @section('content')
@@ -55,3 +57,4 @@
     </form>
 </div>
 @endsection
+@endif

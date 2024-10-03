@@ -13,10 +13,11 @@ class Service extends Model
     {
         return $this->belongsTo(SubSalon::class, 'sub_salons_id');
     }
-    public function subcat()
+    public function user()
     {
-        return $this->belongsTo(Subcat::class, 'subcats_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
+
     public function categorie()
     {
         return $this->belongsTo(Categorie::class, 'categories_id');
@@ -27,7 +28,7 @@ class Service extends Model
        public function feed(){
         return $this->hasMany(Feed::class,'feeds_id');
        }
-     // In Service.php model
+
 protected $fillable = ['name', 'description', 'sub_salons_id', 'subcats_id', 'categories_id'];
 
 }

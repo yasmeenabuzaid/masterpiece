@@ -351,15 +351,15 @@ section {
 .slider-wrapper {
   display: grid;
   grid-template-columns: repeat(4, 1fr); /* 5 columns */
-  gap: 10px; /* space between slides */
+  gap: 5px; /* space between slides */
   transition: transform 0.5s ease-in-out;
 }
 
 .slide {
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-  background-color: #fff;
-  padding: 20px;
+  /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); */
+  /* border-radius: 10px; */
+  /* background-color: #fff; */
+  /* padding: 20px; */
   text-align: center;
   width: 360px;
 }
@@ -368,28 +368,30 @@ section {
   width: 100%;
   height: 250px; /* Fixed height */
   object-fit: cover; /* Crop image to fit dimensions */
-  border-radius: 10px;
+  /* border-radius: 10px; */
 }
 
 
-.card-text {
+/* .card-text {
 padding: 20px;
   display: flex;
   flex-direction: column;
   gap: 10px;
   margin-bottom: 30px;
-  height: 150px;
-}
+  height: 50px;
+} */
 
 .slide h3 {
     margin:0px ;
     /* font-size: 1.5rem; */
+    text-align: start;
 
   }
 
   .slide span {
     color: #666;
     margin: 0;
+    font-size: 13px;
     text-align: start;
     word-wrap: break-word; /* للسماح بتقسيم الكلمات عند الحاجة */
     overflow-wrap: break-word; /* نسخة أحدث من word-wrap */
@@ -645,4 +647,428 @@ border: #666 solid 1px;}
 {
     background: #cf9e7b;
     border: 3px solid  #cf9e7b;
+}
+.services {
+    display: flex;
+    flex-direction:row;
+    align-items: center;
+    margin: 50px 0;
+}
+
+.service-item {
+    background-color:white;
+    border-radius: 8px;
+    padding: 30px;
+    margin: 10px;
+    width: 350px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.5s forwards;
+}
+.service-item:hover{
+    background-color: #99989820;
+    transition: all 0.3s ease-in-out;
+}
+.service-item:nth-child(1) { animation-delay: 0.1s; }
+.service-item:nth-child(2) { animation-delay: 0.2s; }
+.service-item:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.image-container {
+    position: relative;
+    overflow: hidden; /* يخفي المحتوى الزائد */
+    border-radius: 8px;
+
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+}
+
+.image-container img {
+    width: 100%;
+    /* height: auto; */
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.38); /* فلتر أسود */
+
+}
+
+.see-more-btn{
+    background-color: rgb(59, 56, 67);
+    width: 220px;
+    color: white;
+    border-radius: 2px;
+    border: rgb(59, 56, 67) solid 1px ;
+}
+.see-more-btn:hover{
+    background-color: rgb(72, 70, 79);
+    width: 220px;
+    color: white;
+    border-radius: 2px;
+    border: rgb(59, 56, 67) solid 1px ;
+}
+.items{
+    display: flex;
+    gap: 10px;;
+}
+.item1
+{
+    background-color: #333;
+    height: 300px;
+    width: 380px;
+    background-color:white;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+.item2
+{
+    background-color: #333;
+    height: 300px;
+    width: 180px;
+    background-color:white;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+.cat-col{
+    display: flex;
+    gap: 8px;
+}
+.item3{
+    background-color: brown;
+    height: 180px;
+    width: 480px;
+    background-color:white;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+.item4{
+    background-color: brown;
+    height:  100px;
+    width:  108px;
+    background-color:white;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+}
+.item5{
+    background-color: brown;
+    height:  100px;
+    width:  108px;
+    background-color:white;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+.item6{
+    background-color: rgb(42, 165, 42);
+    height:  100px;
+    width: 200px;
+    background-color:white;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.row{
+    margin-top: 10px;
+    display: flex;
+    gap: 33px;
+    justify-content: center;
+}
+.comments-section {
+    padding: 20px;
+
+}
+
+.Comment {
+    width: 90%;
+    padding: 20px;
+    margin-bottom: 20px;
+    background-color:white;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.5s forwards;
+    margin-top: 20px;
+}
+
+.p-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.p-info img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%; /* Circular image */
+    border: 3px solid #fff; /* White border */
+    margin-right: 10px; /* Spacing between image and text */
+}
+
+.comment-form {
+    display: flex;
+}
+
+.comment-form input {
+    flex: 1; /* Takes remaining space */
+    padding: 20px;
+    border: 1px solid #8f8f8f;
+    border-radius: 4px; /* Rounded corners */
+    margin-right: 10px; /* Space between input and button */
+    font-size: 30pz;
+}
+
+.comment-form button {
+    padding: 10px 15px;
+    background-color: #3d3e3e; /* Button color */
+    color: white; /* Button text color */
+    border: none;
+    border-radius: 4px; /* Rounded corners */
+    cursor: pointer; /* Change cursor on hover */
+}
+
+.comments-list {
+    margin-top: 20px;
+}
+
+.comment {
+    padding: 10px;
+    border: 1px solid #ddd; /* Border */
+    border-radius: 4px; /* Rounded corners */
+    margin-bottom: 10px;
+    background-color: #fff; /* Background for comments */
+}
+.info{
+    display: flex;
+    flex-direction: column;
+}
+.container-fluid {
+    background-color: #f8f9fa; /* Light background for the testimonial section */
+}
+
+h4.title-border-radius {
+    border-radius: 10px; /* Rounded corners for the title */
+}
+
+/* Testimonial Styles */
+.testimonial-item {
+    border-radius: 10px; /* Rounded corners for testimonial items */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    transition: transform 0.3s; /* Smooth scaling effect */
+}
+
+.testimonial-item:hover {
+    transform: scale(1.05);
+}
+
+.border-top {
+    border-top: 1px solid #dee2e6;
+}
+
+.bg-light {
+    background-color: #ffffff;
+}
+
+.text-primary {
+    color: #007bff;
+}
+
+.text-dark {
+    color: #343a40;
+}
+
+.d-flex {
+    display: flex;
+}
+
+.rounded-circle {
+    border-radius: 50%;
+}
+
+
+@media (max-width: 768px) {
+    .testimonial-item {
+        margin-bottom: 20px;
+    }
+}
+
+#user-info-t{
+    display: flex;
+    gap: 10px;
+}
+.flex-col{
+    display: flex;
+    flex-direction: column;
+}
+.text-gold {
+
+    color: gold;
+}
+.contact {
+    display: flex; /* استخدام flexbox */
+    justify-content: space-between;
+    max-width: 1200px; /* الحد الأقصى لعرض الحاوية */
+    margin: auto; /* توسيط الحاوية */
+    background-color: #fff; /* خلفية للنموذج */
+    border-radius: 8px;
+    margin-bottom: 30px;
+}
+
+.about {
+    flex: 1; /* أخذ حيز متساوي */
+    padding: 30px;
+    border-right: 1px solid #000000; /* فصل بين القسمين */
+    background-color: rgb(255, 252, 247);
+
+}
+
+.contact-container {
+    flex: 1; /* أخذ حيز متساوي */
+    padding: 30px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* ظل */
+
+}
+
+h1, h4 {
+    color: #333; /* لون النص */
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #555; /* لون النص */
+}
+
+input, textarea {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border 0.3s; /* تأثير انتقال */
+}
+
+input:focus, textarea:focus {
+    border: 1px solid #007bff; /* لون الحدود عند التركيز */
+    outline: none; /* إزالة الإطار الافتراضي */
+}
+
+button {
+    width: 100%;
+    padding: 15px;
+    background-color: #007bff; /* لون الزر */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s; /* تأثير انتقال */
+}
+
+button:hover {
+    background-color: #0056b3; /* لون عند التمرير */
+}
+
+button
+{
+    background-color: rgb(59, 56, 67);
+    width: 220px;
+    height: 60px;
+    color: white;
+    border-radius: 2px;
+    border: rgb(59, 56, 67) solid 1px;
+}
+
+button:hover
+{
+    background: #434140;
+
+}
+h1{
+    text-align: center;
+}
+.big-title{
+    color: white;
+    font-size: 40px;
+}
+.contact{
+    background-color: rgb(255, 252, 247);
+
+}
+.contact-container{
+    background-color: white;
+}
+.about-section {
+    /* background-color: #f9f9f9; */
+    padding: 20px;
+    border-radius: 8px;
+    /* box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); */
+    background-color: rgb(255, 252, 247);
+
+    max-width: 600px;
+    margin: auto;
+}
+
+.about-title {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.about-description {
+    color: #555;
+    line-height: 1.6;
+}
+
+.about-services {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.about-service-column {
+    flex: 1;
+    margin: 0 10px;
+}
+
+.about-service-item {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+.about-service-item i {
+    margin-right: 10px;
+    color: #ffcc00; /* Gold color for stars */
+}
+.input-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.input-group {
+    flex: 1;
+    margin-right: 10px; /* لتوفير مسافة بين الحقول */
+}
+
+.input-group:last-child {
+    margin-right: 0; /* إزالة المسافة للعنصر الأخير */
 }

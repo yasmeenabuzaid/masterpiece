@@ -24,5 +24,8 @@ class SubSalon extends Model
        public function employee(){
         return $this->hasMany(Employee::class,'employees_id');
        }
+       public function testimonial(){
+        return $this->hasMany(Testimonial::class,'testimonial_id');
+       }
 
 }

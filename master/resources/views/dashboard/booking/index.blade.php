@@ -8,11 +8,14 @@
 
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="title-1">bookings</h2>
+        @if (auth()->check() && auth()->user()->isSuperAdmin()||auth()->user()->isOwner())
+
         <a href="{{ route('bookings.create') }}">
             <button type="button" class="btn btn-primary">
                 <i class="zmdi zmdi-plus"></i> Add New booking
             </button>
         </a>
+        @endif
     </div>
 
 
@@ -32,7 +35,10 @@
                         <th scope="col">Services name</th>
                         <th scope="col">appointment_date</th>
                         <th scope="col">Date</th>
+                        @if (auth()->check() && auth()->user()->isSuperAdmin()||auth()->user()->isOwner())
+
                         <th scope="col">Actions</th>
+                        @endif
                     </tr>
                     </thead>
                     <tbody>
@@ -46,6 +52,8 @@
                             <th scope="row">{{ $booking->castomor->first_name }} {{ $booking->castomor->last_name }}</th>
                             <th scope="row">{{ $booking->appointment_date }}</th>
                             <td>{{ $booking->created_at->format('Y-m-d') }}</td>
+                            @if (auth()->check() && auth()->user()->isSuperAdmin()||auth()->user()->isOwner())
+
                              <th scope="row">
                                 <a href="{{ route('bookings.edit', $booking->id) }}">
                                     <button type="button" class="btn btn-secondary"><i class="fa-solid fa-pen-to-square"></i></button>
@@ -54,6 +62,7 @@
 
                                 <button type="button" class="btn btn-danger" onclick="confirmDeletion(event, '{{ route('bookings.destroy', $booking->id) }}')"><i class="fa-solid fa-trash"></i></button>
                             </th>
+                            @endif
                         </tr>
                     @endforeach
                     </tbody>
