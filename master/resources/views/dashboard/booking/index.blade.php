@@ -1,80 +1,83 @@
 @extends('layouts.dashboard_master')
 
-
 @section('content')
 <div class="container">
-
-
-
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="title-1">bookings</h2>
-        @if (auth()->check() && auth()->user()->isSuperAdmin()||auth()->user()->isOwner())
-
-        <a href="{{ route('bookings.create') }}">
-            <button type="button" class="btn btn-primary">
-                <i class="zmdi zmdi-plus"></i> Add New booking
-            </button>
-        </a>
+        <h3 class="title-1">Bookings</h3>
+        @if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()))
+            <a href="{{ route('bookings.create') }}">
+                <button type="button" class="btn btn-primary">
+                    <i class="zmdi zmdi-plus"></i> Add New Booking
+                </button>
+            </a>
         @endif
     </div>
 
-
     <div class="row">
-        <div class="col-lg-12">
-            <div class="table-responsive table--no-card m-b-40">
-
-                <table class="table table-bordered bg-white">
-                    <thead class="thead-light">
-
-                    <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">name</th>
-                        <th scope="col">description</th>
-                        <th scope="col">employee name</th>
-                        <th scope="col">castomors name</th>
-                        <th scope="col">Services name</th>
-                        <th scope="col">appointment_date</th>
-                        <th scope="col">Date</th>
-                        @if (auth()->check() && auth()->user()->isSuperAdmin()||auth()->user()->isOwner())
-
-                        <th scope="col">Actions</th>
-                        @endif
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @foreach($bookings as $booking)
-                        <tr>
-                            <th scope="row">{{ $booking->id }}</th>
-                            <th scope="row">{{ $booking->name }}</th>
-                            <th scope="row">{{ $booking->description }}</th>
-                            <th scope="row">{{ $booking->employee->first_name }} {{ $booking->employee->last_name }}</th>
-                            <th scope="row">{{ $booking->service->name }}</th>
-                            <th scope="row">{{ $booking->castomor->first_name }} {{ $booking->castomor->last_name }}</th>
-                            <th scope="row">{{ $booking->appointment_date }}</th>
-                            <td>{{ $booking->created_at->format('Y-m-d') }}</td>
-                            @if (auth()->check() && auth()->user()->isSuperAdmin()||auth()->user()->isOwner())
-
-                             <th scope="row">
-                                <a href="{{ route('bookings.edit', $booking->id) }}">
-                                    <button type="button" class="btn btn-secondary"><i class="fa-solid fa-pen-to-square"></i></button>
-
-                                </a>
-
-                                <button type="button" class="btn btn-danger" onclick="confirmDeletion(event, '{{ route('bookings.destroy', $booking->id) }}')"><i class="fa-solid fa-trash"></i></button>
-                            </th>
-                            @endif
-                        </tr>
-                    @endforeach
-                    </tbody>
-                </table>
+        <div class="col-12 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Description</th>
+                                    <th scope="col">Employee Name</th>
+                                    <th scope="col">Customer Name</th>
+                                    <th scope="col">Service Name</th>
+                                    <th scope="col">Appointment Date</th>
+                                    <th scope="col">Creation Date</th>
+                                    @if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()))
+                                        <th scope="col">Actions</th>
+                                    @endif
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($bookings as $booking)
+                                    <tr>
+                                        <th scope="row">{{ $booking->id }}</th>
+                                        <td>{{ $booking->name }}</td>
+                                        <td>{{ $booking->description }}</td>
+                                        <td>
+                                            @if($booking->user && $booking->user->usertype === 'employee')
+                                                {{ $booking->user->first_name }} {{ $booking->user->last_name }}
+                                            @else
+                                                {{ $booking->employee->first_name ?? 'N/A' }} {{ $booking->employee->last_name ?? '' }}
+                                            @endif
+                                        </td>
+                                        <td>{{ $booking->customer->first_name ?? 'N/A' }} {{ $booking->customer->last_name ?? '' }}</td>
+                                        <td>{{ $booking->service->name ?? 'N/A' }}</td>
+                                        <td>{{ $booking->appointment_date }}</td>
+                                        <td>{{ $booking->created_at->format('Y-m-d') }}</td>
+                                        @if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()))
+                                            <td>
+                                                <a href="{{ route('bookings.edit', $booking->id) }}">
+                                                    <button type="button" class="btn btn-secondary">
+                                                        <i class="fa-solid fa-pen-to-square"></i>
+                                                    </button>
+                                                </a>
+                                                <button type="button" class="btn btn-danger" onclick="confirmDeletion(event, '{{ route('bookings.destroy', $booking->id) }}')">
+                                                    <i class="fa-solid fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        @endif
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
- <!-- Custom Confirmation Modal -->
- <div id="confirmationModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); justify-content: center; align-items: center; z-index: 1000;">
+
+<!-- Custom Confirmation Modal -->
+<div id="confirmationModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); justify-content: center; align-items: center; z-index: 1000;">
     <div style="background: #fff; padding: 20px; border-radius: 5px; text-align: center;">
-        <p>Are you sure you want to delete this category?</p>
+        <p>Are you sure you want to delete this booking?</p>
         <button id="confirmButton" class="btn btn-danger">Confirm</button>
         <button id="cancelButton" class="btn btn-secondary">Cancel</button>
     </div>
@@ -82,7 +85,7 @@
 
 <script>
     function confirmDeletion(event, url) {
-        event.preventDefault(); // Prevent the default form submission -. تريد منع نموذج من الإرسال عند النقر على زر الإرسال
+        event.preventDefault();
         var modal = document.getElementById('confirmationModal');
         var confirmButton = document.getElementById('confirmButton');
         var cancelButton = document.getElementById('cancelButton');
@@ -98,9 +101,8 @@
 
             var csrfToken = document.createElement('input');
             csrfToken.type = 'hidden';
-            // "hidden" يُستخدم للإشارة إلى طرق مختلفة لجعل العناصر غير مرئية أو مخفية
             csrfToken.name = '_token';
-            csrfToken.value = '{{ csrf_token() }}'; // Laravel CSRF token
+            csrfToken.value = '{{ csrf_token() }}';
             form.appendChild(csrfToken);
 
             var methodField = document.createElement('input');

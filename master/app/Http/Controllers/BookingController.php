@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Booking;
-use App\Models\Castomor;
-use App\Models\Employee;
 use App\Models\Service;
+use App\Models\User; // تأكد من استيراد نموذج المستخدم
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -16,24 +15,28 @@ class BookingController extends Controller
      */
     public function index()
     {
-        $employees = Employee::all();
         $services = Service::all();
-        $castomors = Castomor::all();
-
-
         $bookings = Booking::all();
-        return view('dashboard/booking/index', ['bookings' => $bookings ,'castomors'=>$castomors,'services'=>$services,'employees'=>$employees]);
+
+        return view('dashboard.booking.index', ['bookings' => $bookings, 'services' => $services]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
-    {   $employees = Employee::all();
+    {
         $services = Service::all();
-        $castomors = Castomor::all();
+        // جلب المستخدمين من النوع employee
+        $employees = User::where('usertype', 'employee')->get();
+        // جلب المستخدمين من النوع user
+        $customers = User::where('usertype', 'user')->get();
 
-        return view('dashboard/booking/create', ['castomors'=>$castomors,'services'=>$services,'employees'=>$employees]);
+        return view('dashboard.booking.create', [
+            'services' => $services,
+            'employees' => $employees,
+            'customers' => $customers,
+        ]);
     }
 
     /**
@@ -41,21 +44,18 @@ class BookingController extends Controller
      */
     public function store(Request $request)
     {
-            //  dd($request->all());
-             $request->validate([
-                'name' => 'required|string|max:255',
-                'appointment_date' => 'required|date',
-                'description' => 'nullable|string',
-                'castomors_id' => 'required|exists:castomors,id',
-                'employees_id' => 'required|exists:employees,id',
-                'services_id' => 'required|exists:services,id',
-            ]);
-            Booking::create($request->all());
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'appointment_date' => 'required|date',
+            'description' => 'nullable|string',
+            'services_id' => 'required|exists:services,id',
+            'user_id' => 'required|exists:users,id', // تأكد من تطابق هذا الاسم
+        ]);
 
-            return redirect()->route('bookings.index')->with('success', 'Subcategory created successfully.');
-        }
+        Booking::create($request->only(['name', 'description', 'user_id', 'services_id', 'appointment_date']));
 
-
+        return redirect()->route('bookings.index')->with('success', 'Booking created successfully.');
+    }
 
     /**
      * Display the specified resource.
@@ -70,20 +70,16 @@ class BookingController extends Controller
      */
     public function edit(Booking $booking)
     {
-        $employees = Employee::all();
         $services = Service::all();
-        $castomors = Castomor::all();
-
         // Convert appointment_date to Carbon instance if needed
         $booking->appointment_date = Carbon::parse($booking->appointment_date);
 
-        return view('dashboard/booking/edit', [
+        return view('dashboard.booking.edit', [
             'booking' => $booking,
-            'castomors' => $castomors,
             'services' => $services,
-            'employees' => $employees
         ]);
     }
+
     /**
      * Update the specified resource in storage.
      */
@@ -93,9 +89,9 @@ class BookingController extends Controller
             'name' => 'required|string|max:255',
             'appointment_date' => 'required|date',
             'description' => 'nullable|string',
-            'castomors_id' => 'required|exists:castomors,id',
-            'employees_id' => 'required|exists:employees,id',
             'services_id' => 'required|exists:services,id',
+            'user_id' => 'required|exists:users,id',
+            'usertype' => 'required|in:employee,user', // Validate usertype
         ]);
 
         $booking->update($request->all());
@@ -103,13 +99,13 @@ class BookingController extends Controller
         return redirect()->route('bookings.index')->with('success', 'Booking updated successfully.');
     }
 
-
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Booking $booking)
     {
-        //
-    }
+        $booking->delete();
 
+        return redirect()->route('bookings.index')->with('success', 'Booking deleted successfully.');
+    }
 }

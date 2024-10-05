@@ -15,13 +15,11 @@ class Salon extends Model
 
     public function users()
     {
-        return $this->hasMany(User::class);
+        return $this->hasMany(User::class); //->owners
     }
-    public function subsalon(){
+    public function subsalon(){ //many
         return $this->hasMany(SubSalon::class,'sub_salons_id');
        }
-    public function categorie(){
-        return $this->hasMany(Categorie::class,'salons_id');
-       }
+
 
 }

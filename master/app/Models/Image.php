@@ -10,6 +10,6 @@ class Image extends Model
     use HasFactory;
     public function subsalon()
     {
-        return $this->belongsTo(SubSalon::class, 'sub_salons_id');
+        return $this->belongsTo(SubSalon::class, 'sub_salon_id');
     }
 }

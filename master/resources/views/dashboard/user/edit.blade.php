@@ -48,7 +48,7 @@
                         @enderror
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group" id="salonsField" style="display: {{ $user->usertype === 'owner' ? 'block' : 'none' }};">
                         <label for="salons_id">Salon</label>
                         <select class="form-control form-control-sm @error('salons_id') is-invalid @enderror" name="salons_id" id="salons_id" required>
                             @foreach ($salons as $salon)
@@ -56,6 +56,18 @@
                             @endforeach
                         </select>
                         @error('salons_id')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="form-group" id="subsalonsField" style="display: {{ $user->usertype === 'employee' ? 'block' : 'none' }};">
+                        <label for="subsalons_id">SubSalon</label>
+                        <select class="form-control form-control-sm @error('subsalons_id') is-invalid @enderror" name="subsalons_id" id="subsalons_id">
+                            @foreach ($subsalons as $subsalon)
+                                <option value="{{ $subsalon->id }}" {{ $user->sub_salons_id == $subsalon->id ? 'selected' : '' }}>{{ $subsalon->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('subsalons_id')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
@@ -80,6 +92,12 @@
         imagePreview.src = URL.createObjectURL(event.target.files[0]);
         imagePreview.style.display = 'block';
     }
+
+    document.getElementById('usertype').addEventListener('change', function() {
+        const userType = this.value;
+        document.getElementById('salonsField').style.display = userType === 'owner' ? 'block' : 'none';
+        document.getElementById('subsalonsField').style.display = userType === 'employee' ? 'block' : 'none';
+    });
 </script>
 
 @endsection

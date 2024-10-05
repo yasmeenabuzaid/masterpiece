@@ -8,15 +8,27 @@ use Illuminate\Database\Eloquent\Model;
 class Categorie extends Model
 {
     use HasFactory;
-    public function service(){
-        return $this->hasMany(Service::class,'services_id');
-       }
 
+    // إضافة الخصائص القابلة للتعيين الجماعي
+    protected $fillable = [
+        'name',         // أضف هذا
+        'description',
+        'sub_salons_id',
+        'user_id',
+    ];
 
-    public function salon()
+    public function services()
     {
-        return $this->belongsTo(Salon::class,'salons_id');
+        return $this->hasMany(Service::class, 'services_id');
     }
 
+    public function subsalon()
+    {
+        return $this->belongsTo(SubSalon::class, 'sub_salons_id');
+    }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

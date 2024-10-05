@@ -20,7 +20,6 @@ class DashboardController extends Controller
     public function index()
     {
         $feedbacks = Feed::all()?? [];
-        $subcategories = Subcat::all()?? [];
         $subsalons = SubSalon::all()?? [];
         $categories = Categorie::all()?? [];
         $castomors = Castomor::all()?? [];
@@ -35,7 +34,6 @@ class DashboardController extends Controller
 
             'salons'=>$salons,
             'feedbacks'=>$feedbacks,
-            'subcategories'=>$subcategories,
             'subsalons'=>$subsalons,
             'categories'=>$categories,
             'castomors'=>$castomors,

@@ -1,5 +1,6 @@
           <!-- partial:partials/_footer.html -->
-          <footer class="footer">
+          <footer class="footer" style="background-color: rgb(255, 255, 255); color: #656565; padding:10px 15px;">
+            <ul class="nav">>
             <div class="container-fluid d-flex justify-content-between">
               <span class="text-muted d-block text-center text-sm-start d-sm-inline-block">Copyright © bootstrapdash.com 2021</span>
               <span class="float-none float-sm-end mt-1 mt-sm-0 text-end"> Free <a href="https://www.bootstrapdash.com/bootstrap-admin-template/" target="_blank">Bootstrap admin template</a> from Bootstrapdash.com</span>
@@ -27,6 +28,7 @@
     <!-- Custom js for this page -->
     <script src="{{asset("assets/js/dashboard.js")}}"></script>
     <script src="{{asset("assets/js/todolist.js")}}"></script>
+    
     <!-- End custom js for this page -->
   </body>
 </html>

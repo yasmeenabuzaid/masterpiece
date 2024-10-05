@@ -18,7 +18,7 @@ class User extends Authenticatable
     }
     public function salon()
     {
-        return $this->belongsTo(Salon::class);
+        return $this->belongsTo(Salon::class); //1salon
     }
 
     public function testimonial(){
@@ -27,16 +27,31 @@ class User extends Authenticatable
        public function service(){
         return $this->hasMany(Service::class,'services_id');
        }
+       public function categories() // Use plural for consistency
+    {
+        return $this->hasMany(Categorie::class, 'users_id'); // Changed to 'users_id'
+    }
+    public function subsalon()
+    {
+        return $this->belongsTo(SubSalon::class, 'sub_salons_id');
+    }
+    public function booking(){
+        return $this->hasMany(Booking::class,'bookings_id');
+       }
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+  protected $fillable = [
+    'name',
+    'email',
+    'password',
+
+    'usertype',
+    'image'
+];
 
     /**
      * The attributes that should be hidden for serialization.

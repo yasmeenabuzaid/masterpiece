@@ -14189,14 +14189,18 @@ dl {
         .sidebar .nav .nav-item .nav-link[aria-expanded="true"] .menu-arrow:before {
           content: "\f140"; }
       .sidebar .nav .nav-item.active {
-        background: #ffffff; }
+        background: rgb(100, 95, 110);
+    }
         .sidebar .nav .nav-item.active > .nav-link .menu-title {
           color: #b66dff;
           font-family: "ubuntu-medium", sans-serif; }
         .sidebar .nav .nav-item.active > .nav-link i {
-          color: #b66dff; }
+          color: #fff; }
       .sidebar .nav .nav-item:hover {
-        background: #fcfcfc; }
+        /* background: rgb(100, 95, 110); */
+        border : rgb(100, 95, 110) solid 1px;
+         color: #fff;
+    }
       .sidebar .nav .nav-item.nav-profile .nav-link {
         height: auto;
         line-height: 1;
@@ -14440,7 +14444,7 @@ dl {
       width: 100%; } }
 
 .content-wrapper {
-  background: #f2edf3;
+  background: white;
   padding: 2.75rem 2.25rem;
   width: 100%;
   -webkit-box-flex: 1;

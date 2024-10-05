@@ -12,10 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->engine = 'InnoDB'; 
+            $table->engine = 'InnoDB';
             $table->id();
             $table->string('name');
             $table->foreignId('salon_id')->nullable();
+            $table->foreignId('sub_salons_id')->nullable();
             $table->enum('usertype', ['super_admin', 'owner', 'employee','user'])->default('user');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();

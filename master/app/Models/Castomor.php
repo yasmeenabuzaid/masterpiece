@@ -8,10 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Castomor extends Model
 {
     use HasFactory;
-    public function booking(){
-        return $this->hasMany(Booking::class,'bookings_id');
-       }
-       public function feed(){
-        return $this->hasMany(Feed::class,'feeds_id');
-       }
+    // public function booking(){
+    //     return $this->hasMany(Booking::class,'bookings_id');
+    //    }
+    //    public function feed(){
+    //     return $this->hasMany(Feed::class,'feeds_id');
+    //    }
     }

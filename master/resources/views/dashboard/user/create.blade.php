@@ -1,5 +1,5 @@
 @extends("layouts.dashboard_master")
-@section("headTitle", "Create Owner")
+@section("headTitle", "Create User")
 @section("content")
 
 <div class="nav-profile-text d-flex flex-column">
@@ -36,8 +36,18 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="usertype">User Type</label>
+                        <select class="form-control" name="usertype" id="usertype" required onchange="toggleSalonFields()">
+                            <option value="user">customer</option>
+                            <option value="owner">Owner</option>
+                            <option value="employee">Employee</option>
+                            <option value="super_admin">Super Admin</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" id="salonField" style="display: none;">
                         <label for="salons_id">Salon</label>
-                        <select class="form-control form-control-sm @error('salons_id') is-invalid @enderror" name="salons_id" id="salons_id" required>
+                        <select class="form-control form-control-sm @error('salons_id') is-invalid @enderror" name="salons_id" id="salons_id">
                             @foreach ($salons as $salon)
                                 <option value="{{ $salon->id }}">{{ $salon->name }}</option>
                             @endforeach
@@ -47,14 +57,16 @@
                         @enderror
                     </div>
 
-                    <div class="form-group">
-                        <label for="usertype">User Type</label>
-                        <select class="form-control" name="usertype" id="usertype" required>
-                            <option value="user">User</option>
-                            <option value="owner">Owner</option>
-                            <option value="employee">Employee</option>
-                            <option value="super_admin">Super Admin</option>
+                    <div class="form-group" id="subsalonField" style="display: none;">
+                        <label for="subsalons_id">SubSalon</label>
+                        <select class="form-control form-control-sm @error('sub_salon_id') is-invalid @enderror" name="sub_salons_id" id="sub_salons_id">
+                            @foreach ($subsalons as $subsalon)
+                                <option value="{{ $subsalon->id }}">{{ $subsalon->name }}</option>
+                            @endforeach
                         </select>
+                        @error('subsalons_id')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <div class="form-group">
@@ -81,6 +93,23 @@
     function togglePassword() {
         const passwordField = document.getElementById('password');
         passwordField.type = passwordField.type === 'password' ? 'text' : 'password';
+    }
+
+    function toggleSalonFields() {
+        const userType = document.getElementById('usertype').value;
+        const salonField = document.getElementById('salonField');
+        const subsalonField = document.getElementById('subsalonField');
+
+        if (userType === 'employee') {
+            salonField.style.display = 'none';
+            subsalonField.style.display = 'block';
+        } else if (userType === 'owner') {
+            salonField.style.display = 'block';
+            subsalonField.style.display = 'none';
+        } else {
+            salonField.style.display = 'none';
+            subsalonField.style.display = 'none';
+        }
     }
 </script>
 

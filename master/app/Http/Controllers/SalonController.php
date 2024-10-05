@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 
 if(auth()->check() && (auth()->user()->isSuperAdmin() ||auth()->user()->isOwner() )) {
-class SalonController extends Controller
+class SalonController  extends Controller
 {
 
 
@@ -130,6 +130,7 @@ class SalonController extends Controller
         if ($salon->image && File::exists(public_path($salon->image))) {
             File::delete(public_path($salon->image));
         }
+
 
         $salon->delete();
 

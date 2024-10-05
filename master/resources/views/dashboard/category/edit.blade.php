@@ -24,11 +24,11 @@
 
                         @if (auth()->user()->isSuperAdmin())
                             <div class="form-group">
-                                <label for="salons_id">Salon</label>
-                                <select class="form-control form-control-sm" name="salons_id" id="salons_id" required>
+                                <label for="sub_salons_id">Salon</label>
+                                <select class="form-control form-control-sm" name="sub_salons_id" id="sub_salons_id" required>
                                     @foreach ($salons as $salon)
-                                        <option value="{{ $salon->id }}" {{ $salon->id == $categorie->salons_id ? 'selected' : '' }}>
-                                            {{ $salon->name }}
+                                        <option value="{{ $subsalon->id }}" {{ $subsalon->id == $categorie->sub_salons_id ? 'selected' : '' }}>
+                                            {{ $subsalon->name }}
                                         </option>
                                     @endforeach
                                 </select>

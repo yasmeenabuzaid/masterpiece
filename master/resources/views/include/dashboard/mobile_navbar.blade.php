@@ -1,5 +1,5 @@
-<nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
-    <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+<nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row" style="background-color: rgb(59, 56, 67); color: #fff;">
+    <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center"style="background-color: rgb(59, 56, 67); color: #fff;">
         <a class="navbar-brand brand-logo" href="index.html">
             {{-- <img src="../assets/images/logo2.png" alt="logo"  style="width: 200px; height:60px"/> --}}
         </a>
@@ -48,7 +48,7 @@
                             @endif
                         </div>
                         <div class="nav-profile-text">
-                            <p class="mb-1 text-black">{{ Auth::user()->name }} ({{ Auth::user()->usertype }})</p>
+                            <p class="mb-1 " style=" color: #fff;">{{ Auth::user()->name }} ({{ Auth::user()->usertype }})</p>
                         </div>
                     </a>
                     <div class="dropdown-menu navbar-dropdown" aria-labelledby="profileDropdown">

@@ -5,7 +5,6 @@ use App\Http\Controllers\SalonController;
 use App\Http\Controllers\SubSalonController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\CategorieController;
-use App\Http\Controllers\SubcatController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\FeedController;
 use App\Http\Controllers\CastomorController;
@@ -14,17 +13,18 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TestimonialController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\HomeController;
 
 use  App\Http\Middleware\Admin;
 Route::get('/', function () {
-    return view('welcome');
+    return view('index');
 });
 
 Auth::routes();
 Route::resource('testimonials', TestimonialController::class);
 // Route::post('/testimonials', [TestimonialController::class, 'store'])->name('testimonials.store');
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::resource('home', HomeController::class);
 
 Route::get('/dash', function () {
     return view('welcome');
@@ -46,13 +46,16 @@ Route::resource('users', UserController::class);
 Route::resource('services', ServiceController::class);
 Route::resource('employees', EmployeeController::class);
 Route::resource('categories', CategorieController::class);
-// Route::resource('subcategories', SubcatController::class);
 Route::resource('bookings', BookingController::class);
 Route::resource('feedbacks', FeedController::class);
 Route::resource('castomors', CastomorController::class);
 Route::resource('profile', ProfileController::class);
 Route::resource('castomors',  CastomorController::class);
-Route::resource('subcategories', SubcatController::class);
+Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');
+Route::get('employees', [UserController::class, 'employees'])->name('employees.index');
+Route::get('superAdmins', [UserController::class, 'superAdmins'])->name('superAdmins.index');
+Route::get('owners', [UserController::class, 'owners'])->name('owners.index');
+Route::get('castomors', [UserController::class, 'castomors'])->name('castomors.index');
 
 });
 

@@ -3,18 +3,92 @@
 @section('content')
 @if (auth()->check() && auth()->user()->isSuperAdmin())
 <div class="container">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="title-1">Salons</h2>
+    <div class="d-flex justify-content-between align-items-center">
+        <h3 class="title-1">Salons</h3>
         @if (auth()->check() && auth()->user()->isSuperAdmin())
         <a href="{{ route('salons.create') }}">
-            <button type="button" class="btn btn-primary">
-                <i class="zmdi zmdi-plus"></i> Add New Salon
-            </button>
+            <button type="button" class="btn btn-gradient-success btn-rounded btn-fw"><i class="fa-solid fa-plus" style="margin-right: 5px"></i>  Add New Salon</button>
         </a>
         @endif
     </div>
-
     <div class="row">
+        <div class="col-12 grid-margin">
+          <div class="card">
+            <div class="card-body">
+              {{-- <h4 class="card-title">Recent Tickets</h4> --}}
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th> Image </th>
+                      <th>Address</th>
+                      <th >Description</th>
+                      <th >Date</th>
+                      @if (auth()->check() && auth()->user()->isSuperAdmin())
+                      <th >Actions</th>
+                      @endif
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @if($salons->isNotEmpty())
+                    @foreach($salons as $salon)
+                    <tr>
+                      <td>
+                            @if($salon->image)
+                                <img src="{{ asset($salon->image) }}" alt="Salon Image" class="me-2">{{ $salon->name }}
+                            @else
+                            {{ $salon->name }}
+                          @endif
+                      </td>
+                      <td>{{ $salon->address }}</td>
+                      <td>{{ $salon->description }}</td>
+
+                      <td>
+                        {{ $salon->created_at->format('Y-m-d') }}<br>
+                        {{ $salon->created_at->format('H:i') }}
+                    </td>
+                      @if (auth()->check() && auth()->user()->isSuperAdmin())
+                      <td>
+                          {{-- <a href="{{ route('salons.edit', $salon->id) }}">
+                              <button type="button" class="btn btn-secondary">
+                                  <i class="fa-solid fa-pen-to-square"></i>
+                              </button>
+                          </a> --}}
+                          <button type="button" class="btn btn-gradient-danger btn-rounded btn-icon" onclick="confirmDeletion(event, '{{ route('salons.destroy', $salon->id) }}')">
+                              <i class="fa-solid fa-trash"></i>
+                          </button>
+                          <button type="button" class="btn btn-gradient-dark btn-rounded btn-icon">
+                            <i class="fa-solid fa-eye"></i>
+                         </button>
+                          <a href="{{ route('salons.edit', $salon->id) }}">
+                          <button type="button" class="btn btn-gradient-info btn-rounded btn-icon">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </button>
+                        </a>
+
+                          {{-- <button type="button" class="btn btn-gradient-success btn-rounded btn-icon">
+                            <i class="mdi mdi-map-marker"></i>
+                          </button> --}}
+                      </td>
+                  @endif
+                    </tr>
+                    @endforeach
+                    @else
+                        <tr>
+                            <td colspan="{{ auth()->check() && auth()->user()->isSuperAdmin() ? '7' : '6' }}" class="text-center">
+                                No available salons.
+                            </td>
+                        </tr>
+                    @endif
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    {{-- <div class="row">
         <div class="col-lg-12">
             <div class="table-responsive table--no-card m-b-40">
                 <table class="table table-bordered bg-white">
@@ -72,7 +146,7 @@
                 </table>
             </div>
         </div>
-    </div>
+    </div> --}}
 </div>
 
 <!-- Custom Confirmation Modal -->

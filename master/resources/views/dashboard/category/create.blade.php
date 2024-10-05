@@ -1,5 +1,4 @@
-@if (auth()->check() && auth()->user()->isSuperAdmin()||auth()->user()->isOwner())
-
+@if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()))
 @extends("layouts.dashboard_master")
 @section("headTitle", "One")
 @section("content")
@@ -24,10 +23,18 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="salons_id">Salon</label>
-                            <select class="form-control form-control-sm" name="salons_id" id="salons_id" required>
-                                @foreach ($salons as $salon)
-                                    <option value="{{ $salon->id }}">{{ $salon->name }}</option>
+                            <label for="sub_salons_id">SubSalon</label>
+                            <select class="form-control form-control-sm" name="sub_salons_id" id="sub_salons_id" required>
+                                @foreach ($subsalons as $subsalon)
+                                    <option value="{{ $subsalon->id }}">{{ $subsalon->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="user_id">Owners</label>
+                            <select class="form-control form-control-sm" name="user_id" id="user_id" required>
+                                @foreach ($users as $user)
+                                    <option value="{{ $user->id }}">{{ $user->name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -48,13 +55,14 @@
                             <input type="text" class="form-control" id="description" name="description" placeholder="Description" required>
                         </div>
 
-                        <input type="hidden" name="salons_id" value="{{ auth()->user()->salon_id }}">
+                        <input type="hidden" name="sub_salons_id" value="{{ auth()->user()->sub_salons_id }}">
+                        <input type="hidden" name="user_id" value="{{ auth()->user()->id }}"> <!-- تأكد من استخدام 'id' هنا -->
 
                         <button type="submit" class="btn btn-gradient-primary me-2">Submit New Category</button>
                         <button class="btn btn-light" type="button" onclick="window.history.back();">Cancel</button>
                     </form>
                 @else
-                    <p>You do not have permission to create categories. Please contact an super admin .</p>
+                    <p>You do not have permission to create categories. Please contact a super admin.</p>
                 @endif
             </div>
         </div>

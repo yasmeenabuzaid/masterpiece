@@ -2,22 +2,8 @@
 
 @section('content')
 <div class="container">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="title-1">Sub Salons</h2>
-
-        {{-- @if(auth()->user()->isSuperAdmin())
-            <form method="GET" action="{{ route('subsalons.index') }}" class="form-inline">
-                <div class="form-group">
-                    <label for="salon_id">Filter by Salon:</label>
-                    <select name="salon_id" id="salon_id" class="form-control" onchange="this.form.submit()">
-                        <option value="">All Salons</option>
-                        @foreach($salons as $salon)
-                            <option value="{{ $salon->id }}" {{ request('salon_id') == $salon->id ? 'selected' : '' }}>{{ $salon->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </form>
-        @endif --}}
+    <div class="d-flex justify-content-between align-items-center ">
+        <h3 class="title-1">Sub Salons</h3>
 
         <a href="{{ route('subsalons.create') }}">
             <button type="button" class="btn btn-primary">
@@ -27,56 +13,66 @@
     </div>
 
     <div class="row">
-        <div class="col-lg-12">
-            <div class="table-responsive table--no-card m-b-40">
-                <table class="table table-bordered bg-white">
-                    <thead class="thead-light">
-                        <tr>
-                            <th>ID</th>
-                            <th>Salon Name</th>
-                            <th>Image</th>
-                            <th>Name</th>
-                            <th>Description</th>
-                            <th>Address</th>
-                            <th>Phone</th>
-                            <th>Date</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($subsalons as $subsalon)
-                            <tr>
-                                <th>{{ $subsalon->id }}</th>
-                                <td>{{ $subsalon->salon->name }}</td>
-                                <td>
-                                    @if($subsalon->image)
-                                        <img src="{{ asset($subsalon->image) }}" alt="Image" style="width: 100px; border-radius: 0px;">
-                                    @else
-                                        <span>No Image</span>
-                                    @endif
-                                </td>
-                                <td>{{ $subsalon->name }}</td>
-                                <td>{{ $subsalon->description }}</td>
-                                <td>{{ $subsalon->address }}</td>
-                                <td>{{ $subsalon->phone }}</td>
-                                <td>{{ $subsalon->created_at->format('Y-m-d') }}</td>
-                                <td>
-                                    <a href="{{ route('subsalons.edit', $subsalon->id) }}">
-                                        <button type="button" class="btn btn-secondary">
-                                            <i class="fa-solid fa-pen-to-square"></i>
-                                        </button>
-                                    </a>
-                                    <button type="button" class="btn btn-danger" onclick="confirmDeletion(event, '{{ route('subsalons.destroy', $subsalon->id) }}')">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+        <div class="col-12 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>name</th>
+                                    <th>Salon Name</th>
+                                    <th>Description</th>
+                                    <th>Address</th>
+                                    <th>Phone</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if($subsalons->isEmpty())
+                                    <tr>
+                                        <td colspan="9" class="text-center">No Sub Salons Available</td>
+                                    </tr>
+                                @else
+                                    @foreach($subsalons as $subsalon)
+                                        <tr>
+                                            <td>
+                                                @if($subsalon->image)
+                                                    <img src="{{ asset($subsalon->image) }}" alt="Image" class="me-2" >{{ $subsalon->name }}
+                                                @else
+                                                {{ $subsalon->name }}
+
+                                                @endif
+                                            </td>                                            <td>{{ $subsalon->salon->name }}</td>
+
+                                            <td>{{ $subsalon->description }}</td>
+                                            <td>{{ $subsalon->address }}</td>
+                                            <td>{{ $subsalon->phone }}</td>
+                                            <td>
+                                                {{ $subsalon->created_at->format('Y-m-d') }}<br>
+                                                {{ $subsalon->created_at->format('H:i') }}
+                                            </td>                                            <td>
+                                                <a href="{{ route('subsalons.edit', $subsalon->id) }}">
+                                                    <button type="button" class="btn btn-secondary">
+                                                        <i class="fa-solid fa-pen-to-square"></i>
+                                                    </button>
+                                                </a>
+                                                <button type="button" class="btn btn-danger" onclick="confirmDeletion(event, '{{ route('subsalons.destroy', $subsalon->id) }}')">
+                                                    <i class="fa-solid fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+
 </div>
 
 <!-- Custom Confirmation Modal -->

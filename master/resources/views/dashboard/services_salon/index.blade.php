@@ -3,58 +3,62 @@
 @section('content')
 <div class="container">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="title-1">Services</h2>
-        @if (auth()->check() && auth()->user()->isSuperAdmin()||auth()->user()->isOwner())
-
-        <a href="{{ route('services.create') }}">
-            <button type="button" class="btn btn-primary">
-                <i class="zmdi zmdi-plus"></i> Add New Service
-            </button>
-        </a>
+        <h3 class="title-1">Services</h3>
+        @if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()))
+            <a href="{{ route('services.create') }}">
+                <button type="button" class="btn btn-primary">
+                    <i class="zmdi zmdi-plus"></i> Add New Service
+                </button>
+            </a>
         @endif
     </div>
 
     <div class="row">
-        <div class="col-lg-12">
-            <div class="table-responsive table--no-card m-b-40">
-                <table class="table table-bordered bg-white">
-                    <thead class="thead-light">
-                        <tr>
-                            <th scope="col">ID</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Description</th>
-                            <th scope="col">sub salon name</th>
-                            <th scope="col">category name</th>
-                            <th scope="col">sub category name</th>
-                            <th scope="col">Created At</th>
-                            <th scope="col">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($services as $service)
-                            <tr>
-                                <th scope="row">{{ $service->id }}</th>
-                                <td>{{ $service->name }}</td>
-                                <td>{{ $service->description }}</td>
-                                <td>{{ $service->subsalon->name }}</td>
-                                <td>{{ $service->categorie->name }}</td>
-                                <td>{{ $service->subcat->name }}</td>
-
-                                <td>{{ $service->created_at->format('Y-m-d') }}</td>
-                                <td>
-                                    <a href="{{ route('services.edit', $service->id) }}">
-                                        <button type="button" class="btn btn-secondary">
-                                            <i class="fa-solid fa-pen-to-square"></i>
-                                        </button>
-                                    </a>
-                                    <button type="button" class="btn btn-danger" onclick="confirmDeletion(event, '{{ route('services.destroy', $service->id) }}')">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+        <div class="col-12 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Description</th>
+                                    <th scope="col">Sub Salon Name</th>
+                                    <th scope="col">Category Name</th>
+                                    <th scope="col">Created At</th>
+                                    @if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()))
+                                        <th scope="col">Actions</th>
+                                    @endif
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($services as $service)
+                                    <tr>
+                                        <th scope="row">{{ $service->id }}</th>
+                                        <td>{{ $service->name }}</td>
+                                        <td>{{ $service->description }}</td>
+                                        <td>{{ $service->subsalon->name }}</td>
+                                        <td>{{ $service->categorie->name }}</td>
+                                        <td>{{ $service->created_at->format('Y-m-d') }}</td>
+                                        @if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()))
+                                            <td>
+                                                <a href="{{ route('services.edit', $service->id) }}">
+                                                    <button type="button" class="btn btn-secondary">
+                                                        <i class="fa-solid fa-pen-to-square"></i>
+                                                    </button>
+                                                </a>
+                                                <button type="button" class="btn btn-danger" onclick="confirmDeletion(event, '{{ route('services.destroy', $service->id) }}')">
+                                                    <i class="fa-solid fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        @endif
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -76,8 +80,10 @@
         var confirmButton = document.getElementById('confirmButton');
         var cancelButton = document.getElementById('cancelButton');
 
+        // Show the custom confirmation dialog
         modal.style.display = 'flex';
 
+        // Set up the confirm button to submit the form
         confirmButton.onclick = function() {
             var form = document.createElement('form');
             form.method = 'POST';
@@ -99,6 +105,7 @@
             form.submit();
         };
 
+        // Set up the cancel button to hide the modal
         cancelButton.onclick = function() {
             modal.style.display = 'none';
         };

@@ -4,10 +4,10 @@
 <div class="container">
 
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h3 class="title-1"> All Users</h3>
+        <h3 class="title-1"> Customers</h3>
         <a href="{{ route('users.create') }}">
             <button type="button" class="btn btn-primary">
-                <i class="zmdi zmdi-plus"></i> Add New Owner
+                <i class="zmdi zmdi-plus"></i> Add New Customer
             </button>
         </a>
     </div>
@@ -36,12 +36,6 @@
                       <td>
                         @if($user->usertype === 'user')
                             <label class="badge" style="background-color: red; color: white;">Customer</label>
-                        @elseif($user->usertype === 'employee')
-                            <label class="badge" style="background-color: blue; color: white;">Employee</label>
-                        @elseif($user->usertype === 'owner')
-                            <label class="badge" style="background-color: orange; color: white;">Owner</label>
-                        @elseif($user->usertype === 'super_admin')
-                            <label class="badge" style="background-color: green; color: white;">Super Admin</label>
                         @endif
                     </td>
 
@@ -55,8 +49,6 @@
                           <button type="button" class="btn btn-danger" onclick="confirmDeletion(event, '{{ route('users.destroy', $user->id) }}')">
                               <i class="fa-solid fa-trash"></i>
                           </button>
-
-                          
                       </td>
                     </tr>
                     @empty

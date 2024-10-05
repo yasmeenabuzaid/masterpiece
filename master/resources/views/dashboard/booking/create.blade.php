@@ -1,5 +1,4 @@
-@if (auth()->check() && auth()->user()->isSuperAdmin()||auth()->user()->isOwner())
-
+@if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()))
 @extends('layouts.dashboard_master')
 
 @section('content')
@@ -24,22 +23,28 @@
         </div>
 
         <div class="form-group">
-            <label for="employees_id">Employee</label>
-            <select name="employees_id" id="employees_id" class="form-control" required>
-                @foreach($employees as $employee)
-                    <option value="{{ $employee->id }}">
-                        {{ $employee->first_name }} {{ $employee->last_name }}
-                    </option>
-                @endforeach
+            <label for="employee_id">Employee</label>
+            <select class="form-control form-control-sm" name="user_id" id="employee_id" required>
+                @if ($employees->isEmpty())
+                    <option disabled>No Employees Found</option>
+                @else
+                    @foreach ($employees as $employee)
+                        <option value="{{ $employee->id }}">{{ $employee->name }}</option>
+                    @endforeach
+                @endif
             </select>
         </div>
 
         <div class="form-group">
-            <label for="castomors_id">Customer</label>
-            <select id="castomors_id" name="castomors_id" class="form-control" required>
-                @foreach ($castomors as $castomor)
-                    <option value="{{ $castomor->id }}">{{$castomor->first_name}} {{ $castomor->last_name }}</option>
-                @endforeach
+            <label for="customer_id">Customer</label>
+            <select class="form-control form-control-sm" name="user_id" id="customer_id" required>
+                @if ($customers->isEmpty())
+                    <option disabled>No Customers Found</option>
+                @else
+                    @foreach ($customers as $customer)
+                        <option value="{{ $customer->id }}">{{ $customer->name }}</option>
+                    @endforeach
+                @endif
             </select>
         </div>
 
