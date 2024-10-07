@@ -6,7 +6,7 @@
         <h3 class="title-1">Services</h3>
         @if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()))
             <a href="{{ route('services.create') }}">
-                <button type="button" class="btn btn-primary">
+                <button type="button" class="btn btn-gradient-success btn-rounded btn-fw"><i class="fa-solid fa-plus" style="margin-right: 5px"></i>
                     <i class="zmdi zmdi-plus"></i> Add New Service
                 </button>
             </a>
@@ -24,7 +24,6 @@
                                     <th scope="col">ID</th>
                                     <th scope="col">Name</th>
                                     <th scope="col">Description</th>
-                                    <th scope="col">Sub Salon Name</th>
                                     <th scope="col">Category Name</th>
                                     <th scope="col">Created At</th>
                                     @if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()))
@@ -38,19 +37,22 @@
                                         <th scope="row">{{ $service->id }}</th>
                                         <td>{{ $service->name }}</td>
                                         <td>{{ $service->description }}</td>
-                                        <td>{{ $service->subsalon->name }}</td>
                                         <td>{{ $service->categorie->name }}</td>
                                         <td>{{ $service->created_at->format('Y-m-d') }}</td>
                                         @if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()))
                                             <td>
-                                                <a href="{{ route('services.edit', $service->id) }}">
-                                                    <button type="button" class="btn btn-secondary">
-                                                        <i class="fa-solid fa-pen-to-square"></i>
-                                                    </button>
-                                                </a>
-                                                <button type="button" class="btn btn-danger" onclick="confirmDeletion(event, '{{ route('services.destroy', $service->id) }}')">
+
+                                                <button type="button" class="btn btn-gradient-danger btn-rounded btn-icon" onclick="confirmDeletion(event, '{{ route('services.destroy', $service->id) }}')">
                                                     <i class="fa-solid fa-trash"></i>
                                                 </button>
+                                                <button type="button" class="btn btn-gradient-dark btn-rounded btn-icon">
+                                                  <i class="fa-solid fa-eye"></i>
+                                               </button>
+                                               <a href="{{ route('services.edit', $service->id) }}">
+                                                <button type="button" class="btn btn-gradient-info btn-rounded btn-icon">
+                                                  <i class="fa-solid fa-pen-to-square"></i>
+                                              </button>
+                                              </a>
                                             </td>
                                         @endif
                                     </tr>

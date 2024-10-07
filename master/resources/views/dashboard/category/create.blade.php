@@ -1,6 +1,6 @@
 @if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()))
 @extends("layouts.dashboard_master")
-@section("headTitle", "One")
+@section("headTitle", "Create Category")
 @section("content")
 
 <div class="nav-profile-text d-flex flex-column">
@@ -9,19 +9,19 @@
             <div class="card-body">
                 <h4 class="card-title">Create Category</h4>
 
-                @if (auth()->user()->isSuperAdmin())
-                    <form class="forms-sample" action="{{ route('categories.store') }}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        <div class="form-group">
-                            <label for="name">Name</label>
-                            <input type="text" class="form-control" id="name" name="name" placeholder="Insert category name" required>
-                        </div>
+                <form class="forms-sample" action="{{ route('categories.store') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Insert category name" required>
+                    </div>
 
-                        <div class="form-group">
-                            <label for="description">Description</label>
-                            <input type="text" class="form-control" id="description" name="description" placeholder="Description" required>
-                        </div>
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <input type="text" class="form-control" id="description" name="description" placeholder="Description" required>
+                    </div>
 
+                    @if (auth()->user()->isSuperAdmin())
                         <div class="form-group">
                             <label for="sub_salons_id">SubSalon</label>
                             <select class="form-control form-control-sm" name="sub_salons_id" id="sub_salons_id" required>
@@ -30,40 +30,23 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <label for="user_id">Owners</label>
                             <select class="form-control form-control-sm" name="user_id" id="user_id" required>
                                 @foreach ($users as $user)
                                     <option value="{{ $user->id }}">{{ $user->name }}</option>
                                 @endforeach
                             </select>
-                        </div>
-
-                        <button type="submit" class="btn btn-gradient-primary me-2">Submit New Category</button>
-                        <button class="btn btn-light" type="button" onclick="window.history.back();">Cancel</button>
-                    </form>
-                @elseif (auth()->user()->isOwner())
-                    <form class="forms-sample" action="{{ route('categories.store') }}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        <div class="form-group">
-                            <label for="name">Name</label>
-                            <input type="text" class="form-control" id="name" name="name" placeholder="Insert category name" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="description">Description</label>
-                            <input type="text" class="form-control" id="description" name="description" placeholder="Description" required>
-                        </div>
-
+                        </div> --}}
+                    @else
                         <input type="hidden" name="sub_salons_id" value="{{ auth()->user()->sub_salons_id }}">
-                        <input type="hidden" name="user_id" value="{{ auth()->user()->id }}"> <!-- تأكد من استخدام 'id' هنا -->
+                        {{-- <input type="hidden" name="user_id" value="{{ auth()->user()->id }}"> --}}
+                    @endif
 
-                        <button type="submit" class="btn btn-gradient-primary me-2">Submit New Category</button>
-                        <button class="btn btn-light" type="button" onclick="window.history.back();">Cancel</button>
-                    </form>
-                @else
-                    <p>You do not have permission to create categories. Please contact a super admin.</p>
-                @endif
+                    <button type="submit" class="btn btn-gradient-primary me-2">Submit New Category</button>
+                    <button class="btn btn-light" type="button" onclick="window.history.back();">Cancel</button>
+                </form>
+
             </div>
         </div>
     </div>

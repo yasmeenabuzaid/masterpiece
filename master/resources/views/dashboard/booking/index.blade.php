@@ -6,7 +6,7 @@
         <h3 class="title-1">Bookings</h3>
         @if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()))
             <a href="{{ route('bookings.create') }}">
-                <button type="button" class="btn btn-primary">
+                <button type="button" class="btn btn-gradient-success btn-rounded btn-fw"><i class="fa-solid fa-plus" style="margin-right: 5px"></i>
                     <i class="zmdi zmdi-plus"></i> Add New Booking
                 </button>
             </a>

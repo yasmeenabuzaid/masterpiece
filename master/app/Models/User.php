@@ -12,10 +12,10 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    public function profile(): HasOne
-    {
-        return $this->hasOne( Profile::class);
-    }
+    // public function profile(): HasOne
+    // {
+    //     return $this->hasOne( Profile::class);
+    // }
     public function salon()
     {
         return $this->belongsTo(Salon::class); //1salon
@@ -27,10 +27,15 @@ class User extends Authenticatable
        public function service(){
         return $this->hasMany(Service::class,'services_id');
        }
-       public function categories() // Use plural for consistency
-    {
-        return $this->hasMany(Categorie::class, 'users_id'); // Changed to 'users_id'
-    }
+       public function owner_cat()
+       {
+           return $this->hasMany(Category_Details::class, 'cat_det_id');
+       }
+       public function ser_det()
+       {
+           return $this->hasMany(Service_Details::class, 'ser_det_id');
+       }
+
     public function subsalon()
     {
         return $this->belongsTo(SubSalon::class, 'sub_salons_id');

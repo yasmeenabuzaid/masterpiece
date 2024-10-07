@@ -21,14 +21,15 @@ class Categorie extends Model
     {
         return $this->hasMany(Service::class, 'services_id');
     }
+    public function cat_det()
+    {
+        return $this->hasMany(Category_Details::class, 'cat_det_id');
+    }
 
     public function subsalon()
     {
         return $this->belongsTo(SubSalon::class, 'sub_salons_id');
     }
 
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'user_id');
-    }
+
 }

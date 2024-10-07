@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Categorie;
 use App\Models\SubSalon;
-use App\Models\User;
 use Illuminate\Http\Request;
 
 class CategorieController extends Controller
@@ -16,14 +15,12 @@ class CategorieController extends Controller
     {
         $user = auth()->user();
 
-        // الحصول على الفئات بناءً على نوع المستخدم
         if ($user->isSuperAdmin()) {
-            $categories = Categorie::all(); // السوبر أدمن يحصل على جميع الفئات
+            $categories = Categorie::all();
         } elseif ($user->isOwner()) {
-            // الحصول على الفئات المرتبطة بالسب صالون الخاص بالأونر
             $categories = Categorie::where('sub_salons_id', $user->sub_salons_id)->get();
         } else {
-            $categories = collect(); // إذا لم يكن لديه صلاحيات، فارغ
+            $categories = collect();
         }
 
         return view('dashboard.category.index', compact('categories'));
@@ -36,8 +33,7 @@ class CategorieController extends Controller
     public function create()
     {
         $subsalons = SubSalon::all();
-        $users = User::all(); // تحميل المستخدمين
-        return view('dashboard.category.create', compact('subsalons', 'users'));
+        return view('dashboard.category.create', compact('subsalons'));
     }
 
     /**
@@ -49,7 +45,6 @@ class CategorieController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'required|string',
             'sub_salons_id' => 'required|exists:sub_salons,id',
-            'user_id' => 'required|exists:users,id',
         ]);
 
         Categorie::create($validatedData); // Mass assignment
@@ -63,9 +58,8 @@ class CategorieController extends Controller
     public function edit($id)
     {
         $subsalons = SubSalon::all();
-        $users = User::all(); // تحميل المستخدمين
         $categorie = Categorie::findOrFail($id);
-        return view('dashboard.category.edit', compact('categorie', 'subsalons', 'users'));
+        return view('dashboard.category.edit', compact('categorie', 'subsalons'));
     }
 
     /**
@@ -77,7 +71,6 @@ class CategorieController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'sub_salons_id' => 'required|exists:sub_salons,id',
-            'user_id' => 'required|exists:users,id',
         ]);
 
         $categorie = Categorie::findOrFail($id);

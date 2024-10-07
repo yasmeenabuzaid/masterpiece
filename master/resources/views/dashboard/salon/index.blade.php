@@ -76,7 +76,7 @@
                     @else
                         <tr>
                             <td colspan="{{ auth()->check() && auth()->user()->isSuperAdmin() ? '7' : '6' }}" class="text-center">
-                                No available salons.
+                                No available salons,If you think you have access please contact this email email@gmial.com
                             </td>
                         </tr>
                     @endif

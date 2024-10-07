@@ -1,8 +1,20 @@
-@if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()))
-    @extends('layouts.dashboard_master')
+@extends('layouts.dashboard_master')
 
-    @section('content')
+@section('content')
+    <div class="container">
         <h4 class="card-title">Create Service</h4>
+
+        <!-- Display validation errors -->
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <form action="{{ route('services.store') }}" method="POST">
             @csrf
 
@@ -17,17 +29,6 @@
             </div>
 
             <div class="form-group">
-                <label for="sub_salons_id">Sub Salon</label>
-                <select name="sub_salons_id" id="sub_salons_id" class="form-control" required>
-                    @foreach($sub_salons as $sub_salon)
-                        <option value="{{ $sub_salon->id }}">
-                            {{ $sub_salon->name }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-
-            <div class="form-group">
                 <label for="categories_id">Category</label>
                 <select id="categories_id" name="categories_id" class="form-control" required>
                     @foreach ($categories as $categorie)
@@ -36,25 +37,26 @@
                 </select>
             </div>
 
-            @if(auth()->user()->isOwner())
-                <input type="hidden" name="users_id" value="{{ auth()->user()->id }}">
-                <div class="form-group">
-                    <label for="owner">Owner</label>
-                    <input type="text" class="form-control" id="owner" value="{{ auth()->user()->name }}" readonly>
-                </div>
-            @else
-                <div class="form-group">
-                    <label for="users_id">Owners</label>
-                    <select class="form-control form-control-sm" name="users_id" id="users_id" required>
-                        @foreach ($users as $user)
-                            <option value="{{ $user->id }}">{{ $user->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-            @endif
+            <div class="form-group">
+                <label for="hours">Duration (Hours)</label>
+                <input type="number" class="form-control" id="hours" name="hours" placeholder="HH" min="0" max="23" value="0" required>
+            </div>
+
+            <div class="form-group">
+                <label for="minutes">Duration (Minutes)</label>
+                <input type="number" class="form-control" id="minutes" name="minutes" placeholder="MM" min="0" max="59" value="0" required>
+            </div>
+
+            <small class="form-text text-muted">Please enter duration as hours (00-23) and minutes (00-59).</small>
+
+
+            <div class="form-group">
+                <label for="price">Price ($)</label>
+                <input type="number" class="form-control" id="price" name="price" placeholder="Enter service price" min="0" step="0.01" required>
+            </div>
 
             <button type="submit" class="btn btn-gradient-primary me-2">Create Service</button>
             <a href="{{ route('services.index') }}" class="btn btn-light">Cancel</a>
         </form>
-    @endsection
-@endif
+    </div>
+@endsection

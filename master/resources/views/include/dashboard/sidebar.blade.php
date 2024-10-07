@@ -25,8 +25,16 @@
 
             </a>
         </li>
-
     @endif --}}
+
+    @if (auth()->check() && (auth()->user()->isSuperAdmin()||auth()->user()->isOwner() ))
+        <li class="nav-item">
+            <a class="nav-link" href="{{route('subsalons.index')}}">
+                <span  style=" color: #fff;"  class="menu-title">sub-salons</span>
+                <i class="fa-solid fa-timeline menu-icon"></i>
+            </a>
+        </li>
+    @endif
     @if (auth()->check() && (auth()->user()->isSuperAdmin() ))
 
     <li class="nav-item">
@@ -45,45 +53,6 @@
           </ul>
         </div>
       </li>
-        {{-- @if (auth()->check() && (auth()->user()->isSuperAdmin() )) --}}
-        {{-- <li class="nav-item">
-            <li class="nav-item">
-                <a class="nav-link" href="{{route('users.index')}}">
-                    <span style=" color: #fff;"  class="menu-title">owners</span>
-                    <i class="fa-solid fa-user-group  menu-icon "></i>
-
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{route('users.index')}}">
-                    <span style=" color: #fff;"  class="menu-title">owners</span>
-                    <i class="fa-solid fa-user-group  menu-icon "></i>
-
-                </a>
-            </li>
-            <li class="nav-item">
-            <a class="nav-link" href="{{ route('employees.index') }}">
-                <span style=" color: #fff;"  class="menu-title">employees</span>
-                <i class="fa-solid fa-user-group  menu-icon "></i>
-
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="{{route('users.index')}}">
-                <span style=" color: #fff;"  class="menu-title">castomors</span>
-                <i class="fa-solid fa-user-group  menu-icon "></i>
-
-            </a>
-        </li> --}}
-
-    @endif
-    @if (auth()->check() && (auth()->user()->isSuperAdmin()||auth()->user()->isOwner() ))
-        <li class="nav-item">
-            <a class="nav-link" href="{{route('subsalons.index')}}">
-                <span  style=" color: #fff;"  class="menu-title">sub-salons</span>
-                <i class="fa-solid fa-timeline menu-icon"></i>
-            </a>
-        </li>
     @endif
           <li class="nav-item">
             <a class="nav-link" href="{{route('categories.index')}}">
@@ -111,23 +80,23 @@
                 <i class="fa-solid fa-users  menu-icon"></i>
             </a>
         </li> --}}
-        {{-- @if (auth()->check() && (auth()->user()->isSuperAdmin() ||auth()->user()->isOwner() ))
+        @if (auth()->check() && (auth()->user()->isSuperAdmin() ||auth()->user()->isOwner() ))
         <li class="nav-item">
             <a class="nav-link" href="{{route('feedbacks.index')}}">
-                <span class="menu-title">feedbacks</span>
+                <span class="menu-title" style=" color: #fff;">feedbacks</span>
                 <i class="fa-solid fa-square-poll-horizontal menu-icon"></i>
             </a>
         </li>
-    @endif --}}
+    @endif
         <li class="nav-item">
             <a class="nav-link" href="{{route('services.index')}}">
                 <span style=" color: #fff;"  class="menu-title">services</span>
                 <i class="fa-solid fa-server menu-icon"></i>
             </a>
         </li>
-
+        {{-- {{route('home.index')}} --}}
         <li class="nav-item">
-            <a class="nav-link" href="{{route('home.index')}}">
+            <a class="nav-link" href="">
                 <span style=" color: #fff;"  class="menu-title">logout</span>
                 <i class="fa-solid fa-server menu-icon"></i>
             </a>

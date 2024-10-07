@@ -19,7 +19,7 @@
             <textarea class="form-control" id="description" name="description" placeholder="Enter service description">{{ old('description', $service->description) }}</textarea>
         </div>
 
-        <div class="form-group">
+        {{-- <div class="form-group">
             <label for="sub_salons_id">Sub Salon</label>
             <select name="sub_salons_id" id="sub_salons_id" class="form-control" required>
                 @foreach($sub_salons as $sub_salon)
@@ -28,7 +28,7 @@
                     </option>
                 @endforeach
             </select>
-        </div>
+        </div> --}}
 
         <div class="form-group">
             <label for="categories_id">Category</label>
@@ -41,7 +41,7 @@
             </select>
         </div>
 
-        <div class="form-group">
+        {{-- <div class="form-group">
             <label for="subcats_id">Subcategory</label>
             <select id="subcats_id" name="subcats_id" class="form-control" required>
                 @foreach ($subcats as $subcat)
@@ -50,7 +50,7 @@
                     </option>
                 @endforeach
             </select>
-        </div>
+        </div> --}}
 
         <button type="submit" class="btn btn-gradient-primary me-2">Update Service</button>
         <a href="{{ route('services.index') }}" class="btn btn-light">Cancel</a>

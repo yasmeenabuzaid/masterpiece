@@ -16,9 +16,12 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\HomeController;
 
 use  App\Http\Middleware\Admin;
-Route::get('/', function () {
-    return view('index');
+Route::get('landing', function () {
+    return view('user_side/landing');
 });
+Route::get('/AllSalons', function () {
+    return view('user_side/all_salons');
+})->name('all_salons');
 
 Auth::routes();
 Route::resource('testimonials', TestimonialController::class);

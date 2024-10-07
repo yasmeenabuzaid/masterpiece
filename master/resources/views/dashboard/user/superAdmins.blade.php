@@ -6,7 +6,7 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h3 class="title-1">Super Admins</h3>
         <a href="{{ route('users.create') }}">
-            <button type="button" class="btn btn-primary">
+            <button type="button" class="btn btn-gradient-success btn-rounded btn-fw"><i class="fa-solid fa-plus" style="margin-right: 5px"></i>
                 <i class="zmdi zmdi-plus"></i> Add New Super Admin
             </button>
         </a>
@@ -43,12 +43,17 @@
                       <td>{{ $user->email }}</td>
                       <td>{{ $user->created_at->format('Y-m-d') }}</td>
                       <td>
-                          <a href="{{ route('users.edit', $user->id) }}" class="btn btn-secondary">
-                              <i class="fa-solid fa-pen-to-square"></i>
-                          </a>
-                          <button type="button" class="btn btn-danger" onclick="confirmDeletion(event, '{{ route('users.destroy', $user->id) }}')">
-                              <i class="fa-solid fa-trash"></i>
-                          </button>
+                        <button type="button" class="btn btn-gradient-danger btn-rounded btn-icon" onclick="confirmDeletion(event, '{{ route('users.destroy', $user->id) }}')">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                        <button type="button" class="btn btn-gradient-dark btn-rounded btn-icon">
+                          <i class="fa-solid fa-eye"></i>
+                       </button>
+                           <a href="{{ route('users.edit', $user->id) }}" >
+                              <button type="button" class="btn btn-gradient-info btn-rounded btn-icon">
+                                  <i class="fa-solid fa-pen-to-square"></i>
+                              </button>                          </a>
+
                       </td>
                     </tr>
                     @empty
