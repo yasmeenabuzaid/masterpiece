@@ -57,9 +57,9 @@
                           <button type="button" class="btn btn-gradient-danger btn-rounded btn-icon" onclick="confirmDeletion(event, '{{ route('salons.destroy', $salon->id) }}')">
                               <i class="fa-solid fa-trash"></i>
                           </button>
-                          <button type="button" class="btn btn-gradient-dark btn-rounded btn-icon">
+                          {{-- <button type="button" class="btn btn-gradient-dark btn-rounded btn-icon">
                             <i class="fa-solid fa-eye"></i>
-                         </button>
+                         </button> --}}
                           <a href="{{ route('salons.edit', $salon->id) }}">
                           <button type="button" class="btn btn-gradient-info btn-rounded btn-icon">
                             <i class="fa-solid fa-pen-to-square"></i>
@@ -76,7 +76,7 @@
                     @else
                         <tr>
                             <td colspan="{{ auth()->check() && auth()->user()->isSuperAdmin() ? '7' : '6' }}" class="text-center">
-                                No available salons,If you think you have access please contact this email email@gmial.com
+                                No salons available
                             </td>
                         </tr>
                     @endif

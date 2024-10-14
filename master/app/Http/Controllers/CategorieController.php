@@ -51,10 +51,18 @@ class CategorieController extends Controller
 
         return redirect()->route('categories.index')->with('success', 'Category created successfully.');
     }
+    public function show()
+    {
+        // استرجاع جميع الصالونات الفرعية والفئات
+        $subsalons = SubSalon::all();
+        $categories = Categorie::all();
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+        // تمرير المتغيرات إلى العرض
+        return view('user_side.categories', compact('subsalons', 'categories'));
+    }
+
+
+
     public function edit($id)
     {
         $subsalons = SubSalon::all();

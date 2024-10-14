@@ -1,9 +1,11 @@
 /********** Template CSS **********/
 :root {
-    --primary: #06BBCC;
+    --primary: #007bff;
     --light: #F0FBFC;
     --dark: #181d38;
         --pink:#db8897;
+        --new:#6262627a;
+
 
 }
 
@@ -46,7 +48,7 @@
     transition: .5s;
 }
 
-.btn.btn-primary,
+.btn.btn-new,
 .btn.btn-secondary {
     color: #FFFFFF;
 }
@@ -99,7 +101,7 @@
 
 .navbar-light .navbar-nav .nav-link:hover,
 .navbar-light .navbar-nav .nav-link.active {
-    color: var(--pink);
+    color: var(--new);
 }
 
 @media (max-width: 991.98px) {
@@ -194,12 +196,12 @@
 
 .header-carousel .owl-nav .owl-prev:hover,
 .header-carousel .owl-nav .owl-next:hover {
-    background: var(--pink);
-    border-color: var(--pink);
+    background: var(--new);
+    border-color: var(--new);
 }
 
 .page-header {
-    background: linear-gradient(rgba(24, 29, 56, .7), rgba(24, 29, 56, .7)), url(../img/carousel-1.jpg);
+    background: linear-gradient(rgba(75, 77, 90, 0.7), rgba(85, 87, 99, 0.7)), url(../img/carousel-1.jpg);
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -228,7 +230,7 @@
     height: 2px;
     top: 4px;
     left: -40px;
-    background: var(--pink);
+    background: var(--new);
     z-index: -1;
 }
 
@@ -239,7 +241,7 @@
     height: 2px;
     bottom: 5px;
     left: -60px;
-    background: var(--pink);
+    background: var(--new);
     z-index: -1;
 }
 
@@ -256,33 +258,50 @@
 
 /*** Service ***/
 .service-item {
-    background: #fffafb;
+    background: #ffffff;
     transition: .5s;
 }
 
-.service-item:hover {
+/* .service-item:hover {
     margin-top: -10px;
-    background: var(--pink);
-}
+    background: var(--new);
+} */
 
 .service-item * {
     transition: .5s;
 }
-
+/*
 .service-item:hover * {
     color: var(--light) !important;
-}
+} */
 
 
-/*** Categories & Courses ***/
-.category img,
+/* ** Categories & Courses ***/
+ .category img,
 .course-item img {
     transition: .5s;
+    width: 100%;
 }
 
 .category a:hover img,
 .course-item:hover img {
     transform: scale(1.1);
+}
+.category img,
+.course-item img {
+    transition: .5s;
+    width: 100%;
+    height: auto; /* الحفاظ على نسبة العرض إلى الارتفاع */
+    object-fit: cover; /* يضمن أن الصورة تغطي العنصر بالكامل */
+}
+
+.category .bg-white {
+    position: relative; /* لجعل الخلفية تتداخل مع الصورة */
+}
+
+.category a {
+    position: relative; /* لجعل التداخلات تعمل بشكل صحيح */
+    overflow: hidden; /* لضمان عدم خروج العناصر عن الحدود */
 }
 
 
@@ -291,9 +310,9 @@
     transition: .5s;
 }
 
-.team-item:hover img {
+/* .team-item:hover img {
     transform: scale(1.1);
-}
+} */
 
 
 /*** Testimonial ***/
@@ -304,7 +323,7 @@
     left: 0;
     height: 100%;
     width: 0;
-    background: linear-gradient(to right, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
+    background: linear-gradient(to right, rgb(255, 255, 255) 0%, rgba(255, 255, 255, 0) 100%);
     z-index: 1;
 }
 
@@ -339,11 +358,11 @@
 }
 
 .testimonial-carousel .owl-item.center .testimonial-text {
-    background: var(--pink) !important;
+    background: var(--new) !important;
 }
 
 .testimonial-carousel .owl-item.center .testimonial-text * {
-    color: #FFFFFF !important;
+    color: #ffffff !important;
 }
 
 .testimonial-carousel .owl-dots {
@@ -359,13 +378,13 @@
     margin: 0 5px;
     width: 15px;
     height: 15px;
-    border: 1px solid #CCCCCC;
+    border: 1px solid #ffffff;
     transition: .5s;
 }
 
 .testimonial-carousel .owl-dot.active {
-    background: var(--pink);
-    border-color: var(--pink);
+    background: var(--new);
+    border-color: var(--new);
 }
 
 
@@ -379,13 +398,13 @@
     justify-content: center;
     color: var(--light);
     font-weight: normal;
-    border: 1px solid #FFFFFF;
+    border: 1px solid #ffffff;
     border-radius: 35px;
     transition: .3s;
 }
 
 .footer .btn.btn-social:hover {
-    color: var(--pink);
+    color: var(--new);
 }
 
 .footer .btn.btn-link {
@@ -393,7 +412,7 @@
     margin-bottom: 5px;
     padding: 0;
     text-align: left;
-    color: #FFFFFF;
+    color: #ffffff;
     font-size: 15px;
     font-weight: normal;
     text-transform: capitalize;
@@ -433,4 +452,88 @@
     margin-right: 0;
     padding-right: 0;
     border-right: none;
+}
+.h-card
+{
+    text-align: left;
+    font-size:30px;
+}
+body {
+    font-family: 'Playfair Display', serif; /* لنصوص الجسم */
+}
+
+h1, h2, h3 {
+    font-family: 'Playfair Display', serif; /* للعناوين */
+    font-weight: 700; /* عريض */
+}
+
+p {
+    font-family: 'Playfair Display', serif; /* لنصوص الفقرات */
+    font-weight: 400;
+}
+.p-card{
+    text-align: left;
+    padding-bottom: 0px;
+}
+.card-border {
+    box-shadow: 0 0 10px rgba(191, 191, 191, 0.5);
+}
+.course-item {
+    display: flex;
+    align-items: center;
+
+}
+
+.course-item .position-relative {
+    margin-right: 0px;
+}
+
+.position-relatives {
+    width: 700px;
+    height: 240px;
+    overflow: hidden;
+    margin-left: 10px;
+}
+
+.position-relatives img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* border-radius: 20px 0px 0px 20px; */
+}
+
+.map
+{
+    display: flex;
+
+}
+body{
+    background-color: white;
+}
+.overflow-hidden {
+    width: 100%;
+    height: 300px;
+    position: relative;
+    overflow: hidden; /* يبقى كما هو إذا كنت تريد قص المحتوى الزائد */
+}
+
+.overflow-hidden img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: translate(-50%, -50%);
+    transition: transform 0.3s ease; /* إضافة تأثير انتقال */
+}
+
+.overflow-hidden:hover img {
+    transform: translate(-50%, -50%) scale(1.1); /* تكبير الصورة عند التمرير */
+}
+.service-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
 }

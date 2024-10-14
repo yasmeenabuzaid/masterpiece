@@ -7,12 +7,11 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #000; /* Black background */
-            color: #fff; /* White text */
+            background-color: #000;
+            color: #fff;
             text-align: center;
             padding: 50px;
             margin: 0;
-            /* height: 100vh; */
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -20,7 +19,6 @@
         }
 
         .container {
-            /* background: #dc3545; Red background */
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
@@ -42,19 +40,19 @@
 
         .display-1 {
             font-size: 4rem;
-            color: #fff; /* White color */
+            color: #fff;
             margin-bottom: 20px;
         }
 
         h2 {
             margin-bottom: 10px;
-            color: #fff; /* White color */
+            color: #fff;
         }
 
         p {
             margin-bottom: 20px;
             font-size: 1.1rem;
-            color: #fff; /* White color */
+            color: #fff;
         }
 
         .btn {
@@ -82,7 +80,7 @@
         <h1 class="display-1">403</h1>
         <h2>Unauthorized Access</h2>
         <p>You do not have permission to access this page.</p>
-        <a href="{{ route('home') }}" class="btn">Go Back to Home</a>
+        <a href="{{ route('home_psge') }}" class="btn">Go Back to Home</a>
     </div>
 </body>
 </html>

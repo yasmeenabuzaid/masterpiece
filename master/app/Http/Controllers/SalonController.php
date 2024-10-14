@@ -73,8 +73,8 @@ class SalonController  extends Controller
     }
     public function show()
     {
-        $salons = Salon::all();
-        return view('dashboard/salon/index', ['salons' => $salons]);
+        // $salons = Salon::all();
+        // return view('dashboard/salon/view', ['salons' => $salons]);
     }
 
     public function edit(Salon $salon)

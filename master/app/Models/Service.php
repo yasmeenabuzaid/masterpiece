@@ -18,8 +18,8 @@ class Service extends Model
         return $this->belongsTo(Categorie::class, 'categories_id');
     }
 
-    public function booking(){
-        return $this->hasMany(Booking::class,'bookings_id');
+    public function booking_det(){
+        return $this->hasMany(booking_Details::class,'booking_det_id');
        }
        public function ser_det()
        {

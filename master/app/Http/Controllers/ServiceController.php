@@ -50,9 +50,14 @@ class ServiceController extends Controller
     /**
      * Show the specified resource.
      */
-    public function show(Service $service)
+    public function show()
     {
-        // يمكنك إضافة عرض التفاصيل إذا لزم الأمر
+        // استرجاع جميع الصالونات الفرعية والفئات
+        $services = Service::all();
+        $categories = Categorie::all();
+
+        // تمرير المتغيرات إلى العرض
+        return view('user_side.services', compact('services', 'categories'));
     }
 
     /**

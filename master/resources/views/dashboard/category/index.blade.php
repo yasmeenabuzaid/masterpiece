@@ -41,7 +41,7 @@
                                             @if ($categorie->subSalon)
                                                 {{ $categorie->subSalon->name }} <!-- عرض اسم الصالون -->
                                             @else
-                                                لا يوجد صالون
+                                               no salons found
                                             @endif
                                         </td>
                                         @if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()))

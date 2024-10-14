@@ -65,9 +65,11 @@
                                                 <button type="button" class="btn btn-gradient-danger btn-rounded btn-icon" onclick="confirmDeletion(event, '{{ route('subsalons.destroy', $subsalon->id) }}')">
                                                     <i class="fa-solid fa-trash"></i>
                                                 </button>
+                                                <a href="{{route('subsalons.show',$subsalon->id)}}">
                                                 <button type="button" class="btn btn-gradient-dark btn-rounded btn-icon">
                                                   <i class="fa-solid fa-eye"></i>
                                                </button>
+                                               </a>
                                                <a href="{{ route('subsalons.edit', $subsalon->id) }}">
                                                 <button type="button" class="btn btn-gradient-info btn-rounded btn-icon">
                                                   <i class="fa-solid fa-pen-to-square"></i>

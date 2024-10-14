@@ -15,6 +15,9 @@ class Booking extends Model
            return $this->belongsTo(Service::class, 'services_id');
 
        }
+       public function booking_det(){
+        return $this->hasMany(booking_Details::class,'booking_det_id');
+       }
        public function user()
        {
 

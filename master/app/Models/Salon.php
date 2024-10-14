@@ -4,6 +4,7 @@ namespace App\Models;
 use App\Models\users;
 use App\Models\SubSalon;
 use App\Models\Categorie;
+use App\Models\Massage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 // -------------------------------------------------------
 use Illuminate\Database\Eloquent\Model;
@@ -19,6 +20,9 @@ class Salon extends Model
     }
     public function subsalon(){ //many
         return $this->hasMany(SubSalon::class,'sub_salons_id');
+       }
+    public function chatMessage(){ //many
+        return $this->hasMany(ChatMessage::class,'chatMessage_id');
        }
 
 

@@ -13,31 +13,89 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TestimonialController;
 use App\Http\Controllers\UserController;
+// use App\Http\Controllers\MessageController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ChatMessageController;
+// use App\Http\Controllers\ProfileController;
 
 use  App\Http\Middleware\Admin;
+
+Route::get('/logout', function () {
+    return view('user_side/landing');
+})->name('user_landing');
+Route::post('/logout', [Controller::class, 'logout'])->name('logout');
+// Route::post('/landing', [HomeController::class, 'logout'])->name('logout');
+
+
+Route::get('/home', function () {
+    return view('user_side/landing');
+})->name('home_psge');
+Route::get('/', function () {
+    return view('user_side/landing');
+})->name('home_psge');
+
 Route::get('landing', function () {
     return view('user_side/landing');
 });
-Route::get('/AllSalons', function () {
-    return view('user_side/all_salons');
-})->name('all_salons');
+// Route::get('landing' ,HomeController::class)->name('home');
+// Route::get('/AllSalons', function () {
+//     return view('user_side/all_salons');
+// })->name('all_salons');
+Route::get('/more-deteils', function () {
+    return view('user_side\more_details');
+})->name('more_deteils');
+Route::get('/more-images', function () {
+    return view('user_side\more_images');
+})->name('more_images');
+Route::get('/salon-categories', function () {
+    return view('user_side\categories');
+})->name('categories_user_side');
+Route::get('/salon-services', function () {
+    return view('user_side/services');
+})->name('services_user_side');
 
 Auth::routes();
+
+Route::get('/login', function () {
+    return view('auth.login');
+})->name('login');
+
+Route::get('/register', function () {
+    return view('auth.register');
+})->name('register');
+
+
+// Route::middleware(['salon'])->group(function () {
+//     Route::post('/send-message', [ChatMessageController::class, 'sendMessage'])->name('send.message');
+//     Route::get('/messages/owner/{salon_id}', [ChatMessageController::class, 'indexForOwner'])->name('messages.index.owner');
+//     Route::get('/messages/user/{salon_id}', [ChatMessageController::class, 'indexForUser'])->name('messages.index.user');
+// });
+Route::post('/send-message', [ChatMessageController::class, 'sendMessage'])->name('send.message');
+Route::get('/messages/owner/{salon_id}', [ChatMessageController::class, 'indexForOwner'])->name('messages.index.owner');
+Route::get('/messages/user/{salon_id}', [ChatMessageController::class, 'indexForUser'])->name('messages.index.user');
+
 Route::resource('testimonials', TestimonialController::class);
 // Route::post('/testimonials', [TestimonialController::class, 'store'])->name('testimonials.store');
+Route::get('/categories/{id}', [CategorieController::class, 'show'])->name('all-categories');
+Route::get('/service/{categorie}', [ServiceController::class, 'show'])->name('all-services');
 
-Route::resource('home', HomeController::class);
+Route::get('home', [SubSalonController::class, 'showAllSubSalons'])->name('all_subsalons');
+Route::get('more_subsalons', [SubSalonController::class, 'MoreAllSubSalons'])->name('more_subsalons');
+Route::get('salon/{subsalon}', [SubSalonController::class, 'show'])->name('single_salon');
 
 Route::get('/dash', function () {
-    return view('welcome');
-});
+    return view('dashboard\index');
+})->name('dashbourd');
+// Route::get('/login', function () {
+//     return view('auth.login');
+// })->name('login.index');
+
 
 Route::get('/user', function () {
     return view('user_side/index');
 });
 
-// Route::resource('/home', TestimonialController::class);
+// Route::resource('/home', TestimonialController::class)->name('home_psge');
 
 Route::middleware(['auth', 'admin'])->group(function () {
 
@@ -59,6 +117,9 @@ Route::get('employees', [UserController::class, 'employees'])->name('employees.i
 Route::get('superAdmins', [UserController::class, 'superAdmins'])->name('superAdmins.index');
 Route::get('owners', [UserController::class, 'owners'])->name('owners.index');
 Route::get('castomors', [UserController::class, 'castomors'])->name('castomors.index');
+Route::get('/profiles', [ProfileController::class, 'index'])->name('profiles.index');
+Route::get('/profiles/{user}/edit', [ProfileController::class, 'edit'])->name('profiles.edit');
+Route::put('/profiles/{user}', [ProfileController::class, 'update'])->name('profiles.update');
 
 });
 

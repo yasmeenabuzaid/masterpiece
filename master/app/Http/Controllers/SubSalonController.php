@@ -33,13 +33,11 @@ class SubSalonController extends Controller
 
     $user = auth()->user();
 
-    // تحقق إذا كان المستخدم مالكاً
     if ($user->isOwner()) {
-        $salon = Salon::find($user->salon_id); // احصل على الصالون الخاص بالمالك
-        return view('dashboard.subsalon.create', ['salons' => [$salon]]); // اجعل المصفوفة تحتوي على الصالون فقط
+        $salon = Salon::find($user->salon_id);
+        return view('dashboard.subsalon.create', ['salons' => [$salon]]); //
     }
 
-    // إذا كان سوبر أدمن، اجلب كل الصالونات
     $salons = Salon::all();
     return view('dashboard.subsalon.create', ['salons' => $salons]);
 }
@@ -77,9 +75,20 @@ class SubSalonController extends Controller
         return redirect()->route('subsalons.index')->with('success', 'SubSalon created successfully.');
     }
 
-
+    public function showAllSubSalons()
+    {
+        $subsalons = SubSalon::all();
+        return view('user_side.landing', ['subsalons' => $subsalons]);
+    }
+    public function MoreAllSubSalons()
+    {
+        $subsalons = SubSalon::all();
+        return view('user_side\all_salons', ['subsalons' => $subsalons]); 
+    }
     public function show(SubSalon $subsalon)
     {
+        $salons = Salon::all();
+        return view('user_side\more_details', ['subsalon' => $subsalon, 'salons' => $salons]);
     }
 
 

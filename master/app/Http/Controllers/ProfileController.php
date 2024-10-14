@@ -5,41 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Profile;
 use Illuminate\Http\Request;
 use App\Models\User;
+
 class ProfileController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $users = User::all();
-        $profile = Profile::all();
-        return view( 'dashboard/profile',['profile'=>$profile ,'users'=>$users]);
-
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Profile $profile)
-    {
-        //
+        // Get the authenticated user
+        $user = User::find(auth()->id());
+        return view('dashboard.profile.index', ['user' => $user]); // Use forward slashes
     }
 
     /**
@@ -47,7 +20,9 @@ class ProfileController extends Controller
      */
     public function edit(Profile $profile)
     {
-        //
+        $user = User::find(auth()->id());
+
+        return view('dashboard.profile.edit', compact('profile' ,'user')); // No .blade extension
     }
 
     /**
@@ -55,14 +30,25 @@ class ProfileController extends Controller
      */
     public function update(Request $request, Profile $profile)
     {
-        //
+        $user = User::find(auth()->id());
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'password' => 'required|string|max:255',
+            'email' => 'required|string',
+            'phone' => 'required|string|max:15',
+        ]);
+
+        \Log::info('Updating profile with data:', $request->all());
+
+        $profile->update($request->only('name', 'phone'));
+
+        $user->update([
+            'password' => bcrypt($request->password), 
+            'email' => $request->email,
+        ]);
+
+        return redirect()->route('profiles.index')->with('success', 'Profile updated successfully!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Profile $profile)
-    {
-        //
-    }
 }

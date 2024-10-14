@@ -29,7 +29,7 @@
         </form>
     </div>
     <div style="width: 400px; padding: 20px;">
-        <img src="https://static.vecteezy.com/system/resources/previews/001/840/612/non_2x/picture-profile-icon-male-icon-human-or-people-sign-and-symbol-free-vector.jpg" alt="Profile" style="width: 200px; height: 200px; border-radius: 100px; border: black solid 3px;"/>
+        <img src="https://static.vecteezy.com/system/resources/previews/001/840/612/non_2x/picture-profile-icon-male-icon-human-or-people-sign-and-symbol-free-vector.jpg" alt="Profile" style="width: 200px; height: 200px; border-radius:0px; border: black solid 2px;"/>
     </div>
 
 </div>
