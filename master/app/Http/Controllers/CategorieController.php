@@ -53,11 +53,9 @@ class CategorieController extends Controller
     }
     public function show()
     {
-        // استرجاع جميع الصالونات الفرعية والفئات
         $subsalons = SubSalon::all();
         $categories = Categorie::all();
 
-        // تمرير المتغيرات إلى العرض
         return view('user_side.categories', compact('subsalons', 'categories'));
     }
 

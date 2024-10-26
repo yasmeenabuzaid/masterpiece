@@ -35,6 +35,15 @@
             </a>
         </li>
     @endif
+
+
+    <li class="nav-item">
+        <a class="nav-link" href="{{route('working_hours.index')}}">
+            <span  style=" color: #fff;"  class="menu-title">working hours</span>
+            <i class="mdi mdi-collage menu-icon"></i>
+        </a>
+    </li>
+
     @if (auth()->check() && (auth()->user()->isSuperAdmin() ))
 
     <li class="nav-item">
@@ -49,7 +58,7 @@
             <li class="nav-item"> <a class="nav-link" style=" color: #fff;" href="{{ route('superAdmins.index') }}">super admin</a></li>
             <li class="nav-item"> <a class="nav-link" style=" color: #fff;" href="{{ route('owners.index') }}">owners</a></li>
             <li class="nav-item"> <a class="nav-link" style=" color: #fff;" href="{{ route('employees.index') }}">employees</a></li>
-            <li class="nav-item"> <a class="nav-link" style=" color: #fff;"  href="{{ route('castomors.index') }}">castomors</a></li>
+            <li class="nav-item"> <a class="nav-link" style=" color: #fff;"  href="{{ route('castomors.index') }}">customers</a></li>
           </ul>
         </div>
       </li>
@@ -92,22 +101,27 @@
           <span class="menu-title" style=" color: #fff;">feedbacks</span>
           <i class="fa-solid fa-square-poll-horizontal menu-icon"></i>
       </a>
-  </li>
-@endif
+    </li>
+    @endif
+    <li class="nav-item">
+        <a class="nav-link" href="">
+            <span style=" color: #fff;"  class="menu-title">testimonial</span>
+            <i class="fa-solid fa-server menu-icon"></i>
+        </a>
+    </li>
     {{-- {{route('home.index')}} --}}
     <li class="nav-item">
-        <a class="nav-link" href="{{route('home_psge')}}">
+        <a class="nav-link" href="{{route('all_subsalons')}}">
             <span style=" color: #fff;"  class="menu-title">logout</span>
             <i class="fa-solid fa-server menu-icon"></i>
         </a>
     </li>
     {{-- <li class="nav-item">
-        <a href="{{ route('messages.index.owner', ['salon_id' => $salon->id]) }}">
-            <span style="color: #fff;" class="menu-title">Messages</span>
+        <a href="">
+            <span style="color: #fff;" class="menu-title">testimonial</span>
             <i class="fa-solid fa-server menu-icon"></i>
         </a>
     </li> --}}
-
 
 
     </ul>

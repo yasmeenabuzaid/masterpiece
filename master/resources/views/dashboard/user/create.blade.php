@@ -75,7 +75,7 @@
                     </div>
                     <img id="imagePreview" style="display: none; width: 100px; margin-top: 10px;"/>
 
-                    <button type="submit" class="btn btn-gradient-primary me-2">Submit</button>
+                    <button type="submit"  class="btn btn-gradient-success btn-rounded btn-fw">Submit</button>
                     <a href="{{ route('users.index') }}" class="btn btn-light">Cancel</a>
                 </form>
             </div>

@@ -1,4 +1,4 @@
-@if (auth()->check() && auth()->user()->isSuperAdmin()||auth()->user()->isOwner())
+@if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()))
 
 @extends('layouts.dashboard_master')
 
@@ -37,39 +37,18 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="castomors_id">Castomor</label>
-                            <select class="form-control" id="castomors_id" name="castomors_id" required>
-                                @foreach($castomors as $castomor)
-                                    <option value="{{ $castomor->id }}" {{ $castomor->id == $booking->castomors_id ? 'selected' : '' }}>
-                                        {{ $castomor->name }}
+                            <label for="user_id">Select User</label>
+                            <select class="form-control" id="user_id" name="user_id" required>
+                                <option value="">Select a user</option>
+                                @foreach ($users as $user)
+                                    <option value="{{ $user->id }}" {{ $user->id == old('user_id', $booking->user_id) ? 'selected' : '' }}>
+                                        {{ $user->name }}
                                     </option>
                                 @endforeach
                             </select>
                         </div>
 
-                        <div class="form-group">
-                            <label for="employees_id">Employee</label>
-                            <select class="form-control" id="employees_id" name="employees_id" required>
-                                @foreach($employees as $employee)
-                                    <option value="{{ $employee->id }}" {{ $employee->id == $booking->employees_id ? 'selected' : '' }}>
-                                        {{ $employee->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="services_id">Service</label>
-                            <select class="form-control" id="services_id" name="services_id" required>
-                                @foreach($services as $service)
-                                    <option value="{{ $service->id }}" {{ $service->id == $booking->services_id ? 'selected' : '' }}>
-                                        {{ $service->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <button type="submit" class="btn btn-primary">Update Booking</button>
+                        <button type="submit"  class="btn btn-gradient-success btn-rounded btn-fw">Update Booking</button>
                     </form>
                 </div>
             </div>

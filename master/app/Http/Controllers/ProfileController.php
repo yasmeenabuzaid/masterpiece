@@ -44,7 +44,7 @@ class ProfileController extends Controller
         $profile->update($request->only('name', 'phone'));
 
         $user->update([
-            'password' => bcrypt($request->password), 
+            'password' => bcrypt($request->password),
             'email' => $request->email,
         ]);
 

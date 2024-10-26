@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('testimonial');
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-            $table->foreignId('sub_salons_id')->constrained('sub_salons');
+            // $table->foreignId('sub_salons_id')->constrained('sub_salons');
             $table->timestamps();
         });
     }

@@ -1,10 +1,19 @@
-@if (auth()->check() && auth()->user()->isSuperAdmin()||auth()->user()->isOwner())
-
 @extends('layouts.dashboard_master')
 
 @section('content')
 <div class="container">
     <h4 class="card-title">Edit Service</h4>
+
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <form action="{{ route('services.update', $service->id) }}" method="POST">
         @csrf
         @method('PUT')
@@ -19,17 +28,6 @@
             <textarea class="form-control" id="description" name="description" placeholder="Enter service description">{{ old('description', $service->description) }}</textarea>
         </div>
 
-        {{-- <div class="form-group">
-            <label for="sub_salons_id">Sub Salon</label>
-            <select name="sub_salons_id" id="sub_salons_id" class="form-control" required>
-                @foreach($sub_salons as $sub_salon)
-                    <option value="{{ $sub_salon->id }}" {{ $sub_salon->id == $service->sub_salons_id ? 'selected' : '' }}>
-                        {{ $sub_salon->name }}
-                    </option>
-                @endforeach
-            </select>
-        </div> --}}
-
         <div class="form-group">
             <label for="categories_id">Category</label>
             <select id="categories_id" name="categories_id" class="form-control" required>
@@ -41,20 +39,23 @@
             </select>
         </div>
 
-        {{-- <div class="form-group">
-            <label for="subcats_id">Subcategory</label>
-            <select id="subcats_id" name="subcats_id" class="form-control" required>
-                @foreach ($subcats as $subcat)
-                    <option value="{{ $subcat->id }}" {{ $subcat->id == $service->subcats_id ? 'selected' : '' }}>
-                        {{ $subcat->name }}
-                    </option>
-                @endforeach
-            </select>
-        </div> --}}
+        <div class="form-group">
+            <label for="price">Price</label>
+            <input type="number" class="form-control" id="price" name="price" value="{{ old('price', $service->price) }}" placeholder="Enter service price" required min="0" step="0.01">
+        </div>
 
-        <button type="submit" class="btn btn-gradient-primary me-2">Update Service</button>
+        <div class="form-group">
+            <label for="hours">Duration Hours</label>
+            <input type="number" class="form-control" id="hours" name="hours" value="{{ old('hours', floor($service->duration / 60)) }}" placeholder="Hours" min="0">
+        </div>
+
+        <div class="form-group">
+            <label for="minutes">Duration Minutes</label>
+            <input type="number" class="form-control" id="minutes" name="minutes" value="{{ old('minutes', $service->duration % 60) }}" placeholder="Minutes" min="0" max="59">
+        </div>
+
+        <button type="submit"  class="btn btn-gradient-success btn-rounded btn-fw">Update Service</button>
         <a href="{{ route('services.index') }}" class="btn btn-light">Cancel</a>
     </form>
 </div>
 @endsection
-@endif

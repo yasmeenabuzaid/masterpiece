@@ -41,7 +41,7 @@
                             </div>
                         @endif
 
-                        <button type="submit" class="btn btn-gradient-primary me-2">Update Category</button>
+                        <button type="submit"  class="btn btn-gradient-success btn-rounded btn-fw">Update Category</button>
                         <a href="{{ route('categories.index') }}" class="btn btn-light">Cancel</a>
                     </form>
                 </div>

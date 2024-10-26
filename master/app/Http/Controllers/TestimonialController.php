@@ -1,9 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\Auth;
 
 use App\Models\Testimonial;
-use App\Models\Salon;
+use App\Models\User;
 
 use Illuminate\Http\Request;
 
@@ -12,12 +13,13 @@ class TestimonialController extends Controller
     /**
      * Display a listing of the resource.
      */
+
     public function index()
     {
-        $salons = Salon::all();
-
         $testimonials = Testimonial::all();
-        return view('welcome',['salons'=>$salons ,'testimonials'=>$testimonials]);
+        $user = Auth::user();
+
+        return view('home', ['testimonials' => $testimonials, 'user' => $user]);
     }
 
     /**
@@ -25,7 +27,10 @@ class TestimonialController extends Controller
      */
     public function create()
     {
-        //
+        $testimonials = Testimonial::all();
+        $user = Auth::user();
+
+        return view('home', ['testimonials' => $testimonials, 'user' => $user]);
     }
 
     /**
@@ -33,21 +38,21 @@ class TestimonialController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
-        $validatedData = $request->validate([
+        $request->validate([
             'testimonial' => 'required|string|max:255',
-            'user_id' => 'required|integer', // Changed to integer for user ID
-            'sub_salons_id' => 'required|integer', // Fixed whitespace and changed to integer
         ]);
 
-        $testimonial = new Testimonial();
-        $testimonial->testimonial = $validatedData['testimonial'];
-        $testimonial->user_id = $validatedData['user_id'];
-        $testimonial->sub_salons_id = $validatedData['sub_salons_id'];
-        $testimonial->save();
+        $user = auth()->user();
 
-        return redirect()->route('testimonials.index')->with('success', 'Testimonial created successfully.'); // Updated success message
+        Testimonial::create([
+            'testimonial' => $request->testimonial,
+            'user_id' => $user->id,
+        ]);
+
+        return redirect()->back()->with('success', 'Testimonial submitted successfully!');
     }
+
+
     /**
      * Display the specified resource.
      */

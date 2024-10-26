@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Booking;
-use App\Models\Service;
-use App\Models\User; // تأكد من استيراد نموذج المستخدم
+use App\Models\User;
+use App\Models\SubSalon;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -15,10 +15,9 @@ class BookingController extends Controller
      */
     public function index()
     {
-        $services = Service::all();
         $bookings = Booking::all();
-
-        return view('dashboard.booking.index', ['bookings' => $bookings, 'services' => $services]);
+        $users = User::all();
+        return view('dashboard.booking.index', ['bookings' => $bookings, 'users' => $users]);
     }
 
     /**
@@ -26,16 +25,12 @@ class BookingController extends Controller
      */
     public function create()
     {
-        $services = Service::all();
-        // جلب المستخدمين من النوع employee
-        $employees = User::where('usertype', 'employee')->get();
-        // جلب المستخدمين من النوع user
-        $customers = User::where('usertype', 'user')->get();
+        $users = User::all();
+        $subsalons = SubSalon::all();
 
         return view('dashboard.booking.create', [
-            'services' => $services,
-            'employees' => $employees,
-            'customers' => $customers,
+            'users' => $users,
+            'subsalons' => $subsalons
         ]);
     }
 
@@ -48,11 +43,11 @@ class BookingController extends Controller
             'name' => 'required|string|max:255',
             'appointment_date' => 'required|date',
             'description' => 'nullable|string',
-            'services_id' => 'required|exists:services,id',
-            'user_id' => 'required|exists:users,id', // تأكد من تطابق هذا الاسم
+            'user_id' => 'required|exists:users,id',
+            'sub_salons_id' => 'required|exists:sub_salons,id', // Make SubSalon required
         ]);
 
-        Booking::create($request->only(['name', 'description', 'user_id', 'services_id', 'appointment_date']));
+        Booking::create($request->only(['name', 'description', 'user_id', 'appointment_date', 'sub_salons_id']));
 
         return redirect()->route('bookings.index')->with('success', 'Booking created successfully.');
     }
@@ -62,7 +57,7 @@ class BookingController extends Controller
      */
     public function show(Booking $booking)
     {
-        //
+        return view('dashboard.booking.view', ['booking' => $booking]);
     }
 
     /**
@@ -70,13 +65,14 @@ class BookingController extends Controller
      */
     public function edit(Booking $booking)
     {
-        $services = Service::all();
-        // Convert appointment_date to Carbon instance if needed
         $booking->appointment_date = Carbon::parse($booking->appointment_date);
+        $users = User::all();
+        $subsalons = SubSalon::all(); // Fetch SubSalons for the edit view
 
         return view('dashboard.booking.edit', [
             'booking' => $booking,
-            'services' => $services,
+            'users' => $users,
+            'subsalons' => $subsalons // Pass SubSalons to the view
         ]);
     }
 
@@ -89,12 +85,11 @@ class BookingController extends Controller
             'name' => 'required|string|max:255',
             'appointment_date' => 'required|date',
             'description' => 'nullable|string',
-            'services_id' => 'required|exists:services,id',
             'user_id' => 'required|exists:users,id',
-            'usertype' => 'required|in:employee,user', // Validate usertype
+            'sub_salons_id' => 'required|exists:sub_salons,id',
         ]);
 
-        $booking->update($request->all());
+        $booking->update($request->only(['name', 'description', 'user_id', 'appointment_date', 'sub_salons_id']));
 
         return redirect()->route('bookings.index')->with('success', 'Booking updated successfully.');
     }

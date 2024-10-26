@@ -20,7 +20,8 @@
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th>name</th>
+                                    <th>Image</th>
+                                    <th>Name</th>
                                     <th>Salon Name</th>
                                     <th>Description</th>
                                     <th>Address</th>
@@ -38,8 +39,8 @@
                                     @foreach($subsalons as $subsalon)
                                         <tr>
                                             <td>
-                                                @if($subsalon->image)
-                                                    <img src="{{ asset($subsalon->image) }}" alt="Image" class="me-2" >{{ $subsalon->name }}
+                                                @if($subsalon->salon->image)
+                                                    <img src="{{ asset($subsalon->salon->image) }}" alt="Image" class="me-2" >{{ $subsalon->name }}
                                                 @else
                                                 {{ $subsalon->name }}
 

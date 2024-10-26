@@ -1,4 +1,5 @@
 <?php
+// use App\Http\Controllers\WorkingHourController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SalonController;
 // use App\Http\Controllers\OwnerController;
@@ -15,6 +16,7 @@ use App\Http\Controllers\TestimonialController;
 use App\Http\Controllers\UserController;
 // use App\Http\Controllers\MessageController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\WorkingHourController;
 use App\Http\Controllers\ChatMessageController;
 // use App\Http\Controllers\ProfileController;
 
@@ -74,12 +76,18 @@ Route::post('/send-message', [ChatMessageController::class, 'sendMessage'])->nam
 Route::get('/messages/owner/{salon_id}', [ChatMessageController::class, 'indexForOwner'])->name('messages.index.owner');
 Route::get('/messages/user/{salon_id}', [ChatMessageController::class, 'indexForUser'])->name('messages.index.user');
 
+
+Route::middleware(['auth'])->group(function () {
+    Route::post('testimonials', [TestimonialController::class, 'store'])->name('testimonials.store');
+});
+
 Route::resource('testimonials', TestimonialController::class);
 // Route::post('/testimonials', [TestimonialController::class, 'store'])->name('testimonials.store');
-Route::get('/categories/{id}', [CategorieController::class, 'show'])->name('all-categories');
+Route::get('/category/{id}', [CategorieController::class, 'show'])->name('all-categories');
 Route::get('/service/{categorie}', [ServiceController::class, 'show'])->name('all-services');
 
 Route::get('home', [SubSalonController::class, 'showAllSubSalons'])->name('all_subsalons');
+Route::get('/', [SubSalonController::class, 'showAllSubSalons'])->name('all_subsalons');
 Route::get('more_subsalons', [SubSalonController::class, 'MoreAllSubSalons'])->name('more_subsalons');
 Route::get('salon/{subsalon}', [SubSalonController::class, 'show'])->name('single_salon');
 
@@ -103,6 +111,7 @@ Route::get('/dashboard',  [DashboardController::class, 'index'])->name('count');
 Route::resource('salons', SalonController::class);
 Route::resource('subsalons', SubSalonController::class);
 // Route::resource('owners', OwnerController::class);
+
 Route::resource('users', UserController::class);
 Route::resource('services', ServiceController::class);
 Route::resource('employees', EmployeeController::class);
@@ -112,6 +121,7 @@ Route::resource('feedbacks', FeedController::class);
 Route::resource('castomors', CastomorController::class);
 Route::resource('profile', ProfileController::class);
 Route::resource('castomors',  CastomorController::class);
+Route::resource('working_hours', WorkingHourController::class);
 Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');
 Route::get('employees', [UserController::class, 'employees'])->name('employees.index');
 Route::get('superAdmins', [UserController::class, 'superAdmins'])->name('superAdmins.index');
@@ -120,6 +130,7 @@ Route::get('castomors', [UserController::class, 'castomors'])->name('castomors.i
 Route::get('/profiles', [ProfileController::class, 'index'])->name('profiles.index');
 Route::get('/profiles/{user}/edit', [ProfileController::class, 'edit'])->name('profiles.edit');
 Route::put('/profiles/{user}', [ProfileController::class, 'update'])->name('profiles.update');
+Route::get('/dashboard/home', [UserController::class, 'showUsers'])->name('dashboard.home');
 
 });
 

@@ -14,13 +14,19 @@ return new class extends Migration
         Schema::create('sub_salons', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('description');
+            $table->string('location');
+            $table->string('description')->nullable();
             $table->string('address');
-            $table->integer('phone');
+            $table->string('phone');
             $table->string('image')->nullable();
-            $table->foreignId('salons_id')->constrained('salons')->onDelete('cascade');
+            $table->foreignId('salon_id')->constrained('salons')->onDelete('cascade');
+
+            $table->json('working_days')->nullable();
+            $table->Time ('opening_hours_start');
+            $table->Time ('opening_hours_end');
             $table->timestamps();
         });
+
     }
 
     /**

@@ -9,12 +9,12 @@ class Booking extends Model
 {
     use HasFactory;
 
-       public function service()
-       {
+    //    public function service()
+    //    {
 
-           return $this->belongsTo(Service::class, 'services_id');
+    //        return $this->belongsTo(Service::class, 'services_id');
 
-       }
+    //    }
        public function booking_det(){
         return $this->hasMany(booking_Details::class,'booking_det_id');
        }
@@ -24,7 +24,10 @@ class Booking extends Model
            return $this->belongsTo(User::class, 'user_id');
 
        }
-
-       protected $fillable = ['name', 'description', 'user_id', 'services_id', 'appointment_date'];
+       public function subsalon()
+       {
+           return $this->belongsTo(SubSalon::class, 'sub_salons_id');
+       }
+       protected $fillable = ['name', 'description', 'user_id', 'appointment_date','sub_salons_id'];
 
 }

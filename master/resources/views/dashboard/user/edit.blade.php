@@ -78,7 +78,7 @@
                     </div>
                     <img id="imagePreview" style="display: {{ $user->image ? 'block' : 'none' }}; width: 100px; margin-top: 10px;" src="{{ asset($user->image) }}" />
 
-                    <button type="submit" class="btn btn-gradient-primary me-2">Update</button>
+                    <button type="submit"  class="btn btn-gradient-success btn-rounded btn-fw">Update</button>
                     <a href="{{ route('users.index') }}" class="btn btn-light">Cancel</a>
                 </form>
             </div>

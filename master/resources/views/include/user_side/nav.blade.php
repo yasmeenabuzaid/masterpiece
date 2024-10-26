@@ -7,107 +7,94 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
-    <style>
-        /* .navbar-nav .btn {
-            transition: background-color 0.3s, color 0.3s;
-            border-radius: 4px;
-        }
-        .navbar-nav .btn-outline-primary {
-            border: 1px solid #007bff;
-            color: #007bff;
-        }
-        .navbar-nav .btn-outline-primary:hover {
-            background-color: #007bff;
-            color: white;
-        }
-        .navbar-nav .btn-primary {
-            background-color: #007bff;
-            border: 1px solid #007bff;
-        }
-        .navbar-nav .btn-primary:hover {
-            background-color: #0056b3;
-            border: 1px solid #0056b3;
-        } */
-        .btn-nav {
-    background-color: #1d1d1d;
-    color: white;
-    padding: 10px 30px;
-    margin-right: 10px;
-    border-radius: 10px;
-    height: 45px;
-    border: none;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    text-decoration: none
 
-}
+    <!-- Navbar Start -->
 
-.btn-nav:hover {
-    color: white;
+    <header class="site-navbar py-1" role="banner">
 
-    background-color: #333333;
-    transform: scale(1.0);
-    text-decoration: none
+        <div class="container-fluid">
+          <div class="row align-items-center">
 
-}
-a{
-    text-decoration: none
-}
-.btns{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    align-self: center
-}
-    </style>
-</head>
-<body>
-    <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
-        <div class="container">
-            <a href="#" class="navbar-brand d-flex align-items-center">
-                <h2  style="color: #1d1d1d"><i class="fa fa-book me-3"></i>eLEARNING</h2>
-            </a>
-            <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarCollapse">
-                <div class="navbar-nav ms-auto p-4 p-lg-0">
-                    <a href="index.html" class="nav-item nav-link active">Home</a>
-                    <a href="about.html" class="nav-item nav-link">About</a>
-                    <a href="courses.html" class="nav-item nav-link">Courses</a>
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
-                        <div class="dropdown-menu fade-down m-0">
-                            <a href="team.html" class="dropdown-item">Our Team</a>
-                            <a href="testimonial.html" class="dropdown-item">Testimonial</a>
-                            <a href="404.html" class="dropdown-item">404 Page</a>
-                        </div>
-                    </div>
-                    <a href="contact.html" class="nav-item nav-link">Contact</a>
-                </div>
-                <div class="navbar-nav ms-auto">
-                    @guest
-                        <a href="{{ route('login') }}" class="btn-nav">Login</a>
-                        <a href="{{ route('register') }}" class="btn-nav">Register</a>
-                    @else
-                    <div class="btns">
-                        <form id="logout-form" action="{{ route('home_psge') }}" method="POST" class="d-inline">
-                            @csrf
-                            <a href="{{ route('dashbourd') }}" class="btn-nav">Dashboard</a>
-                        </form>
-                        <form action="{{ route('logout') }}" method="POST" style="display: inline;">
-                            @csrf
-                            <button type="submit" class="btn-nav">Logout</button>
-                        </form>
-                    </div>
-                    @endguest
-                </div>
+            <div class="col-6 col-xl-2" data-aos="fade-down">
+              <h1 class="mb-0"><a href="index.html" class="text-black h2 mb-0">Hairsal</a></h1>
             </div>
-        </div>
+            <div class="col-10 col-md-8 d-none d-xl-block" data-aos="fade-down">
+              <nav class="site-navigation position-relative text-right text-lg-center" role="navigation">
+
+                <ul class="site-menu js-clone-nav mx-auto d-none d-lg-block">
+                  <li class="has-children active">
+                    <a href="index.html">Home</a>
+                    <ul class="dropdown">
+                      <li><a href="#">Menu One</a></li>
+                      <li><a href="#">Menu Two</a></li>
+                      <li><a href="#">Menu Three</a></li>
+                      <li class="has-children">
+                        <a href="#">Sub Menu</a>
+                        <ul class="dropdown">
+                          <li><a href="#">Menu One</a></li>
+                          <li><a href="#">Menu Two</a></li>
+                          <li><a href="#">Menu Three</a></li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </li>
+                  <li class="has-children">
+                    <a href="haircut.html">Haircut</a>
+                    <ul class="dropdown">
+                      <li><a href="#">Menu One</a></li>
+                      <li><a href="#">Menu Two</a></li>
+                      <li><a href="#">Menu Three</a></li>
+                    </ul>
+                  </li>
+                  <li><a href="services.html">Services</a></li>
+                  <li><a href="about.html">About</a></li>
+                  <li><a href="booking.html">Book Online</a></li>
+                  <li><a href="contact.html">Contact</a></li>
+                </ul>
+              </nav>
             </div>
+            {{-- @guest
+            <a href="{{ route('login') }}" class="btn-nav">Login</a>
+            <a href="{{ route('register') }}" class="btn-nav">Register</a>
+        @else
+        <div class="btns">
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-inline">
+                @csrf
+                <a href="{{ route('dashbourd') }}" class="btn-nav">Dashboard</a>
+            </form>
+            <form action="{{ route('logout') }}" method="POST" style="display: inline;">
+                @csrf
+                <button type="submit" class="btn-nav">Logout</button>
+            </form>
         </div>
-    </nav>
+        @endguest --}}
+            <div class="col-6 col-xl-2 text-right" data-aos="fade-down">
+              <div class="d-none d-xl-inline-block">
+                <ul class="site-menu js-clone-nav ml-auto list-unstyled d-flex text-right mb-0" data-class="social">
+                  <li>
+                    <a href="#" class="pl-0 pr-3 text-black"><span class="icon-facebook"></span></a>
+                  </li>
+                  <li>
+                    <a href="#" class="pl-3 pr-3 text-black"><span class="icon-twitter"></span></a>
+                  </li>
+                  <li>
+                    <a href="#" class="pl-3 pr-3 text-black"><span class="icon-instagram"></span></a>
+                  </li>
+                  <li>
+                    <a href="#" class="pl-3 pr-3 text-black"><span class="icon-youtube-play"></span></a>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="d-inline-block d-xl-none ml-md-0 mr-auto py-3" style="position: relative; top: 3px;"><a href="#" class="site-menu-toggle js-menu-toggle text-black"><span class="icon-menu h3"></span></a></div>
+
+            </div>
+
+          </div>
+        </div>
+
+      </header>
+
+
+
     <!-- Navbar End -->
-

@@ -39,15 +39,15 @@
 
             <div class="form-group">
                 <label for="hours">Duration (Hours)</label>
-                <input type="number" class="form-control" id="hours" name="hours" placeholder="HH" min="0" max="23" value="0" required>
+                <input type="number" class="form-control" id="hours" name="hours" placeholder="Please enter duration as hours" min="0" max="23" value="0" required>
             </div>
 
             <div class="form-group">
                 <label for="minutes">Duration (Minutes)</label>
-                <input type="number" class="form-control" id="minutes" name="minutes" placeholder="MM" min="0" max="59" value="0" required>
+                <input type="number" class="form-control" id="minutes" name="minutes" placeholder="Please enter duration as minutes (00-59)." min="0" max="59" value="0" required>
             </div>
 
-            <small class="form-text text-muted">Please enter duration as hours (00-23) and minutes (00-59).</small>
+            {{-- <small class="form-text text-muted">Please enter duration as hours (00-23) and minutes (00-59).</small> --}}
 
 
             <div class="form-group">
@@ -55,7 +55,7 @@
                 <input type="number" class="form-control" id="price" name="price" placeholder="Enter service price" min="0" step="0.01" required>
             </div>
 
-            <button type="submit" class="btn btn-gradient-primary me-2">Create Service</button>
+            <button type="submit" class="btn btn-gradient-success btn-rounded btn-fw">Create Service</button>
             <a href="{{ route('services.index') }}" class="btn btn-light">Cancel</a>
         </form>
     </div>

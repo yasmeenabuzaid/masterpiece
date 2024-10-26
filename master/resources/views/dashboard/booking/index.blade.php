@@ -7,7 +7,7 @@
         @if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()))
             <a href="{{ route('bookings.create') }}">
                 <button type="button" class="btn btn-gradient-success btn-rounded btn-fw"><i class="fa-solid fa-plus" style="margin-right: 5px"></i>
-                    <i class="zmdi zmdi-plus"></i> Add New Booking
+                    <i class="zmdi zmdi-plus"></i> Add New Category
                 </button>
             </a>
         @endif
@@ -23,11 +23,7 @@
                                 <tr>
                                     <th scope="col">ID</th>
                                     <th scope="col">Name</th>
-                                    <th scope="col">Description</th>
-                                    <th scope="col">Employee Name</th>
-                                    <th scope="col">Customer Name</th>
-                                    <th scope="col">Service Name</th>
-                                    <th scope="col">Appointment Date</th>
+                                    <th scope="col">Description</th>                                    <th scope="col">Appointment Date</th>
                                     <th scope="col">Creation Date</th>
                                     @if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()))
                                         <th scope="col">Actions</th>
@@ -40,27 +36,23 @@
                                         <th scope="row">{{ $booking->id }}</th>
                                         <td>{{ $booking->name }}</td>
                                         <td>{{ $booking->description }}</td>
-                                        <td>
-                                            @if($booking->user && $booking->user->usertype === 'employee')
-                                                {{ $booking->user->first_name }} {{ $booking->user->last_name }}
-                                            @else
-                                                {{ $booking->employee->first_name ?? 'N/A' }} {{ $booking->employee->last_name ?? '' }}
-                                            @endif
-                                        </td>
-                                        <td>{{ $booking->customer->first_name ?? 'N/A' }} {{ $booking->customer->last_name ?? '' }}</td>
-                                        <td>{{ $booking->service->name ?? 'N/A' }}</td>
                                         <td>{{ $booking->appointment_date }}</td>
                                         <td>{{ $booking->created_at->format('Y-m-d') }}</td>
                                         @if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()))
-                                            <td>
+                                        <td>
+                                                <button type="button"  class="btn btn-gradient-danger btn-rounded btn-icon" onclick="confirmDeletion(event, '{{ route('bookings.destroy', $booking->id) }}')">
+                                                    <i class="fa-solid fa-trash"></i>
+                                                </button>
+                                                <a href="{{ route('bookings.show', $booking->id) }}">
+                                                    <button type="button" class="btn btn-gradient-dark btn-rounded btn-icon">
+                                                        <i class="fa-solid fa-eye"></i>
+                                                    </button>
+                                                </a>
                                                 <a href="{{ route('bookings.edit', $booking->id) }}">
-                                                    <button type="button" class="btn btn-secondary">
+                                                    <button type="button" class="btn btn-gradient-info btn-rounded btn-icon">
                                                         <i class="fa-solid fa-pen-to-square"></i>
                                                     </button>
                                                 </a>
-                                                <button type="button" class="btn btn-danger" onclick="confirmDeletion(event, '{{ route('bookings.destroy', $booking->id) }}')">
-                                                    <i class="fa-solid fa-trash"></i>
-                                                </button>
                                             </td>
                                         @endif
                                     </tr>

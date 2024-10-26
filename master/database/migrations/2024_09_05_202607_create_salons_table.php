@@ -12,13 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('salons', function (Blueprint $table) {
-            $table->engine = 'InnoDB'; // Ensure InnoDB
+            $table->engine = 'InnoDB';
             $table->id();
             $table->string('name');
             $table->string('description');
             $table->string('image')->nullable();
             $table->string('address');
-            
             $table->timestamps();
         });
     }

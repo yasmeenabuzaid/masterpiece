@@ -24,14 +24,14 @@
                             <label for="description">salon description</label>
                             <input type="text" class="form-control" id="description" name="description" placeholder="description" required>
                         </div>
-                     
+
                         <div class="form-group">
                             <label for="image">File Upload</label>
                             <input type="file" name="image" id="fileUpload" class="form-control">
                         </div>
 
 
-                        <button type="submit" class="btn btn-gradient-primary me-2">Submit new salon</button>
+                        <button type="submit"  class="btn btn-gradient-success btn-rounded btn-fw">Submit new salon</button>
                         <button class="btn btn-light">Cancel</button>
                     </form>
                 </div>

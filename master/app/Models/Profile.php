@@ -17,7 +17,7 @@ protected $fillable = [
     'email',
     'password',
     'image',
-    'user_id' 
+    'user_id'
 ];
 
 }

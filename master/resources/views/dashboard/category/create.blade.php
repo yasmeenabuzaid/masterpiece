@@ -43,7 +43,7 @@
                         {{-- <input type="hidden" name="user_id" value="{{ auth()->user()->id }}"> --}}
                     @endif
 
-                    <button type="submit" class="btn btn-gradient-primary me-2">Submit New Category</button>
+                    <button type="submit"  class="btn btn-gradient-success btn-rounded btn-fw">Submit New Category</button>
                     <button class="btn btn-light" type="button" onclick="window.history.back();">Cancel</button>
                 </form>
 

@@ -29,7 +29,7 @@
                         <input type="text" class="form-control" id="description" name="description" placeholder="description" value="{{ old('description', $salon->description) }}" required>
                     </div>
 
-                
+
 
                     <div class="form-group">
                         <label for="image">File Upload</label>
@@ -39,7 +39,7 @@
                         @endif
                     </div>
 
-                    <button type="submit" class="btn btn-gradient-primary me-2">Submit Update</button>
+                    <button type="submit"  class="btn btn-gradient-success btn-rounded btn-fw">Submit Update</button>
                     <a href="{{ route('salons.index') }}" class="btn btn-light">Cancel</a>
                 </form>
             </div>

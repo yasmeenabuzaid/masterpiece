@@ -1,14 +1,13 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\SubSalon;
 use App\Models\Salon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class SubSalonController extends Controller
 {
-
     public function index()
     {
 
@@ -26,55 +25,64 @@ class SubSalonController extends Controller
             }
 
         }
-
-
     public function create()
     {
-
-    $user = auth()->user();
-
-    if ($user->isOwner()) {
-        $salon = Salon::find($user->salon_id);
-        return view('dashboard.subsalon.create', ['salons' => [$salon]]); //
+        $user = auth()->user();
+        $salons = $user->isOwner() ? Salon::where('id', $user->salon_id)->get() : Salon::all();
+        return view('dashboard.subsalon.create', compact('salons'));
     }
-
-    $salons = Salon::all();
-    return view('dashboard.subsalon.create', ['salons' => $salons]);
-}
-
-
 
     public function store(Request $request)
     {
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
+            'location' => 'required|string|max:255',
             'address' => 'required|string|max:255',
             'description' => 'required|string|max:255',
-            'phone' => 'required|string|max:10',
-            'salons_id' => 'required|exists:salons,id',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'phone' => 'required|string|max:15',
+            'salon_id' => 'required|exists:salons,id',
+            'working_days' => 'required|array',
+            'opening_hours_start' => 'required|string',
+            'opening_hours_end' => 'required|string',
+            'image' => 'nullable|image|max:2048',
         ]);
 
-        $subsalon = new SubSalon();
-        $subsalon->name = $validatedData['name'];
-        $subsalon->address = $validatedData['address'];
-        $subsalon->description = $validatedData['description'];
-        $subsalon->phone = $validatedData['phone'];
-        $subsalon->salons_id = $validatedData['salons_id'];
+        Log::info('Working Days:', $validatedData['working_days']);
+        $validatedData['working_days'] = json_encode($validatedData['working_days']);
+
+        $validatedData['opening_hours_start'] = $this->convertTo24HourFormat(
+            (int)$request->input('opening_hours_start'),
+            $request->input('opening_hours_start_period')
+        );
+
+        $validatedData['opening_hours_end'] = $this->convertTo24HourFormat(
+            (int)$request->input('opening_hours_end'),
+            $request->input('opening_hours_end_period')
+        );
 
         if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $filename = time() . '.' . $file->getClientOriginalExtension();
-            $path = public_path('uploads/subsalon/');
-            $file->move($path, $filename);
-            $subsalon->image = 'uploads/subsalon/' . $filename;
+            $validatedData['image'] = $request->file('image')->store('subsalons', 'public');
         }
 
-        $subsalon->save();
-
-        return redirect()->route('subsalons.index')->with('success', 'SubSalon created successfully.');
+        try {
+            SubSalon::create($validatedData);
+            return redirect()->route('subsalons.index')->with('success', 'Sub salon created successfully.');
+        } catch (\Exception $e) {
+            Log::error('Error creating sub salon: ' . $e->getMessage());
+            return redirect()->back()->withErrors(['db_error' => 'Failed to create sub salon.'])->withInput();
+        }
     }
 
+    private function convertTo24HourFormat($hour, $period)
+    {
+        if ($period === 'PM' && $hour < 12) {
+            return $hour + 12;
+        }
+        if ($period === 'AM' && $hour == 12) {
+            return 0;
+        }
+        return $hour;
+    }
     public function showAllSubSalons()
     {
         $subsalons = SubSalon::all();
@@ -83,7 +91,7 @@ class SubSalonController extends Controller
     public function MoreAllSubSalons()
     {
         $subsalons = SubSalon::all();
-        return view('user_side\all_salons', ['subsalons' => $subsalons]); 
+        return view('user_side\all_salons', ['subsalons' => $subsalons]);
     }
     public function show(SubSalon $subsalon)
     {
@@ -161,3 +169,4 @@ class SubSalonController extends Controller
         return redirect()->route('subsalons.index')->with('success', 'SubSalon deleted successfully.');
     }
 }
+

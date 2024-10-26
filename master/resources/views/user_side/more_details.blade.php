@@ -2,297 +2,265 @@
 
 @section('content')
 <style>
-    .overflow-hidden {
-        width: 100%;
-        height: 300px;
-        overflow: hidden;
-        position: relative;
+    .paragraph-description {
+        font-size: 16px;
+        line-height: 1.6;
+        color: #333;
+        margin-bottom: 1.5rem;
     }
 
-    .overflow-hidden img {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transform: translate(-50%, -50%);
+    .paragraph-hours {
+        font-size: 16px;
+        line-height: 1.6;
+        color: #555;
+        margin-bottom: 1.5rem;
     }
-    /* .overflow-hidden img:hover {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transform: translate(-50%, -50%);
-    } */
-    .service-item {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between; /* يوزع المحتوى بشكل متساوي */
-    height: 100%; /* يضمن أن كل عنصر يأخذ نفس الارتفاع */
-    min-height: 300px; /* تحديد ارتفاع أدنى لكل عنصر */
-}
 
-.service-item .btn {
-    margin-top: auto; /* يجبر الزر على الانتقال إلى أسفل العنصر */
-}
-.ser-des{
-    height: 50%;
-}
+    .paragraph-info {
+        font-size: 16px;
+        line-height: 1.6;
+        color: #444;
+        margin-bottom: 1.5rem;
+    }
 
-.ser_curd {
-    border-radius: 8px;
-    padding: 20px;
-    transition: transform 0.3s, box-shadow 0.3s;
-     height: 0%;
-}
+    h1 {
+        font-size: 2.5rem;
+        color: #222;
+        margin-bottom: 1rem;
+    }
 
-.ser_curd:hover {
-    transform: translateY(2px);
-    box-shadow: 0 8px 20px rgba(88, 88, 88, 0.4);
-}
+    h6 {
+        font-size: 1.2rem;
+        color: #444;
+        margin-top: 1rem;
+    }
 
+    .search-section {
+        margin-top: 20px;
+    }
+
+    .search-input {
+        width: 80%;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .search-button {
+        padding: 10px 35px;
+        font-size: 16px;
+        background-color: #0056b3;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .search-button:hover {
+        background-color: #033367;
+    }
+
+    .custom-slider {
+        margin-top: 20px;
+    }
+
+    .custom-slider .owl-item {
+        text-align: center;
+    }
+
+    .custom-slider img {
+        transition: transform 0.6s ease;
+    }
+
+    .custom-slider img:hover {
+        transform: scale(1.04);
+    }
+
+    .category-item {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 15px;
+        margin: 10px;
+        text-align: center;
+        background-color: #fff;
+    }
 </style>
-<!-- Carousel Start -->
-<div class="container-fluid p-0  " >
-        <div class="container-xxl py-5">
-            <div class="container">
-                <div class="row g-5 mt-1">
-                    <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s" style="min-height: 400px;">
-                        <div class="position-relative h-100">
-                            <img src="{{ asset($subsalon->image) }}" alt="" style="object-fit: cover; height: 500px; width: 100%;">
-                        </div>
-                    </div>
-                    <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.3s">
-                        {{-- <h6 class="section-title bg-white text-start text-primary pe-3">About Glamour Salon</h6> --}}
-                        <h1 class="mb-4">Welcome to {{ ($subsalon->name) }} salon</h1>
-                        <p class="mb-4">{{ ($subsalon->description) }}</p>
-                        <p class="mb-4">Our platform offers seamless appointment booking and access to a variety of services, ensuring you find exactly what you need. We pride ourselves on delivering exceptional customer service and high-quality treatments.</p>
 
-                        <h6 class="mt-4">Business Hours:</h6>
-                        <p class="mb-4">Monday to Friday: 9 AM - 8 PM<br>Saturday: 10 AM - 6 PM<br>Sunday: Closed</p>
-
-                        <div class="row gy-2 gx-4 mb-4">
-                            <div class="col-sm-6">
-                                <p class="mb-0"><i class="fa fa-check text-primary me-2"></i>Expert Stylists</p>
-                            </div>
-                            <div class="col-sm-6">
-                                <p class="mb-0"><i class="fa fa-check text-primary me-2"></i>Easy Online Booking</p>
-                            </div>
-                            <div class="col-sm-6">
-                                <p class="mb-0"><i class="fa fa-check text-primary me-2"></i>Transparent Pricing</p>
-                            </div>
-                            <div class="col-sm-6">
-                                <p class="mb-0"><i class="fa fa-check text-primary me-2"></i>Customer Reviews</p>
-                            </div>
-                        </div>
-                    </div>
-
-                        {{-- <a class="btn btn-primary py-3 px-5 mt-2" href="">Learn More</a> --}}
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container-xxl">
-            <div class="container">
-                <div class="row g-4">
-                    <!-- Service: Appointment Booking -->
-                    <div class="col-lg-4 col-sm-6 wow fadeInUp ser_curd" data-wow-delay="0.1s">
-                        <div class="service-item text-center pt-3">
-                            <div class="p-4">
-                                <i class="fa fa-3x fa-calendar-check mb-4" style="color: #1d1d1d"></i>
-                                <div class="ser-des">
-                                    <h5 class="mb-3">Appointment Booking</h5>
-                                    <p>Effortlessly book your appointments online with the best salons.</p>
-                                </div>
-                                <a href="{{ route('all-categories', $subsalon) }}" class="btn" style="background-color: #1d1d1d; color: white">Book Now</a>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Service: Contact Manager -->
-                    <div class="col-lg-4 col-sm-6 wow fadeInUp ser_curd" data-wow-delay="0.3s">
-                        <div class="service-item text-center pt-3">
-                            <div class="p-4">
-                                <i class="fa fa-3x fa-envelope mb-4" style="color: #1d1d1d"></i>
-                                <div class="ser-des">
-                                    <h5 class="mb-3">Contact Manager</h5>
-                                    <p>For any inquiries, reach out directly to the manager.</p>
-                                </div>
-                                <a class="btn mt-4" style="background-color: #1d1d1d; color: white">Contact Now</a>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Service: View More Work -->
-                    <div class="col-lg-4 col-sm-6 wow fadeInUp ser_curd" data-wow-delay="0.5s">
-                        <div class="service-item text-center pt-3">
-                            <div class="p-4">
-                                <i class="fa fa-3x fa-image mb-4" style="color: #1d1d1d"></i>
-                                <div class="ser-des">
-                                    <h5 class="mt-4">View More Work</h5>
-                                    <p>Explore our previous work and get inspired.</p>
-                                </div>
-                                <a href="{{ route('more_images') }}" class="btn" style="background-color: #1d1d1d; color: white">View Work</a>
-                            </div>
+<div class="slide-one-item home-slider owl-carousel">
+    <div class="site-blocks-cover inner-page-cover" style="background-image: url('{{ asset($subsalon->salon->image ?? 'default_image.jpg') }}');" data-aos="fade" data-stellar-background-ratio="0.5">
+        <div class="filter-overlay"></div>
+        <div class="container">
+            <div class="row align-items-center justify-content-center text-center">
+                <div class="col-md-8" data-aos="fade-up" data-aos-delay="400">
+                    <h2 class="text-white font-weight-light mb-2 display-1">{{ $subsalon->name }}</h2>
+                    <div class="search-section">
+                        <p>Search for the service details you want to book!</p>
+                        <div class="d-flex">
+                            <input type="text" class="search-input" placeholder="Type here...">
+                            <button class="search-button">Search</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
-
-
-<!-- Service End -->
-
-
-
     </div>
 </div>
-<div class="container-xxl py-5">
+
+<div class="site-section bg-light">
     <div class="container">
-        <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-                <h6 class="section-title bg-white text-center text-primary px-3">Instructors</h6>
-                <h1 class="mb-5">Distinctive salon works</h1>
+        <div class="row">
+            <div class="col-lg-6 p-md-4">
+                <div class="img-md-fluid">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.8354345091796!2d144.9537353153159!3d-37.81627997975109!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642af0f11c97d%3A0x5045675218ce6e0!2sMelbourne%20CBD%2C%20Victoria%2C%20Australia!5e0!3m2!1sen!2sus!4v1616011087579!5m2!1sen!2sus" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                </div>
             </div>
-            <div class="row g-4">
-                <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="team-item bg-light">
-                        <div class="overflow-hidden">
-                            <img class="img-fluid" src="https://i.pinimg.com/236x/86/fb/74/86fb742948c4e3d540fb68471979ea1f.jpg" alt="">
-                        </div>
-                        <div class="position-relative d-flex justify-content-center" style="margin-top: -23px;">
-                            {{-- <div class="bg-light d-flex justify-content-center pt-2 px-1">
-                                <a class="btn btn-sm-square btn-primary mx-1" href=""><i class="fab fa-facebook-f"></i></a>
-                                <a class="btn btn-sm-square btn-primary mx-1" href=""><i class="fab fa-twitter"></i></a>
-                                <a class="btn btn-sm-square btn-primary mx-1" href=""><i class="fab fa-instagram"></i></a>
-                            </div> --}}
-                        </div>
-                        <div class="text-center p-4">
-                            <h5 class="mb-0">Instructor Name</h5>
-                            <small>Designation</small>
-                        </div>
+            <div class="col-lg-6 p-md-4 align-self-center">
+                <h1>Welcome to {{ $subsalon->name }} salon</h1>
+                <p class="paragraph-description mb-4">{{ $subsalon->description }}</p>
+                <p class="paragraph-info mb-4">Our platform offers seamless appointment booking and access to a variety of services, ensuring you find exactly what you need. We pride ourselves on delivering exceptional customer service and high-quality treatments.</p>
+
+                <h6 class="mt-4">Business Hours:</h6>
+                <p class="paragraph-hours mb-4">Monday to Friday: 9 AM - 8 PM<br>Saturday: 10 AM - 6 PM<br>Sunday: Closed</p>
+
+                <div class="row gy-2 gx-4 mb-4">
+                    <div class="col-sm-6">
+                        <p class="mb-0"><i class="bi bi-check"></i> Expert Stylists</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="mb-0"><i class="bi bi-check"></i> Easy Online Booking</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="mb-0"><i class="bi bi-check"></i> Transparent Pricing</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="mb-0"><i class="bi bi-check"></i> Customer Reviews</p>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
-                    <div class="team-item bg-light">
-                        <div class="overflow-hidden">
-                            <img class="img-fluid" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKxrlTNR2MdOeBNVyLGJbZ0Y1uKUwCRYxGNA&s" alt="">
-                        </div>
-                        <div class="position-relative d-flex justify-content-center" style="margin-top: -23px;">
-                            {{-- <div class="bg-light d-flex justify-content-center pt-2 px-1">
-                                <a class="btn btn-sm-square btn-primary mx-1" href=""><i class="fab fa-facebook-f"></i></a>
-                                <a class="btn btn-sm-square btn-primary mx-1" href=""><i class="fab fa-twitter"></i></a>
-                                <a class="btn btn-sm-square btn-primary mx-1" href=""><i class="fab fa-instagram"></i></a>
-                            </div> --}}
-                        </div>
-                        <div class="text-center p-4">
-                            <h5 class="mb-0">Instructor Name</h5>
-                            <small>Designation</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
-                    <div class="team-item bg-light">
-                        <div class="overflow-hidden">
-                            <img class="img-fluid" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTDI-m2jqrPKUigRqbC9kzWeQVtZMhI8sGO9Q&s" alt="">
-                        </div>
-                        <div class="position-relative d-flex justify-content-center" style="margin-top: -23px;">
-                            {{-- <div class="bg-light d-flex justify-content-center pt-2 px-1">
-                                <a class="btn btn-sm-square btn-primary mx-1" href=""><i class="fab fa-facebook-f"></i></a>
-                                <a class="btn btn-sm-square btn-primary mx-1" href=""><i class="fab fa-twitter"></i></a>
-                                <a class="btn btn-sm-square btn-primary mx-1" href=""><i class="fab fa-instagram"></i></a>
-                            </div> --}}
-                        </div>
-                        <div class="text-center p-4">
-                            <h5 class="mb-0">Instructor Name</h5>
-                            <small>Designation</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.7s">
-                    <div class="team-item bg-light">
-                        <div class="overflow-hidden">
-                            <img class="img-fluid" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWjqAnwFMA_Oq9Wam44KC-wL2W3ZAXIHeCLQ&s" alt="">
-                        </div>
-                        <div class="position-relative d-flex justify-content-center" style="margin-top: -23px;">
-                            {{-- <div class="bg-light d-flex justify-content-center pt-2 px-1">
-                                <a class="btn btn-sm-square btn-primary mx-1" href=""><i class="fab fa-facebook-f"></i></a>
-                                <a class="btn btn-sm-square btn-primary mx-1" href=""><i class="fab fa-twitter"></i></a>
-                                <a class="btn btn-sm-square btn-primary mx-1" href=""><i class="fab fa-instagram"></i></a>
-                            </div> --}}
-                        </div>
-                        <div class="text-center p-4">
-                            <h5 class="mb-0">Instructor Name</h5>
-                            <small>Designation</small>
-                        </div>
-                    </div>
-                </div>
+                <a href="{{ route('all-categories', $subsalon) }}" class="search-button">Book Now</a>
             </div>
         </div>
     </div>
-    <!-- Team End -->
-<!-- Carousel End -->
-<div class="container-xxl py-5 category">
+</div>
+
+<!-- قسم الكاتيجوري -->
+<div class="site-section bg-light">
+    <div class="container text-center my-4">
+        <h2>Categories</h2>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="category-item">
+                <h4>Hair Styling</h4>
+                <p>Explore our range of hair styling services.</p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="category-item">
+                <h4>Skin Care</h4>
+                <p>Discover our skin care treatments.</p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="category-item">
+                <h4>Nail Services</h4>
+                <p>Choose from our variety of nail services.</p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="category-item">
+                <h4>Massage</h4>
+                <p>Relax with our massage therapies.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="site-section bg-white">
     <div class="container">
-        <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-            <h6 class="section-title bg-white text-center text-primary px-3">Categories</h6>
-            <h1 class="mb-5">Images of Salon</h1>
+        <div class="container text-center my-4">
+            <h2>Featured Works of the Salon</h2>
         </div>
-        <div class="row g-3">
-            <div class="col-lg-7 col-md-6">
-                <div class="row g-3">
-                    <div class="col-lg-12 col-md-12 wow zoomIn" data-wow-delay="0.1s">
-                        <a class="position-relative d-block overflow-hidden" href="">
-                            <img class="img-fluid" src="https://i.pinimg.com/236x/3b/5b/7d/3b5b7d50b92bb2290361ec37f3ce4cf2.jpg" alt="">
-                            <div class="bg-white text-center position-absolute bottom-0 end-0 py-2 px-3" style="margin: 1px;">
-                                <h5 class="m-0">Web Design</h5>
-                                <small class="text-primary">49 Courses</small>
-                            </div>
-                        </a>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="owl-carousel owl-theme custom-slider">
+                    <div class="item mb-5">
+                        <img src="https://i8.amplience.net/i/Cosnova/2151754" alt="Eyebrow Service" class="img-fluid w-100" style="object-fit: cover;">
                     </div>
-                    <div class="col-lg-6 col-md-12 wow zoomIn" data-wow-delay="0.3s">
-                        <a class="position-relative d-block overflow-hidden" href="">
-                            <img class="img-fluid" src="https://i.pinimg.com/236x/c3/c0/d0/c3c0d095ef705f002dc66d6ccb674e8a.jpg" alt="">
-                            <div class="bg-white text-center position-absolute bottom-0 end-0 py-2 px-3" style="margin: 1px;">
-                                <h5 class="m-0">Graphic Design</h5>
-                                <small class="text-primary">49 Courses</small>
-                            </div>
-                        </a>
+                    <div class="item mb-5">
+                        <img src="https://i8.amplience.net/i/Cosnova/2151754" alt="Eyebrow Service" class="img-fluid w-100" style="object-fit: cover;">
                     </div>
-                    <div class="col-lg-6 col-md-12 wow zoomIn" data-wow-delay="0.5s">
-                        <a class="position-relative d-block overflow-hidden" href="">
-                            <img class="img-fluid" src="https://i.pinimg.com/enabled/564x/33/cb/2f/33cb2f839693719c4fbe2eca30dcf0a2.jpg" alt="">
-                            <div class="bg-white text-center position-absolute bottom-0 end-0 py-2 px-3" style="margin: 1px;">
-                                <h5 class="m-0">Video Editing</h5>
-                                <small class="text-primary">49 Courses</small>
-                            </div>
-                        </a>
+                    <div class="item mb-5">
+                        <img src="https://i8.amplience.net/i/Cosnova/2151754" alt="Eyebrow Service" class="img-fluid w-100" style="object-fit: cover;">
+                    </div>
+                    <div class="item mb-5">
+                        <img src="https://i8.amplience.net/i/Cosnova/2151754" alt="Eyebrow Service" class="img-fluid w-100" style="object-fit: cover;">
+                    </div>
+                    <div class="item mb-5">
+                        <img src="https://i8.amplience.net/i/Cosnova/2151754" alt="Eyebrow Service" class="img-fluid w-100" style="object-fit: cover;">
+                    </div>
+                    <div class="item mb-5">
+                        <img src="https://i8.amplience.net/i/Cosnova/2151754" alt="Eyebrow Service" class="img-fluid w-100" style="object-fit: cover;">
                     </div>
                 </div>
             </div>
-            <div class="col-lg-5 col-md-6 wow zoomIn" data-wow-delay="0.7s" style="min-height: 350px;">
-                <a class="position-relative d-block h-100 overflow-hidden" href="">
-                    <img class="img-fluid position-absolute w-100 h-100" src="https://i.pinimg.com/enabled/564x/e9/ca/5c/e9ca5caa20055fe6e7684428e73ff780.jpg" alt="" style="object-fit: cover;">
-                    <div class="bg-white text-center position-absolute bottom-0 end-0 py-2 px-3" style="margin: 1px;">
-                        <h5 class="m-0">Online Marketing</h5>
-                        <small class="text-primary">49 Courses</small>
-                    </div>
-                </a>
+        </div>
+    </div>
+</div>
+
+<div class="site-section bg-light">
+    <div class="container">
+        <div class="row justify-content-center mb-5">
+            <div class="container text-center my-4">
+                <h2>Feedbacks</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-lg-4 text-center mb-5" data-aos="fade-up">
+                <img src="https://c0.klipartz.com/pngpicture/355/848/gratis-png-iconos-de-computadora-perfil-de-usuario-cuenta-de-google-s-icono-de-cuenta-thumbnail.png" alt="Image" class="img-fluid w-50 rounded-circle mb-4">
+                <h2 class="text-black font-weight-light mb-4">Jean Smith</h2>
+                <p class="mb-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur ab quas facilis obcaecati non ea, est odit repellat distinctio incidunt, quia aliquam eveniet quod deleniti impedit sapiente atque tenetur porro?</p>
+            </div>
+            <div class="col-md-6 col-lg-4 text-center mb-5" data-aos="fade-up">
+                <img src="https://c0.klipartz.com/pngpicture/355/848/gratis-png-iconos-de-computadora-perfil-de-usuario-cuenta-de-google-s-icono-de-cuenta-thumbnail.png" alt="Image" class="img-fluid w-50 rounded-circle mb-4">
+                <h2 class="text-black font-weight-light mb-4">Claire Smith</h2>
+                <p class="mb-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur ab quas facilis obcaecati non ea, est odit repellat distinctio incidunt, quia aliquam eveniet quod deleniti impedit sapiente atque tenetur porro?</p>
+            </div>
+            <div class="col-md-6 col-lg-4 text-center mb-5" data-aos="fade-up">
+                <img src="https://c0.klipartz.com/pngpicture/355/848/gratis-png-iconos-de-computadora-perfil-de-usuario-cuenta-de-google-s-icono-de-cuenta-thumbnail.png" alt="Image" class="img-fluid w-50 rounded-circle mb-4">
+                <h2 class="text-black font-weight-light mb-4">John Smith</h2>
+                <p class="mb-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur ab quas facilis obcaecati non ea, est odit repellat distinctio incidunt, quia aliquam eveniet quod deleniti impedit sapiente atque tenetur porro?</p>
             </div>
         </div>
     </div>
 </div>
 
-    </div>
-</div>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $(".custom-slider").owlCarousel({
+            items: 4,
+            loop: true,
+            margin: 20,
+            autoplay: true,
+            autoplayTimeout: 3000,
+            autoplayHoverPause: true
+        });
 
- <!-- About End -->
-
-
-    <!-- Categories Start -->
-    <!-- Categories Start -->
-
+        $(".feedback-slider").owlCarousel({
+            items: 1,
+            loop: true,
+            margin: 20,
+            autoplay: true,
+            autoplayTimeout: 5000,
+            autoplayHoverPause: true
+        });
+    });
+</script>
 
 @endsection

@@ -19,28 +19,36 @@ class DashboardController extends Controller
     //
     public function index()
     {
-        $feedbacks = Feed::all()?? [];
-        $subsalons = SubSalon::all()?? [];
-        $categories = Categorie::all()?? [];
-        $castomors = Castomor::all()?? [];
-        $bookings = Booking::all()?? [];
-        $employees = Employee::all()?? [];
-        $services = Service::all()?? [];
-        $salons = Salon::all()?? [];
-        $owners = Owner::all()??[];
+        $feedbacks = Feed::all() ?? [];
+        $subsalons = SubSalon::all() ?? [];
+        $categories = Categorie::all() ?? [];
+        $castomors = Castomor::all() ?? [];
+        $bookings = Booking::all() ?? [];
+        $employees = Employee::all() ?? [];
+        $services = Service::all() ?? [];
+        $salons = Salon::all() ?? [];
+        $owners = Owner::all() ?? [];
 
-        //$data
-        return view('dashboard\index',[
+        // إحصائيات المستخدمين
+        $ownersCount = $owners->count();
+        $employeesCount = $employees->count();
+        $customersCount = $castomors->count(); // إذا كانت "Castomor" تمثل العملاء
+        $superAdminsCount = 0; // قم بتعديل هذا إذا كان لديك نموذج "Super Admin"
 
-            'salons'=>$salons,
-            'feedbacks'=>$feedbacks,
-            'subsalons'=>$subsalons,
-            'categories'=>$categories,
-            'castomors'=>$castomors,
-            'bookings'=>$bookings,
-            'employees'=>$employees,
-            'services'=>$services,
-            'owners'=>$owners,
+        return view('dashboard.index', [
+            'salons' => $salons,
+            'feedbacks' => $feedbacks,
+            'subsalons' => $subsalons,
+            'categories' => $categories,
+            'castomors' => $castomors,
+            'bookings' => $bookings,
+            'employees' => $employees,
+            'services' => $services,
+            'owners' => $owners,
+            'ownersCount' => $ownersCount,
+            'employeesCount' => $employeesCount,
+            'customersCount' => $customersCount,
+            'superAdminsCount' => $superAdminsCount,
         ]);
     }
 

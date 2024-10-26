@@ -31,6 +31,7 @@ class HomeController extends Controller
         $testimonial=Testimonial::all();
         $subsalons =SubSalon::all();
         $salons =Salon::all();
-        return view('user_side\landing ',['salons'=>$salons ,'testimonial'=>$testimonial ,'subsalons'=>$subsalons]);
+        $users =User::all();
+        return view('user_side\landing ',['salons'=>$salons ,'testimonial'=>$testimonial ,'subsalons'=>$subsalons ,'users'=>$users]);
     }
 }

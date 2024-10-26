@@ -21,9 +21,24 @@ class UserController extends Controller
         return view('dashboard.user.index', compact('users', 'salons','sub_salons'));
     }
 
-    /**
-     * Display the specified resource.
-     */
+    public function showUsers()
+    {
+        $ownersCount = User::where('usertype', 'owner')->count();
+        $employeesCount = User::where('usertype', 'employee')->count();
+        $customersCount = User::where('usertype', 'customer')->count();
+        $superAdminsCount = User::where('usertype', 'super_admin')->count();
+
+        // تأكد من أن القيم ليست فارغة
+        $ownersCount = $ownersCount ?: 0;
+        $employeesCount = $employeesCount ?: 0;
+        $customersCount = $customersCount ?: 0;
+        $superAdminsCount = $superAdminsCount ?: 0;
+
+        return view('dashboard.index', compact('ownersCount', 'employeesCount', 'customersCount', 'superAdminsCount'));
+    }
+
+
+
     public function show(string $id)
     {
         $user = User::findOrFail($id);

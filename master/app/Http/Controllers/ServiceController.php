@@ -52,11 +52,9 @@ class ServiceController extends Controller
      */
     public function show()
     {
-        // استرجاع جميع الصالونات الفرعية والفئات
         $services = Service::all();
         $categories = Categorie::all();
 
-        // تمرير المتغيرات إلى العرض
         return view('user_side.services', compact('services', 'categories'));
     }
 
@@ -72,23 +70,29 @@ class ServiceController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Service $service)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'categories_id' => 'required|exists:categories,id',
-            'hours' => 'nullable|integer|min:0|max:23',
-            'minutes' => 'nullable|integer|min:0|max:59',
-            'price' => 'required|numeric|min:0',
-        ]);
+   /**
+ * Update the specified resource in storage.
+ */
+public function update(Request $request, Service $service)
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'description' => 'nullable|string',
+        'categories_id' => 'required|exists:categories,id',
+        'hours' => 'nullable|integer|min:0|max:23',
+        'minutes' => 'nullable|integer|min:0|max:59',
+        'price' => 'required|numeric|min:0',
+    ]);
 
-        $duration = ($request->input('hours', 0) * 60) + $request->input('minutes', 0);
+    // حساب المدة
+    $duration = ($request->input('hours', 0) * 60) + $request->input('minutes', 0);
 
-        $service->update($request->only(['name', 'description', 'categories_id', 'price']) + ['duration' => $duration]);
+    // تحديث الخدمة
+    $service->update($request->only(['name', 'description', 'categories_id', 'price']) + ['duration' => $duration]);
 
-        return redirect()->route('services.index')->with('success', 'Service updated successfully.');
-    }
+    return redirect()->route('services.index')->with('success', 'Service updated successfully.');
+}
+
 
     /**
      * Remove the specified resource from storage.
