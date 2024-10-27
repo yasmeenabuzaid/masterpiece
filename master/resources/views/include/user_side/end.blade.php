@@ -1,3 +1,12 @@
+<form action="{{ route('change.language', ['locale' => 'en']) }}" method="POST">
+    @csrf
+    <select name="language" onchange="this.form.submit()">
+        <option value="en" {{ session('app_locale') === 'en' ? 'selected' : '' }}>English</option>
+        <option value="ar" {{ session('app_locale') === 'ar' ? 'selected' : '' }}>العربية</option>
+    </select>
+</form>
+
+
 <footer class="site-footer">
     <div class="container">
         <div class="row">

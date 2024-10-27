@@ -143,9 +143,8 @@
     </div>
 </div>
 
-<!-- قسم الكاتيجوري -->
-<div class="site-section bg-light">
-    <div class="container text-center my-4">
+<div class="site-section ">
+    <div class="container text-center m-4">
         <h2>Categories</h2>
     </div>
     <div class="row">
@@ -185,24 +184,12 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="owl-carousel owl-theme custom-slider">
+                    @foreach($subsalon->images as $image)
                     <div class="item mb-5">
-                        <img src="https://i8.amplience.net/i/Cosnova/2151754" alt="Eyebrow Service" class="img-fluid w-100" style="object-fit: cover;">
+                        <img src="{{ asset($image->image) }}" alt="Eyebrow Service" class="img-fluid" style="object-fit: cover; height: 300px; max-width: 110%;">
                     </div>
-                    <div class="item mb-5">
-                        <img src="https://i8.amplience.net/i/Cosnova/2151754" alt="Eyebrow Service" class="img-fluid w-100" style="object-fit: cover;">
-                    </div>
-                    <div class="item mb-5">
-                        <img src="https://i8.amplience.net/i/Cosnova/2151754" alt="Eyebrow Service" class="img-fluid w-100" style="object-fit: cover;">
-                    </div>
-                    <div class="item mb-5">
-                        <img src="https://i8.amplience.net/i/Cosnova/2151754" alt="Eyebrow Service" class="img-fluid w-100" style="object-fit: cover;">
-                    </div>
-                    <div class="item mb-5">
-                        <img src="https://i8.amplience.net/i/Cosnova/2151754" alt="Eyebrow Service" class="img-fluid w-100" style="object-fit: cover;">
-                    </div>
-                    <div class="item mb-5">
-                        <img src="https://i8.amplience.net/i/Cosnova/2151754" alt="Eyebrow Service" class="img-fluid w-100" style="object-fit: cover;">
-                    </div>
+                @endforeach
+
                 </div>
             </div>
         </div>
@@ -244,7 +231,7 @@
 <script>
     $(document).ready(function(){
         $(".custom-slider").owlCarousel({
-            items: 4,
+            items: 3,
             loop: true,
             margin: 20,
             autoplay: true,

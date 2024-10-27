@@ -51,12 +51,12 @@ class CategorieController extends Controller
 
         return redirect()->route('categories.index')->with('success', 'Category created successfully.');
     }
-    public function show()
+    public function show($id)
     {
-        $subsalons = SubSalon::all();
+        $subsalon = SubSalon::findOrFail($id);
         $categories = Categorie::all();
 
-        return view('user_side.categories', compact('subsalons', 'categories'));
+        return view('user_side.categories', compact('categories', 'subsalon')); // إزالة الفاصلة الزائدة
     }
 
 

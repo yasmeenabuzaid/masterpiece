@@ -18,10 +18,12 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\WorkingHourController;
 use App\Http\Controllers\ChatMessageController;
+use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\Controller;
 // use App\Http\Controllers\ProfileController;
 
 use  App\Http\Middleware\Admin;
-
+Route::post('/change-language/{locale}', [LanguageController::class, 'changeLanguage'])->name('change.language');
 Route::get('/logout', function () {
     return view('user_side/landing');
 })->name('user_landing');
@@ -32,7 +34,7 @@ Route::post('/logout', [Controller::class, 'logout'])->name('logout');
 Route::get('/home', function () {
     return view('user_side/landing');
 })->name('home_psge');
-Route::get('/', function () {
+Route::get('/', action: function () {
     return view('user_side/landing');
 })->name('home_psge');
 
@@ -102,6 +104,9 @@ Route::get('/dash', function () {
 Route::get('/user', function () {
     return view('user_side/index');
 });
+Route::get('/user-booking', function () {
+    return view('user_side/booking');
+})->name('user-booking');
 
 // Route::resource('/home', TestimonialController::class)->name('home_psge');
 

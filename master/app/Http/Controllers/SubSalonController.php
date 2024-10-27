@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Models\SubSalon;
 use App\Models\Salon;
+use App\Models\Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -44,7 +45,10 @@ class SubSalonController extends Controller
             'working_days' => 'required|array',
             'opening_hours_start' => 'required|string',
             'opening_hours_end' => 'required|string',
-            'image' => 'nullable|image|max:2048',
+            'images.*' => 'nullable|image|max:2048',
+            'opening_hours_start_period' => 'required|string|in:AM,PM',
+            'opening_hours_end_period' => 'required|string|in:AM,PM',
+            'type' => 'required|in:women,men,mixed',
         ]);
 
         Log::info('Working Days:', $validatedData['working_days']);
@@ -60,29 +64,43 @@ class SubSalonController extends Controller
             $request->input('opening_hours_end_period')
         );
 
-        if ($request->hasFile('image')) {
-            $validatedData['image'] = $request->file('image')->store('subsalons', 'public');
+        // إنشاء الـ SubSalon
+        $subsalon = SubSalon::create($validatedData);
+
+        // التعامل مع الصور المتعددة
+        if ($request->hasFile('images')) {
+            $images = [];
+            foreach ($request->file('images') as $file) {
+                $filename = uniqid() . '_' . $file->getClientOriginalName();
+                $path = public_path('uploads/subsalons/');
+                $file->move($path, $filename);
+
+                $images[] = [
+                    'image' => 'uploads/subsalons/' . $filename,
+                    'sub_salons_id' => $subsalon->id, // ربط بالصالة الفرعية
+                ];
+            }
+
+            // تأكد من أن نموذج Image معد بشكل صحيح لإدخال البيانات
+            Image::insert($images);
         }
 
-        try {
-            SubSalon::create($validatedData);
-            return redirect()->route('subsalons.index')->with('success', 'Sub salon created successfully.');
-        } catch (\Exception $e) {
-            Log::error('Error creating sub salon: ' . $e->getMessage());
-            return redirect()->back()->withErrors(['db_error' => 'Failed to create sub salon.'])->withInput();
-        }
+        return redirect()->route('subsalons.index')->with('success', 'Sub salon created successfully.');
     }
+
+
 
     private function convertTo24HourFormat($hour, $period)
     {
         if ($period === 'PM' && $hour < 12) {
-            return $hour + 12;
+            return $hour + 12; // تحويل PM
         }
         if ($period === 'AM' && $hour == 12) {
-            return 0;
+            return 0; // تحويل 12 AM إلى 0
         }
-        return $hour;
+        return $hour; // لا حاجة لتغيير
     }
+
     public function showAllSubSalons()
     {
         $subsalons = SubSalon::all();
@@ -95,8 +113,8 @@ class SubSalonController extends Controller
     }
     public function show(SubSalon $subsalon)
     {
-        $salons = Salon::all();
-        return view('user_side\more_details', ['subsalon' => $subsalon, 'salons' => $salons]);
+        $images = Image::where('sub_salons_id', $subsalon->id)->get();
+          return view('user_side\more_details', ['subsalon' => $subsalon, 'images' => $images]);
     }
 
 

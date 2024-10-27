@@ -13,8 +13,7 @@ return new class extends Migration
     {
         Schema::create('images', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('bath');
+            $table->string('image'); // إضافة العمود
             $table->foreignId('sub_salons_id')->constrained('sub_salons');
             $table->timestamps();
         });

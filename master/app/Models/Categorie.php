@@ -9,9 +9,8 @@ class Categorie extends Model
 {
     use HasFactory;
 
-    // إضافة الخصائص القابلة للتعيين الجماعي
     protected $fillable = [
-        'name',         // أضف هذا
+        'name',       
         'description',
         'sub_salons_id',
         'user_id',
@@ -19,7 +18,7 @@ class Categorie extends Model
 
     public function services()
     {
-        return $this->hasMany(Service::class, 'services_id');
+        return $this->hasMany(Service::class, 'categories_id');
     }
     public function cat_det()
     {

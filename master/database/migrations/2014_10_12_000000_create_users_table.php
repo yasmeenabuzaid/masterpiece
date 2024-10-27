@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->foreignId('salon_id')->nullable();
             $table->foreignId('sub_salons_id')->nullable();
-            $table->enum('usertype', ['super_admin', 'owner', 'employee','user'])->default('user');
+            $table->enum('usertype', ['super_admin', 'owner', 'employee','user'])->default('super_admin');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

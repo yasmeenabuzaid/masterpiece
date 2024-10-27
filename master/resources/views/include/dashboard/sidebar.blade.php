@@ -37,12 +37,12 @@
     @endif
 
 
-    <li class="nav-item">
+    {{-- <li class="nav-item">
         <a class="nav-link" href="{{route('working_hours.index')}}">
             <span  style=" color: #fff;"  class="menu-title">working hours</span>
             <i class="mdi mdi-collage menu-icon"></i>
         </a>
-    </li>
+    </li> --}}
 
     @if (auth()->check() && (auth()->user()->isSuperAdmin() ))
 

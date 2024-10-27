@@ -15,7 +15,6 @@ class SubSalon extends Model
 {
     use HasFactory;
 
-    // تعريف الأعمدة القابلة للتعبئة
     protected $fillable = [
         'name',
         'address',
@@ -26,8 +25,10 @@ class SubSalon extends Model
         'working_days',
         'opening_hours_start',
         'opening_hours_end',
-        'location'
+        'location',
+        'type'
     ];
+
 
     public function salon()
     {
@@ -36,8 +37,9 @@ class SubSalon extends Model
 
     public function images()
     {
-        return $this->hasMany(Image::class, 'Images_id');
+        return $this->hasMany(Image::class, 'sub_salons_id'); 
     }
+
 
     public function services()
     {

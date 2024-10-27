@@ -24,10 +24,11 @@
                         <label for="description">Description</label>
                         <input type="text" class="form-control" id="description" name="description" placeholder="Insert description" required>
                     </div>
-                    {{-- <div class="form-group">
-                        <label for="location">location</label>
+
+                    <div class="form-group">
+                        <label for="location">Location</label>
                         <input type="text" class="form-control" id="location" name="location" placeholder="Insert location" required>
-                    </div>+ --}}
+                    </div>
 
                     <div class="form-group">
                         <label for="phone">Phone</label>
@@ -35,8 +36,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="image">File Upload</label>
-                        <input type="file" name="image" id="fileUpload" class="form-control">
+                        <label for="images">Choose Featured Works of the Salon</label>
+                        <input type="file" name="images[]" id="images" class="form-control" multiple />
                     </div>
 
                     <label for="salon_id">Salon</label>
@@ -61,6 +62,7 @@
                         </select>
                         <small>Select multiple days by holding down the Ctrl (Windows) or Command (Mac) key.</small>
                     </div>
+
                     <div class="form-group">
                         <label for="opening_hours_start">Opening Hours From:</label>
                         <select name="opening_hours_start" id="opening_hours_start" class="form-control">
@@ -68,7 +70,6 @@
                                 <option value="{{ $hour }}">{{ $hour }}</option>
                             @endforeach
                         </select>
-
                         <select name="opening_hours_start_period" id="opening_hours_start_period" class="form-control">
                             <option value="AM">AM</option>
                             <option value="PM">PM</option>
@@ -82,25 +83,32 @@
                                 <option value="{{ $hour }}">{{ $hour }}</option>
                             @endforeach
                         </select>
-
                         <select name="opening_hours_end_period" id="opening_hours_end_period" class="form-control">
                             <option value="AM">AM</option>
                             <option value="PM">PM</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="type">Type of SubSalon</label>
+                        <select class="form-control" name="type" id="type" required>
+                            <option value="women">Women Only</option>
+                            <option value="men">Men Only</option>
+                            <option value="mixed">Mixed</option>
                         </select>
                     </div>
 
                     <button type="submit" class="btn btn-gradient-primary me-2">Create</button>
                     <a href="{{ route('subsalons.index') }}" class="btn btn-light">Cancel</a>
                     @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
-
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                 </form>
             </div>
         </div>
