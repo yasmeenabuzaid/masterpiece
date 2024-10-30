@@ -3,14 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Categorie;
+use App\Models\BookingService;
 use App\Models\SubSalon;
+use App\Models\Booking;
+use App\Models\Service; // تأكد من استيراد نموذج الخدمة
 use Illuminate\Http\Request;
 
 class CategorieController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $user = auth()->user();
@@ -26,19 +26,12 @@ class CategorieController extends Controller
         return view('dashboard.category.index', compact('categories'));
     }
 
-
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         $subsalons = SubSalon::all();
         return view('dashboard.category.create', compact('subsalons'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $validatedData = $request->validate([
@@ -47,19 +40,21 @@ class CategorieController extends Controller
             'sub_salons_id' => 'required|exists:sub_salons,id',
         ]);
 
-        Categorie::create($validatedData); // Mass assignment
+        Categorie::create($validatedData);
 
         return redirect()->route('categories.index')->with('success', 'Category created successfully.');
     }
+
     public function show($id)
     {
         $subsalon = SubSalon::findOrFail($id);
         $categories = Categorie::all();
+        $bookings = Booking::all();
+        $bookingServices = BookingService::all();
+        $services = Service::all(); // استرجاع جميع الخدمات
 
-        return view('user_side.categories', compact('categories', 'subsalon')); // إزالة الفاصلة الزائدة
+        return view('user_side.categories', compact('categories', 'subsalon', 'bookings', 'bookingServices', 'services')); // تأكد من تمرير المتغيرات
     }
-
-
 
     public function edit($id)
     {
@@ -68,9 +63,6 @@ class CategorieController extends Controller
         return view('dashboard.category.edit', compact('categorie', 'subsalons'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, $id)
     {
         $validatedData = $request->validate([
@@ -80,14 +72,11 @@ class CategorieController extends Controller
         ]);
 
         $categorie = Categorie::findOrFail($id);
-        $categorie->update($validatedData); // Mass assignment
+        $categorie->update($validatedData);
 
         return redirect()->route('categories.index')->with('success', 'Category updated successfully.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy($id)
     {
         $categorie = Categorie::findOrFail($id);

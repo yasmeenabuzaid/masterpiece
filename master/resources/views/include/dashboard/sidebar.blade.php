@@ -83,12 +83,12 @@
             <i class="fa-solid fa-server menu-icon"></i>
         </a>
     </li>
-    <li class="nav-item">
+    {{-- <li class="nav-item">
       <a class="nav-link" href="{{route('bookings.index')}}">
           <span style=" color: #fff;"  class="menu-title">bookings</span>
           <i class="fa-solid fa-calendar-days menu-icon"></i>
       </a>
-  </li>
+  </li> --}}
   {{-- <li class="nav-item">
       <a class="nav-link" href="{{route('castomors.index')}}">
           <span class="menu-title">castomors</span>

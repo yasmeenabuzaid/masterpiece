@@ -26,6 +26,7 @@ class SubSalon extends Model
         'opening_hours_start',
         'opening_hours_end',
         'location',
+        'map_iframe',
         'type'
     ];
 
@@ -37,7 +38,7 @@ class SubSalon extends Model
 
     public function images()
     {
-        return $this->hasMany(Image::class, 'sub_salons_id'); 
+        return $this->hasMany(Image::class, 'sub_salons_id');
     }
 
 
@@ -51,14 +52,14 @@ class SubSalon extends Model
         return $this->hasMany(User::class, 'users_id');
     }
 
-    public function bookings()
-    {
-        return $this->hasMany(Booking::class, 'bookings_id');
-    }
+    // public function bookings()
+    // {
+    //     return $this->hasMany(Booking::class, 'bookings_id');
+    // }
 
     public function categories()
     {
-        return $this->hasMany(Categorie::class, 'booking_id');
+        return $this->hasMany(Categorie::class, 'sub_salons_id');
     }
 
     public function workingHours()
@@ -93,4 +94,10 @@ class SubSalon extends Model
     {
         return $this->status == 1;
     }
+    // In SubSalon.php
+public function bookings()
+{
+    return $this->hasManyThrough(Booking::class, Service::class);
+}
+
 }

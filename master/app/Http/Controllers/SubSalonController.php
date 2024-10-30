@@ -49,6 +49,7 @@ class SubSalonController extends Controller
             'opening_hours_start_period' => 'required|string|in:AM,PM',
             'opening_hours_end_period' => 'required|string|in:AM,PM',
             'type' => 'required|in:women,men,mixed',
+            'map_iframe' => 'nullable',
         ]);
 
         Log::info('Working Days:', $validatedData['working_days']);
@@ -106,11 +107,36 @@ class SubSalonController extends Controller
         $subsalons = SubSalon::all();
         return view('user_side.landing', ['subsalons' => $subsalons]);
     }
-    public function MoreAllSubSalons()
+    public function MoreAllSubSalons(Request $request)
     {
-        $subsalons = SubSalon::all();
-        return view('user_side\all_salons', ['subsalons' => $subsalons]);
+        $query = SubSalon::query();
+
+        // فلتر حسب نوع الصالون
+        if ($request->filled('type')) {
+            $query->whereHas('salon', function($q) use ($request) {
+                $q->where('type', $request->type);
+            });
+        }
+
+        // فلتر حسب الموقع
+        if ($request->filled('location')) {
+            $query->whereHas('salon', function($q) use ($request) {
+                $q->where('location', 'LIKE', '%' . $request->location . '%');
+            });
+        }
+
+        // فلتر على اسم الصالون
+        if ($request->filled('name')) {
+            $query->whereHas('salon', function($q) use ($request) {
+                $q->where('name', 'LIKE', '%' . $request->name . '%');
+            });
+        }
+
+        $subsalons = $query->get();
+
+        return view('user_side.all_salons', ['subsalons' => $subsalons]);
     }
+
     public function show(SubSalon $subsalon)
     {
         $images = Image::where('sub_salons_id', $subsalon->id)->get();

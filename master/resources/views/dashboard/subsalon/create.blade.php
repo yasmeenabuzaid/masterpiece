@@ -29,7 +29,10 @@
                         <label for="location">Location</label>
                         <input type="text" class="form-control" id="location" name="location" placeholder="Insert location" required>
                     </div>
-
+                    <div class="form-group">
+                        <label for="iframe">iframe Location</label>
+                        <textarea name="map_iframe" placeholder="iframe Location" required></textarea>
+                    </div>
                     <div class="form-group">
                         <label for="phone">Phone</label>
                         <input type="text" class="form-control" id="phone" name="phone" placeholder="Insert phone" required>
@@ -88,7 +91,7 @@
                             <option value="PM">PM</option>
                         </select>
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="type">Type of SubSalon</label>
                         <select class="form-control" name="type" id="type" required>

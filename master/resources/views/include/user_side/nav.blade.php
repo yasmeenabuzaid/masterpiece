@@ -16,14 +16,18 @@
           <div class="row align-items-center">
 
             <div class="col-6 col-xl-2" data-aos="fade-down">
-              <h1 class="mb-0"><a href="index.html" class="text-black h2 mb-0">Hairsal</a></h1>
-            </div>
+                <h1 class="mb-0">
+                    <a href="#" class="text-black h2 mb-0">
+                        <img src="{{ asset('logo2.png') }}" alt="Logo" style="height: 45px; width: 160px;">
+                    </a>
+                </h1>
+          </div>
             <div class="col-10 col-md-8 d-none d-xl-block" data-aos="fade-down">
               <nav class="site-navigation position-relative text-right text-lg-center" role="navigation">
 
                 <ul class="site-menu js-clone-nav mx-auto d-none d-lg-block">
-                  <li class="has-children active">
-                    <a href="index.html">Home</a>
+                  {{-- <li class="has-children ">
+                    <a href="#">Home</a>
                     <ul class="dropdown">
                       <li><a href="#">Menu One</a></li>
                       <li><a href="#">Menu Two</a></li>
@@ -37,52 +41,52 @@
                         </ul>
                       </li>
                     </ul>
-                  </li>
+                </li> --}}
+                <li><a href="user_side/landing.blade.php">Home</a></li>
                   <li class="has-children">
-                    <a href="haircut.html">Haircut</a>
+                    <a href="haircut.html">salons</a>
                     <ul class="dropdown">
-                      <li><a href="#">Menu One</a></li>
-                      <li><a href="#">Menu Two</a></li>
-                      <li><a href="#">Menu Three</a></li>
+                      <li><a href="#">Women’s Salon</a></li>
+                      <li><a href="#">Men’s Salon</a></li>
+                      <li><a href="#">Mixed Salon</a></li>
                     </ul>
                   </li>
-                  <li><a href="services.html">Services</a></li>
                   <li><a href="about.html">About</a></li>
-                  <li><a href="booking.html">Book Online</a></li>
-                  <li><a href="contact.html">Contact</a></li>
+                  <li><a href="booking.html">Contact</a></li>
+                  <li><a href="{{route('my_booking')}}">my booking</a></li>
                 </ul>
               </nav>
             </div>
-            {{-- @guest
-            <a href="{{ route('login') }}" class="btn-nav">Login</a>
-            <a href="{{ route('register') }}" class="btn-nav">Register</a>
-        @else
-        <div class="btns">
-            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-inline">
-                @csrf
-                <a href="{{ route('dashbourd') }}" class="btn-nav">Dashboard</a>
-            </form>
-            <form action="{{ route('logout') }}" method="POST" style="display: inline;">
-                @csrf
-                <button type="submit" class="btn-nav">Logout</button>
-            </form>
-        </div>
-        @endguest --}}
+
             <div class="col-6 col-xl-2 text-right" data-aos="fade-down">
               <div class="d-none d-xl-inline-block">
                 <ul class="site-menu js-clone-nav ml-auto list-unstyled d-flex text-right mb-0" data-class="social">
                   <li>
-                    <a href="#" class="pl-0 pr-3 text-black"><span class="icon-facebook"></span></a>
+                     @guest
+                   <a href="{{ route('login') }}" class="btn-nav">Login</a>
+                   <a href="{{ route('register') }}" class="btn-nav">Register</a>
+
                   </li>
                   <li>
-                    <a href="#" class="pl-3 pr-3 text-black"><span class="icon-twitter"></span></a>
+                    @else
+                    <div class="btns">
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-inline">
+                            @csrf
+                            <a href="{{ route('dashbourd') }}" class="btn-nav mr-3" style="border: 2px solid #000; border-radius: 5px; padding: 5px; background-color: transparent; cursor: pointer; color: #000; width: 30px; height: 15px;">
+                                <i class="fas fa-tachometer-alt" style="margin-right: 5px;"></i> Dashboard
+                            </a>
+                      </form>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-inline ">
+                            @csrf
+                            <button type="submit" class="btn-nav " style="border: 2px solid #000; border-radius: 5px; padding: 5px; background-color: transparent; cursor: pointer;">
+                                <i class="fas fa-sign-out-alt" style="margin-right: 5px;"></i> Logout
+                            </button>
+                        </form>
+                    </div>
+                    @endguest
                   </li>
                   <li>
-                    <a href="#" class="pl-3 pr-3 text-black"><span class="icon-instagram"></span></a>
-                  </li>
-                  <li>
-                    <a href="#" class="pl-3 pr-3 text-black"><span class="icon-youtube-play"></span></a>
-                  </li>
+
                 </ul>
               </div>
 

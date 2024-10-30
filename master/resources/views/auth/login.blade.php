@@ -146,6 +146,12 @@
 </head>
 <body>
     <div class="containe">
+@if(session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
+
         <div class="video-container">
             <video autoplay muted loop>
                 <source src="../salon_f.mp4" type="video/mp4">

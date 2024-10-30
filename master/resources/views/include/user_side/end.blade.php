@@ -1,10 +1,10 @@
-<form action="{{ route('change.language', ['locale' => 'en']) }}" method="POST">
+{{-- <form action="{{ route('change.language', ['locale' => 'en']) }}" method="POST">
     @csrf
     <select name="language" onchange="this.form.submit()">
         <option value="en" {{ session('app_locale') === 'en' ? 'selected' : '' }}>English</option>
         <option value="ar" {{ session('app_locale') === 'ar' ? 'selected' : '' }}>العربية</option>
     </select>
-</form>
+</form> --}}
 
 
 <footer class="site-footer">
@@ -69,7 +69,7 @@
         </div>
     </div>
 </footer>
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <script src="{{ asset('js/jquery-3.3.1.min.js') }}"></script>
 <script src="{{ asset('js/jquery-migrate-3.0.1.min.js') }}"></script>
 <script src="{{ asset('js/jquery-ui.js') }}"></script>

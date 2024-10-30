@@ -6,6 +6,8 @@ use App\Models\Salon;
 use App\Models\SubSalon;
 use App\Models\Testimonial;
 use App\Models\User;
+use App\Models\Booking;
+use App\Models\BookingService;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -32,6 +34,8 @@ class HomeController extends Controller
         $subsalons =SubSalon::all();
         $salons =Salon::all();
         $users =User::all();
-        return view('user_side\landing ',['salons'=>$salons ,'testimonial'=>$testimonial ,'subsalons'=>$subsalons ,'users'=>$users]);
+        $bookings =Booking::all();
+        $bookingServices  =BookingService::all();
+        return view('user_side\landing ',['salons'=>$salons ,'testimonial'=>$testimonial ,'subsalons'=>$subsalons ,'users'=>$users ,'bookings'=>$bookings]);
     }
 }

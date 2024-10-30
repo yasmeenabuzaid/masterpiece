@@ -100,7 +100,6 @@ Route::get('/dash', function () {
 //     return view('auth.login');
 // })->name('login.index');
 
-
 Route::get('/user', function () {
     return view('user_side/index');
 });
@@ -109,6 +108,14 @@ Route::get('/user-booking', function () {
 })->name('user-booking');
 
 // Route::resource('/home', TestimonialController::class)->name('home_psge');
+Route::get('/select-services', [BookingController::class, 'showServices'])->name('services.index')->middleware('auth');
+
+
+Route::get('/services', [BookingController::class, 'showServices'])->name('services.index');
+Route::get('/booking/{subSalonId}', [BookingController::class, 'showBookingForm'])->name('booking.form');
+Route::get('/available-times', [BookingController::class, 'availableTimes'])->name('available.times');
+Route::post('/bookings', action: [BookingController::class, 'store'])->name('bookings.store');
+Route::get('/my-booking', [BookingController::class, 'get'])->name('my_booking');
 
 Route::middleware(['auth', 'admin'])->group(function () {
 
@@ -121,7 +128,7 @@ Route::resource('users', UserController::class);
 Route::resource('services', ServiceController::class);
 Route::resource('employees', EmployeeController::class);
 Route::resource('categories', CategorieController::class);
-Route::resource('bookings', BookingController::class);
+// Route::resource('bookings', BookingController::class);
 Route::resource('feedbacks', FeedController::class);
 Route::resource('castomors', CastomorController::class);
 Route::resource('profile', ProfileController::class);

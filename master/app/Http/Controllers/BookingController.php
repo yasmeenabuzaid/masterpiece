@@ -1,106 +1,100 @@
 <?php
-
 namespace App\Http\Controllers;
 
+use App\Models\Service;
 use App\Models\Booking;
-use App\Models\User;
-use App\Models\SubSalon;
+use App\Models\BookingService;
 use Illuminate\Http\Request;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class BookingController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function showServices()
     {
-        $bookings = Booking::all();
-        $users = User::all();
-        return view('dashboard.booking.index', ['bookings' => $bookings, 'users' => $users]);
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'يرجى تسجيل الدخول قبل رؤية الخدمات.');
+        }
+        $bookings =Booking::all();
+        $services = Service::all();
+        $bookingServices = BookingService::all();
+        return view('services.index', compact('services' ,'bookings' ,'bookingServices'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        $users = User::all();
-        $subsalons = SubSalon::all();
-
-        return view('dashboard.booking.create', [
-            'users' => $users,
-            'subsalons' => $subsalons
-        ]);
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'appointment_date' => 'required|date',
-            'description' => 'nullable|string',
-            'user_id' => 'required|exists:users,id',
-            'sub_salons_id' => 'required|exists:sub_salons,id', // Make SubSalon required
+{
+    // dd($request->all()); // استخدمها فقط للاختبار
+    $request->validate([
+        'date' => 'required|date',
+        'time' => 'required|date_format:H:i',
+        'note' => 'nullable|string',
+        'services' => 'required|string',
+    ]);
+
+    // تحويل سلسلة الخدمات إلى مصفوفة
+    $services = explode(',', $request->services);
+
+    // تحقق من أن كل معرف خدمة موجود
+    $request->merge(['services' => $services]); // قم بتحديث البيانات
+
+    $request->validate([
+        'services.*' => 'exists:services,id',
+    ]);
+
+    try {
+        $booking = Booking::create([
+            'name' => $request->name ?? auth()->user()->name,
+            'date' => $request->date,
+            'time' => $request->time,
+            'email' => $request->email ?? auth()->user()->email,
+            'note' => $request->note,
+            'user_id' => auth()->id(),
         ]);
-
-        Booking::create($request->only(['name', 'description', 'user_id', 'appointment_date', 'sub_salons_id']));
-
-        return redirect()->route('bookings.index')->with('success', 'Booking created successfully.');
+    } catch (\Exception $e) {
+        return redirect()->back()->with('error', 'حدث خطأ أثناء إنشاء الحجز: ' . $e->getMessage());
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Booking $booking)
+    foreach ($services as $service_id) {
+        BookingService::create([
+            'booking_id' => $booking->id,
+            'service_id' => $service_id,
+        ]);
+    }
+
+    return redirect()->back()->with('success', 'Booking was successful!');
+}
+
+
+
+
+    // عرض تفاصيل الحجز
+    public function get(Booking $booking)
     {
-        return view('dashboard.booking.view', ['booking' => $booking]);
+        $user = auth()->user();
+
+        $bookings = Booking::where('user_id', $user->id)->get();
+
+        $services = Service::all();
+
+        $bookingServices = BookingService::all();
+
+        return view('user_side.confirmation', compact('services', 'bookings', 'bookingServices'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+    // عرض نموذج تعديل الحجز
     public function edit(Booking $booking)
     {
-        $booking->appointment_date = Carbon::parse($booking->appointment_date);
-        $users = User::all();
-        $subsalons = SubSalon::all(); // Fetch SubSalons for the edit view
-
-        return view('dashboard.booking.edit', [
-            'booking' => $booking,
-            'users' => $users,
-            'subsalons' => $subsalons // Pass SubSalons to the view
-        ]);
+        // محتوى الدالة حسب الحاجة
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    // تحديث الحجز
     public function update(Request $request, Booking $booking)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'appointment_date' => 'required|date',
-            'description' => 'nullable|string',
-            'user_id' => 'required|exists:users,id',
-            'sub_salons_id' => 'required|exists:sub_salons,id',
-        ]);
-
-        $booking->update($request->only(['name', 'description', 'user_id', 'appointment_date', 'sub_salons_id']));
-
-        return redirect()->route('bookings.index')->with('success', 'Booking updated successfully.');
+        // محتوى الدالة حسب الحاجة
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    // حذف الحجز
     public function destroy(Booking $booking)
     {
-        $booking->delete();
-
-        return redirect()->route('bookings.index')->with('success', 'Booking deleted successfully.');
+        // محتوى الدالة حسب الحاجة
     }
 }

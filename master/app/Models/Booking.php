@@ -15,19 +15,21 @@ class Booking extends Model
     //        return $this->belongsTo(Service::class, 'services_id');
 
     //    }
-       public function booking_det(){
-        return $this->hasMany(booking_Details::class,'booking_det_id');
-       }
-       public function user()
-       {
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
-           return $this->belongsTo(User::class, 'user_id');
-
-       }
-       public function subsalon()
-       {
-           return $this->belongsTo(SubSalon::class, 'sub_salons_id');
-       }
-       protected $fillable = ['name', 'description', 'user_id', 'appointment_date','sub_salons_id'];
-
+    public function bookingServices()
+    {
+        return $this->hasMany(BookingService::class);
+    }
+            protected $fillable = [
+        'name',
+        'email',
+        'note',
+        'date',
+        'time',
+        'user_id'
+    ];
 }

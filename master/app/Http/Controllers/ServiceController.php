@@ -53,6 +53,7 @@ class ServiceController extends Controller
     public function show()
     {
         $services = Service::all();
+        $services = Service::all();
         $categories = Categorie::all();
 
         return view('user_side.services', compact('services', 'categories'));

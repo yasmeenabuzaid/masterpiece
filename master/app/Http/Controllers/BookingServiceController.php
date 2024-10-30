@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\booking_Details;
+use App\Models\BookingService;
 use Illuminate\Http\Request;
 
-class BookingDetailsController extends Controller
+class BookingServiceController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -28,13 +28,20 @@ class BookingDetailsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'booking_id' => 'required|exists:bookings,id',
+            'service_id' => 'required|exists:services,id',
+        ]);
+
+        BookingService::create($request->only('booking_id', 'service_id'));
+
+        return redirect()->route('booking_services.index')->with('success', 'Service added successfully!');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(booking_Details $booking_Details)
+    public function show(BookingService $bookingService)
     {
         //
     }
@@ -42,7 +49,7 @@ class BookingDetailsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(booking_Details $booking_Details)
+    public function edit(BookingService $bookingService)
     {
         //
     }
@@ -50,7 +57,7 @@ class BookingDetailsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, booking_Details $booking_Details)
+    public function update(Request $request, BookingService $bookingService)
     {
         //
     }
@@ -58,7 +65,7 @@ class BookingDetailsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(booking_Details $booking_Details)
+    public function destroy(BookingService $bookingService)
     {
         //
     }

@@ -24,8 +24,9 @@ class User extends Authenticatable
     public function testimonial(){
         return $this->hasMany(Testimonial::class,'testimonial_id');
        }
-       public function service(){
-        return $this->hasMany(Service::class,'services_id');
+       public function bookings()
+       {
+           return $this->hasMany(Booking::class);
        }
        public function owner_cat()
        {
@@ -40,9 +41,11 @@ class User extends Authenticatable
     {
         return $this->belongsTo(SubSalon::class, 'sub_salons_id');
     }
-    public function booking(){
-        return $this->hasMany(Booking::class,'bookings_id');
-       }
+    // public function bookings()
+    // {
+    //     return $this->hasMany(Booking::class, ' user_id');
+    // }
+
        public function massage(){ //many
         return $this->hasMany(massage::class,'massage_id');
        }
