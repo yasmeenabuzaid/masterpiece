@@ -116,7 +116,7 @@
     <div class="row justify-content-center mt-5 mb-5">
         <div class="row justify-content-center mb-5 ">
             <div class="col-md-7 text-center">
-                <h2 class="site-section-heading font-weight-light text-black">more details for this salon</h2>
+                <h2 class="site-section-heading font-weight-light">more details for this salon</h2>
             </div>
         </div>
     </div>
@@ -124,14 +124,15 @@
         <div class="col-md-7">
             <div class="img-md-fluid">
                 @if($subsalon->map_iframe)
-                <iframe src="{!! $subsalon->map_iframe !!}" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-                @else
-                <img src="https://cdni.iconscout.com/illustration/premium/thumb/location-error-404-flash-message-illustration-download-in-svg-png-gif-file-formats--finding-position-navigator-pin-gps-travelling-characters-pack-holidays-illustrations-9001081.png?f=webp" alt="Alternative Image" width="100%" height="450" style="border:0;">
-                <p style="font-size: 20px ; color:red">No map available.</p>
-                <p style="font-size: 15px">
+                <iframe src="{{ $subsalon->map_iframe }}" width="100%" height="450" style="border:0;" allowfullscreen loading="lazy"></iframe>
+            @else
+                {{-- <img src="https://cdni.iconscout.com/illustration/premium/thumb/location-error-404-flash-message-illustration-download-in-svg-png-gif-file-formats--finding-position-navigator-pin-gps-travelling-characters-pack-holidays-illustrations-9001081.png?f=webp" alt="Alternative Image" width="100%" height="450" style="border:0;"> --}}
+                <p style="font-size: 20px; color:red;">No map available.</p>
+                <p style="font-size: 15px;">
                     Contact the salon at {{ $subsalon->phone }} for location details.
                 </p>
-                 @endif
+            @endif
+
             </div>
         </div>
         <div class="col-md-4 align-self-center">
@@ -149,29 +150,31 @@
 </div>
 
 <div class="site-section">
-    <div class="containe">
+    <div class="container">
         <div class="row justify-content-center mb-5 ">
             <div class="col-md-7 text-center">
-                <h2 class="site-section-heading font-weight-light text-black">Featured Services</h2>
+                <h2 class="site-section-heading font-weight-light">Featured Services</h2>
             </div>
         </div>
         <div class="owl-carousel owl-theme custom-slider">
+            @foreach($categories as $categorie)
             <div class="item m-2">
                 <div class="h-100 p-4 p-lg-5 bg-light site-block-feature-7 d-flex flex-column" style="height: 50px">
                     <span class="icon flaticon-razor display-3 text-primary mb-4 d-block"></span>
-                    <h3 class="text-black h4">Barber Razor</h3>
-                    <p>Sample description for Barber Razor service.</p>
-                    <p><strong class="font-weight-bold text-primary">$29</strong></p>
+                    <h3 class="text-black h4">{{$categorie->name }}</h3>
+                    <p>{{$categorie->description }}</p>
+                    <p><button>see more</button></p>
                 </div>
             </div>
-            <div class="item m-2">
+            @endforeach
+            {{-- <div class="item m-2">
                 <div class="h-100 p-4 p-lg-5 bg-light site-block-feature-7 d-flex flex-column" style="height: 50px">
                     <span class="icon flaticon-shave display-3 text-primary mb-4 d-block"></span>
                     <h3 class="text-black h4">Barber Shave</h3>
                     <p>Sample description for Barber Shave service.</p>
                     <p><strong class="font-weight-bold text-primary">$24</strong></p>
                 </div>
-            </div>
+            </div> --}}
 
         </div>
     </div>
@@ -181,7 +184,7 @@
     <div class="container">
         <div class="row justify-content-center mb-5 ">
             <div class="col-md-7 text-center">
-                <h2 class="site-section-heading font-weight-light text-black">feedbacks</h2>
+                <h2 class="site-section-heading font-weight-light ">feedbacks</h2>
             </div>
         </div>
         <div class="row">

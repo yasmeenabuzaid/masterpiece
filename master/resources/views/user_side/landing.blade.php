@@ -475,7 +475,7 @@ button:hover .star-6 {
               <span class="d-block display-4 line-height-1"><em class=" font-weight-bold">salonak</em></span>
           </h3>
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt architecto ab hic rem placeat eius commodi eum eligendi recusandae sed qui cumque quibusdam.
+            We’re here to help! If you have any questions or feedback, please don’t hesitate to reach out. The "Your Salon" team is eager to assist you and answer any inquiries you may have.
         </p>
           <div>
             <a href="mailto:info@example.com"><i class="fas fa-envelope"></i> Email</a><br>
@@ -484,7 +484,6 @@ button:hover .star-6 {
             <a href="https://www.instagram.com/fakeprofile" target="_blank"><i class="fab fa-instagram"></i> Instagram</a><br>
             <a href="https://www.linkedin.com/fakeprofile" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
         </div>
-          {{-- <p><a href="#"><small class="text-uppercase font-weight-bold">Read More</small></a></p> --}}
         </div>
         <div class="col-md-6 col-lg-4">
           <figure class="h-100 hover-bg-enlarge">

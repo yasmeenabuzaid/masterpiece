@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Models\SubSalon;
 use App\Models\Salon;
+use App\Models\Categorie;
 use App\Models\Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -139,8 +140,9 @@ class SubSalonController extends Controller
 
     public function show(SubSalon $subsalon)
     {
+        $categories =Categorie::all();
         $images = Image::where('sub_salons_id', $subsalon->id)->get();
-          return view('user_side\more_details', ['subsalon' => $subsalon, 'images' => $images]);
+          return view('user_side\more_details', ['subsalon' => $subsalon, 'images' => $images ,'categories' => $categories]);
     }
 
 

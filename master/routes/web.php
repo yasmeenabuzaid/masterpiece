@@ -113,9 +113,10 @@ Route::get('/select-services', [BookingController::class, 'showServices'])->name
 
 Route::get('/services', [BookingController::class, 'showServices'])->name('services.index');
 Route::get('/booking/{subSalonId}', [BookingController::class, 'showBookingForm'])->name('booking.form');
-Route::get('/available-times', [BookingController::class, 'availableTimes'])->name('available.times');
-Route::post('/bookings', action: [BookingController::class, 'store'])->name('bookings.store');
+// Route::get('/available-times', [BookingController::class, 'availableTimes'])->name('available.times');
+Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.store');
 Route::get('/my-booking', [BookingController::class, 'get'])->name('my_booking');
+Route::get('/available-times', [BookingController::class, 'getAvailableTimes']);
 
 Route::middleware(['auth', 'admin'])->group(function () {
 
