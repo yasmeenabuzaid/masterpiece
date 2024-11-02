@@ -18,15 +18,13 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->string('address');
             $table->string('phone');
-            $table->string('image')->nullable();
+            $table->string(column: 'image')->nullable();
             $table->foreignId('salon_id')->constrained('salons')->onDelete('cascade');
             $table->json('working_days')->nullable();
             $table->Time ('opening_hours_start');
             $table->Time ('opening_hours_end');
-            $table->string('opening_hours_start_period')->default('AM');
-            $table->string('opening_hours_end_period')->default('AM');
             $table->enum('type', ['women', 'men', 'mixed']);
-        
+
             $table->timestamps();
         });
 

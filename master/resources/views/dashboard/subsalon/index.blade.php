@@ -25,6 +25,7 @@
                                     <th>Salon Name</th>
                                     <th>Description</th>
                                     <th>Address</th>
+                                    <th>User Count</th> <!-- إضافة عمود عدد المستخدمين -->
                                     <th>Phone</th>
                                     <th>Date</th>
                                     <th>Actions</th>
@@ -46,6 +47,7 @@
 
                                                 @endif
                                             </td>                                            <td>{{ $subsalon->salon->name }}</td>
+                                            {{-- <td>{{ $subsalon->users()->count() }}</td> <!-- إضافة عدد المستخدمين --> --}}
 
                                             <td>{{ $subsalon->description }}</td>
                                             <td>{{ $subsalon->address }}</td>

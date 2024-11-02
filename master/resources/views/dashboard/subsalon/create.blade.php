@@ -66,31 +66,46 @@
                         <small>Select multiple days by holding down the Ctrl (Windows) or Command (Mac) key.</small>
                     </div>
 
-                    <div class="form-group">
-                        <label for="opening_hours_start">Opening Hours From:</label>
-                        <select name="opening_hours_start" id="opening_hours_start" class="form-control">
-                            @foreach(range(1, 12) as $hour)
-                                <option value="{{ $hour }}">{{ $hour }}</option>
-                            @endforeach
-                        </select>
-                        <select name="opening_hours_start_period" id="opening_hours_start_period" class="form-control">
-                            <option value="AM">AM</option>
-                            <option value="PM">PM</option>
-                        </select>
-                    </div>
 
-                    <div class="form-group">
-                        <label for="opening_hours_end">To:</label>
-                        <select name="opening_hours_end" id="opening_hours_end" class="form-control">
-                            @foreach(range(1, 12) as $hour)
-                                <option value="{{ $hour }}">{{ $hour }}</option>
-                            @endforeach
-                        </select>
-                        <select name="opening_hours_end_period" id="opening_hours_end_period" class="form-control">
-                            <option value="AM">AM</option>
-                            <option value="PM">PM</option>
-                        </select>
-                    </div>
+    <!-- Opening Hours Start -->
+<label for="opening_hours_start_hour">Opening Hours Start:</label>
+<select name="opening_hours_start_hour" id="opening_hours_start_hour">
+    @for ($hour = 1; $hour <= 12; $hour++)
+        <option value="{{ $hour }}">{{ sprintf('%02d', $hour) }}</option>
+    @endfor
+</select>
+
+<select name="opening_hours_start_minute" id="opening_hours_start_minute">
+    @for ($minute = 0; $minute < 60; $minute += 5)
+        <option value="{{ sprintf('%02d', $minute) }}">{{ sprintf('%02d', $minute) }}</option>
+    @endfor
+</select>
+
+<select name="opening_hours_start_ampm" id="opening_hours_start_ampm">
+    <option value="AM">AM</option>
+    <option value="PM">PM</option>
+</select>
+
+<!-- Opening Hours End -->
+<label for="opening_hours_end_hour">Opening Hours End:</label>
+<select name="opening_hours_end_hour" id="opening_hours_end_hour">
+    @for ($hour = 1; $hour <= 12; $hour++)
+        <option value="{{ $hour }}">{{ sprintf('%02d', $hour) }}</option>
+    @endfor
+</select>
+
+<select name="opening_hours_end_minute" id="opening_hours_end_minute">
+    @for ($minute = 0; $minute < 60; $minute += 5)
+        <option value="{{ sprintf('%02d', $minute) }}">{{ sprintf('%02d', $minute) }}</option>
+    @endfor
+</select>
+
+<select name="opening_hours_end_ampm" id="opening_hours_end_ampm">
+    <option value="AM">AM</option>
+    <option value="PM">PM</option>
+</select>
+
+
 
                     <div class="form-group">
                         <label for="type">Type of SubSalon</label>

@@ -11,7 +11,7 @@
 
 
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="title-1">feedbacks</h2>
+        <h2 class="title-1">contacts us</h2>
 
     </div>
     <div class="row">
@@ -22,25 +22,24 @@
                     <thead class="thead-light">
                     <tr>
                         <th scope="col">ID</th>
-                        <th scope="col">feedback</th>
-                        <th scope="col">castomor name</th>
-                        <th scope="col">service name</th>
+                        <th scope="col">user name</th>
+                        <th scope="col">email</th>
+                        <th scope="col">massage</th>
                         <th scope="col">Date</th>
                         <th scope="col">Actions</th>
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($feedbacks as $feedback)
+                    @foreach($contacts as $contact)
                         <tr>
-                            <th scope="row">{{ $feedback->id }}</th>
-                            <th scope="row">{{ $feedback->feedback }}</th>
-                            <th scope="row">{{ $feedback->castomor->first_name }}</th>
-                            {{-- <th scope="row">{{ $owner->last_name }}</th> --}}
-                            {{-- <th scope="row">{{ $feedback->service-> }}</th> --}}
-                            <th scope="row"></th>
-                            <td>{{ $feedback->created_at->format('Y-m-d') }}</td>
+                            <th scope="row">{{ $contact->id }}</th>
+                            <th scope="row">{{ $contact->name }}</th>
+                            <th scope="row">{{ $contact->email }}</th>
+                            <th scope="row">{{ $contact->message }}</th>
+
+                            <td>{{ $contact->created_at->format('Y-m-d') }}</td>
                             <th scope="row">
-                                <button type="button" class="btn btn-danger" onclick="confirmDeletion(event, '{{ route('feedbacks.destroy', $feedback->id) }}')"><i class="fa-solid fa-trash"></i></button>
+                                <button type="button" class="btn btn-danger"><i class="fa-solid fa-trash"></i></button>
                             </th>
                         </tr>
                     @endforeach

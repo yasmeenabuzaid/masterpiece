@@ -7,22 +7,21 @@
         <div class="col-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">create salon</h4>
+                    <h4 class="card-title">create a new salon</h4>
                     <form class="forms-sample" action="{{ route('salons.store') }}" method="POST" enctype="multipart/form-data">
-                        {{-- enctype="multipart/form-data" -> بتخليني ابعت انواع داتا مختلفه --}}
 
                         @csrf
                         <div class="form-group">
                             <label for="name">salon name</label>
                             <input type="text" class="form-control" id="name" name="name" placeholder="insert salon name" required>
                         </div>
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <label for="address">salon address</label>
-                            <input type="text" class="form-control" id="address" name="address" placeholder="address" required>
-                        </div>
+                            <input type="text" class="form-control" id="address" name="address" placeholder="insert salon address" required>
+                        </div> --}}
                         <div class="form-group">
                             <label for="description">salon description</label>
-                            <input type="text" class="form-control" id="description" name="description" placeholder="description" required>
+                            <input type="text" class="form-control" id="description" name="description" placeholder="insert salon description" required>
                         </div>
 
                         <div class="form-group">
@@ -31,8 +30,8 @@
                         </div>
 
 
-                        <button type="submit"  class="btn btn-gradient-success btn-rounded btn-fw">Submit new salon</button>
-                        <button class="btn btn-light">Cancel</button>
+                        <button type="submit"  class="btn btn-gradient-success  btn-fw">save</button>
+                        <button class="btn btn-light">back to list</button>
                     </form>
                 </div>
             </div>

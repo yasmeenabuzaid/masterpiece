@@ -8,12 +8,20 @@ use Illuminate\Database\Eloquent\Model;
 class Feed extends Model
 {
     use HasFactory;
-    public function service()
+    protected $fillable = [
+        'feedback',
+        'rating',
+        'users_id',
+        'sub_salons_id',
+        // Add any other necessary fields here
+    ];
+    public function user()
     {
-        return $this->belongsTo(Service::class, 'services_id');
+        return $this->belongsTo(User::class);
     }
-    public function castomor()
+
+    public function salon()
     {
-        return $this->belongsTo(Castomor::class, 'castomors_id');
+        return $this->belongsTo(Salon::class);
     }
 }

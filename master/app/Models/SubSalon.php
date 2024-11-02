@@ -49,9 +49,13 @@ class SubSalon extends Model
 
     public function users()
     {
-        return $this->hasMany(User::class, 'users_id');
+        return $this->hasMany(User::class, 'sub_salons_id');
     }
 
+    public function usersCount()
+    {
+        return $this->users()->count();
+    }
     // public function bookings()
     // {
     //     return $this->hasMany(Booking::class, 'bookings_id');
@@ -99,5 +103,7 @@ public function bookings()
 {
     return $this->hasManyThrough(Booking::class, Service::class);
 }
-
+public function feedback(){
+    return $this->hasMany(Feed::class,'feedback_id');
+   }
 }

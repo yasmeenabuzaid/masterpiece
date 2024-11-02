@@ -1,9 +1,11 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Models\Categorie;
 use App\Models\SubSalon;
 use App\Models\Salon;
-use App\Models\Categorie;
+use App\Models\User;
+use App\Models\Feed;
 use App\Models\Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -33,7 +35,6 @@ class SubSalonController extends Controller
         $salons = $user->isOwner() ? Salon::where('id', $user->salon_id)->get() : Salon::all();
         return view('dashboard.subsalon.create', compact('salons'));
     }
-
     public function store(Request $request)
     {
         $validatedData = $request->validate([
@@ -44,11 +45,13 @@ class SubSalonController extends Controller
             'phone' => 'required|string|max:15',
             'salon_id' => 'required|exists:salons,id',
             'working_days' => 'required|array',
-            'opening_hours_start' => 'required|string',
-            'opening_hours_end' => 'required|string',
+            'opening_hours_start_hour' => 'required',
+            'opening_hours_start_minute' => 'required',
+            'opening_hours_start_ampm' => 'required|string|in:AM,PM',
+            'opening_hours_end_hour' => 'required',
+            'opening_hours_end_minute' => 'required',
+            'opening_hours_end_ampm' => 'required|string|in:AM,PM',
             'images.*' => 'nullable|image|max:2048',
-            'opening_hours_start_period' => 'required|string|in:AM,PM',
-            'opening_hours_end_period' => 'required|string|in:AM,PM',
             'type' => 'required|in:women,men,mixed',
             'map_iframe' => 'nullable',
         ]);
@@ -56,20 +59,24 @@ class SubSalonController extends Controller
         Log::info('Working Days:', $validatedData['working_days']);
         $validatedData['working_days'] = json_encode($validatedData['working_days']);
 
-        $validatedData['opening_hours_start'] = $this->convertTo24HourFormat(
-            (int)$request->input('opening_hours_start'),
-            $request->input('opening_hours_start_period')
-        );
+        // Convert start time to 24-hour format
+        $opening_start_hour = $request->opening_hours_start_ampm === 'PM' && $request->opening_hours_start_hour != 12
+            ? $request->opening_hours_start_hour + 12
+            : ($request->opening_hours_start_ampm === 'AM' && $request->opening_hours_start_hour == 12 ? 0 : $request->opening_hours_start_hour);
 
-        $validatedData['opening_hours_end'] = $this->convertTo24HourFormat(
-            (int)$request->input('opening_hours_end'),
-            $request->input('opening_hours_end_period')
-        );
+        $validatedData['opening_hours_start'] = sprintf('%02d:%02d:00', $opening_start_hour, $request->opening_hours_start_minute);
 
-        // إنشاء الـ SubSalon
+        // Convert end time to 24-hour format
+        $opening_end_hour = $request->opening_hours_end_ampm === 'PM' && $request->opening_hours_end_hour != 12
+            ? $request->opening_hours_end_hour + 12
+            : ($request->opening_hours_end_ampm === 'AM' && $request->opening_hours_end_hour == 12 ? 0 : $request->opening_hours_end_hour);
+
+        $validatedData['opening_hours_end'] = sprintf('%02d:%02d:00', $opening_end_hour, $request->opening_hours_end_minute);
+
+        // Create the SubSalon
         $subsalon = SubSalon::create($validatedData);
 
-        // التعامل مع الصور المتعددة
+        // Handle multiple images upload
         if ($request->hasFile('images')) {
             $images = [];
             foreach ($request->file('images') as $file) {
@@ -79,16 +86,17 @@ class SubSalonController extends Controller
 
                 $images[] = [
                     'image' => 'uploads/subsalons/' . $filename,
-                    'sub_salons_id' => $subsalon->id, // ربط بالصالة الفرعية
+                    'sub_salons_id' => $subsalon->id, // Link to the subsalon
                 ];
             }
 
-            // تأكد من أن نموذج Image معد بشكل صحيح لإدخال البيانات
+            // Ensure the Image model is properly set up for data insertion
             Image::insert($images);
         }
 
         return redirect()->route('subsalons.index')->with('success', 'Sub salon created successfully.');
     }
+
 
 
 
@@ -110,23 +118,20 @@ class SubSalonController extends Controller
     }
     public function MoreAllSubSalons(Request $request)
     {
-        $query = SubSalon::query();
+        $query = SubSalon::with('salon');
 
-        // فلتر حسب نوع الصالون
         if ($request->filled('type')) {
             $query->whereHas('salon', function($q) use ($request) {
                 $q->where('type', $request->type);
             });
         }
 
-        // فلتر حسب الموقع
-        if ($request->filled('location')) {
+        if ($request->filled('governorate')) {
             $query->whereHas('salon', function($q) use ($request) {
-                $q->where('location', 'LIKE', '%' . $request->location . '%');
+                $q->where('location', 'LIKE', '%' . $request->governorate . '%');
             });
         }
 
-        // فلتر على اسم الصالون
         if ($request->filled('name')) {
             $query->whereHas('salon', function($q) use ($request) {
                 $q->where('name', 'LIKE', '%' . $request->name . '%');
@@ -138,28 +143,46 @@ class SubSalonController extends Controller
         return view('user_side.all_salons', ['subsalons' => $subsalons]);
     }
 
-    public function show(SubSalon $subsalon)
+
+    public function show($id)
     {
-        $categories =Categorie::all();
+        $subsalon = SubSalon::find($id);
+
+        if (!$subsalon) {
+            return redirect()->back()->with('error', 'Salon not found');
+        }
+
+        $categories = $subsalon->categories;
+        $subsalon = SubSalon::with('categories')->find($id);
+        $users = User::all();
+        $feeds = Feed::all();
         $images = Image::where('sub_salons_id', $subsalon->id)->get();
-          return view('user_side\more_details', ['subsalon' => $subsalon, 'images' => $images ,'categories' => $categories]);
+
+        return view('user_side.more_details', [
+            'subsalon' => $subsalon,
+            'images' => $images,
+            'feeds' => $feeds,
+            'users' => $users,
+            'categories' => $categories
+        ]);
     }
+
+
+
 
 
     public function edit(SubSalon $subsalon)
 {
     $user = auth()->user();
 
-    // تحقق إذا كان المستخدم مالكاً
     if ($user->isOwner()) {
-        $salon = Salon::find($user->salon_id); // احصل على الصالون الخاص بالمالك
+        $salon = Salon::find($user->salon_id);
         return view('dashboard.subsalon.edit', [
             'subsalon' => $subsalon,
-            'salons' => [$salon] // اجعل المصفوفة تحتوي على الصالون فقط
+            'salons' => [$salon]
         ]);
     }
 
-    // إذا كان سوبر أدمن، اجلب كل الصالونات
     $salons = Salon::all();
 
     return view('dashboard.subsalon.edit', [

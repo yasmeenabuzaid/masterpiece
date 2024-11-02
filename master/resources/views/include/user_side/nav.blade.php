@@ -42,7 +42,7 @@
                       </li>
                     </ul>
                 </li> --}}
-                <li><a href="user_side/landing.blade.php">Home</a></li>
+                <li><a href="#hero-sec">Home</a></li>
                   <li class="has-children">
                     <a href="haircut.html">salons</a>
                     <ul class="dropdown">
@@ -51,7 +51,7 @@
                       <li><a href="#">Mixed Salon</a></li>
                     </ul>
                   </li>
-                  <li><a href="about.html">About</a></li>
+                  <li><a href="#about">About</a></li>
                   <li><a href="booking.html">Contact</a></li>
                   <li><a href="{{route('my_booking')}}">my booking</a></li>
                 </ul>

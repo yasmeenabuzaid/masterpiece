@@ -21,8 +21,8 @@ class User extends Authenticatable
         return $this->belongsTo(Salon::class); //1salon
     }
 
-    public function testimonial(){
-        return $this->hasMany(Testimonial::class,'testimonial_id');
+    public function feedback(){
+        return $this->hasMany(Feed::class,'feedback_id');
        }
        public function bookings()
        {
@@ -37,10 +37,11 @@ class User extends Authenticatable
            return $this->hasMany(Service_Details::class, 'ser_det_id');
        }
 
-    public function subsalon()
-    {
-        return $this->belongsTo(SubSalon::class, 'sub_salons_id');
-    }
+       public function subsalon()
+       {
+           return $this->belongsTo(SubSalon::class, 'sub_salons_id');
+       }
+
     // public function bookings()
     // {
     //     return $this->hasMany(Booking::class, ' user_id');

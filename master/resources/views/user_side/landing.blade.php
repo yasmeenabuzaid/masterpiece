@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="slide-one-item home-slider owl-carousel">
+<div class="slide-one-item home-slider owl-carousel" id="hero-sec">
     <div class="site-blocks-cover" style="background-image: url('{{ asset('salon-landing.png') }}');" data-aos="fade" data-stellar-background-ratio="0.5">
         <div class="filter-overlay"></div>
         <div class="container">
@@ -303,13 +303,12 @@ button:hover .star-6 {
 }
 
 </style>
-<div class="site-section bg-light">
+<div class="site-section bg-light" id="about">
     <div class="container">
         <div class="row">
             <div class="col-lg-6 mb-5">
                 <video width="100%" height="auto" style="max-height: 400px; object-fit: cover; borderborder:#5b5a5a solid 2px" autoplay muted loop>
                     <source src="salon_f.mp4" type="video/mp4">
-                    Your browser does not support the video tag.
                 </video>
          </div>
         <div class="col-lg-6 bg-white p-md-5 align-self-center" style="border:#5b5a5a dashed  2px">
@@ -381,7 +380,7 @@ button:hover .star-6 {
 
 
 @if ($subsalons->isEmpty())
-    <p>No sub-salons found.</p>
+<p style="text-align: center">No sub-salons found.</p>
 @endif
 
 
@@ -458,7 +457,7 @@ button:hover .star-6 {
 
 
   @if ($subsalons->isEmpty())
-      <p>No sub-salons found.</p>
+      <p style="text-align: center">No sub-salons found.</p>
   @endif
 
 
@@ -478,11 +477,11 @@ button:hover .star-6 {
             We’re here to help! If you have any questions or feedback, please don’t hesitate to reach out. The "Your Salon" team is eager to assist you and answer any inquiries you may have.
         </p>
           <div>
-            <a href="mailto:info@example.com"><i class="fas fa-envelope"></i> Email</a><br>
-            <a href="https://www.facebook.com/fakepage" target="_blank"><i class="fab fa-facebook"></i> Facebook</a><br>
-            <a href="https://www.twitter.com/fakeaccount" target="_blank"><i class="fab fa-twitter"></i> Twitter</a><br>
-            <a href="https://www.instagram.com/fakeprofile" target="_blank"><i class="fab fa-instagram"></i> Instagram</a><br>
-            <a href="https://www.linkedin.com/fakeprofile" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
+            <a href="#"><i class="fas fa-envelope"></i> Email</a><br>
+            <a href="#" target="_blank"><i class="fab fa-facebook"></i> Facebook</a><br>
+            <a href="#" target="_blank"><i class="fab fa-twitter"></i> Twitter</a><br>
+            <a href="#" target="_blank"><i class="fab fa-instagram"></i> Instagram</a><br>
+            <a href="#" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
         </div>
         </div>
         <div class="col-md-6 col-lg-4">
@@ -491,30 +490,57 @@ button:hover .star-6 {
           </figure>
         </div>
         <div class="col-md-6 col-lg-4">
-          <div class="border p-4 d-flex h-100">
+          <div class="border p-4 ">
               <div class="row">
-                  <form action="" method="POST">
-                      @csrf
-                      <div class="form-group">
-                          <label for="name">Name</label>
-                          <input type="text" id="name" name="name" class="form-control" required>
-                      </div>
-                      <div class="form-group">
-                          <label for="email">Email</label>
-                          <input type="email" id="email" name="email" class="form-control" required>
-                      </div>
-                      <div class="form-group">
-                          <label for="message">Message</label>
-                          <textarea id="message" name="message" class="form-control" rows="5" required></textarea>
-                      </div>
-                      <button type="submit" class="btn ">Send Message</button>
-                  </form>
+                @if (session('success'))
+                <script>
+                    alert('{{ session('success') }}');
+                </script>
+            @endif
+
+            @if ($errors->has('email'))
+                <script>
+                    alert('تحقق من البريد الإلكتروني.');
+                </script>
+            @endif
+
+            <form action="{{ route('contacts.store') }}" method="POST">
+                @csrf
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" class="form-control" rows="5" required></textarea>
+                </div>
+                <button type="submit" class="btn" style="background-color: #333333; color:white">Send Message</button>
+            </form>
+
               </div>
           </div>
         </div>
       </div>
     </div>
 </div>
+<!-- Content page -->
+<script>
+    document.querySelector('form').onsubmit = function() {
+        var email = document.getElementById('email').value;
+        var emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+
+        if (!email.match(emailPattern)) {
+            alert('please check your email address and try again.');
+            return false;
+        }
+
+        return true;
+    };
+</script>
 
 
 

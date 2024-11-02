@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('feeds', function (Blueprint $table) {
+        Schema::create('contacts', function (Blueprint $table) {
             $table->id();
-            $table->string('feedback');
-            $table->integer('rating');
-            $table->foreignId('users_id')->constrained('users');
-            $table->foreignId('sub_salons_id')->constrained('sub_salons');
+            $table->string('name');
+            $table->string('email');
+            $table->string('message');
+
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('feeds');
+        Schema::dropIfExists('contacts');
     }
 };

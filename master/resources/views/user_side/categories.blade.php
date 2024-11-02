@@ -2,12 +2,11 @@
 
 @section('content')
 <style>
+    /* CSS هنا يمكن نقله إلى ملف خارجي */
     .main {
         display: flex;
         flex-direction: column;
-        margin-left: 50px;
-        margin-right: 50px;
-        margin-bottom: 50px;
+        margin: 50px;
     }
     .container {
         display: flex;
@@ -23,7 +22,7 @@
         padding-left: 20px;
     }
     .card {
-        background-color: rgb(255, 255, 255);
+        background-color: #fff;
         border: 1px solid #ddd;
         border-radius: 8px;
         padding: 10px;
@@ -49,25 +48,14 @@
         margin-bottom: 10px;
         justify-content: space-between;
     }
-    .service-item img {
-        width: 70px;
-        height: 80px;
-        border-radius: 5px;
-        margin-right: 10px;
-    }
     .selected-item {
         margin-bottom: 10px;
         display: flex;
         justify-content: space-between;
-        align-items: center;
         background: #e9f5ff;
         padding: 10px;
         border-radius: 5px;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-    }
-    .no-services {
-        color: #666;
-        font-style: italic;
     }
     .total-price {
         font-weight: bold;
@@ -78,42 +66,18 @@
         padding: 8px;
         border: 1px solid #ddd;
         border-radius: 5px;
-        font-size: 1em;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
-
-    input[type="date"]:invalid, input[type="time"]:invalid {
-        background-color: #fbfbfb;
-    }
-
-    .form-group {
-        margin-bottom: 1.5rem;
-    }
 </style>
+
 @if(session('success'))
     <script>
         alert("{{ session('success') }}");
     </script>
 @endif
 
-<div class="slide-one-item home-slider owl-carousel" style="height: 30%;">
-    <div class="site-blocks-cover inner-page-cover" style="background-image: url('{{ asset($subsalon->salon->image ?? 'default_image.jpg') }}');" data-aos="fade" data-stellar-background-ratio="0.5">
-        <div class="filter-overlay"></div>
-        <div class="container" style="position: relative; height: 90%; padding: 0; margin: 0;">
-            <div class="text-container" style="position: absolute; bottom: 20px; left: 0; text-align: left;">
-                <div class="col-md-8" data-aos="fade-up" data-aos-delay="400">
-                    <h2 class="text-white font-weight-light mb-2 display-1">{{ $subsalon->name }}</h2>
-                    <div class="search-section">
-                        <h3>All Categories</h3>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 <div class="container-xxl py-5">
-    <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+    <div class="text-center">
         <h1 class="m-4">All Categories in {{ $subsalon->name }}</h1>
     </div>
 
@@ -121,7 +85,7 @@
         <div class="categories">
             @foreach($categories as $categorie)
                 <div class="card" onclick="toggleServices('{{ $categorie->id }}')">
-                    <div class="text-container" style="display: flex; align-items: center; justify-content: space-between;">
+                    <div class="text-container" style="display: flex; justify-content: space-between;">
                         <div>
                             <h3>{{ $categorie->name }} <span>({{ $categorie->services->count() }})</span></h3>
                             <p>{{ $categorie->description }}</p>
@@ -138,17 +102,13 @@
                         <ul>
                             @foreach($categorie->services as $service)
                                 <li class="service-item">
-                                    <div style="display: flex; align-items: center;">
-                                        <img src="{{ asset($service->image ? $service->image : 'default_service_image.jpg') }}" alt="Service Image">
-                                        <div>
-                                            <strong>{{ $service->name }}</strong> - ${{ $service->price }}<br>
-                                            <span>{{ $service->description }}</span><br>
-                                            <span>Duration: {{ $service->duration }}</span>
-                                        </div>
+                                    <img src="{{ asset($service->image ?: 'default_service_image.jpg') }}" alt="Service Image">
+                                    <div>
+                                        <strong>{{ $service->name }}</strong> - ${{ $service->price }}<br>
+                                        <span>{{ $service->description }}</span><br>
+                                        <span>Duration: {{ $service->duration }}</span>
                                     </div>
-                                    <button onclick="addService('{{ $service->id }}', '{{ $service->name }}', {{ $service->price }})" style="padding: 10px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">
-                                        +
-                                    </button>
+                                    <button onclick="addService('{{ $service->id }}', '{{ $service->name }}', {{ $service->price }})">+</button>
                                 </li>
                             @endforeach
                         </ul>
@@ -159,166 +119,195 @@
 
         <div class="selected-services">
             <h3>Selected Services</h3>
-            <button onclick="clearServices()" style="margin: 10px; padding: 5px; background-color: #dc3545; color: white; border: none; border-radius: 5px;">Clear All Services</button>
+            <button onclick="clearServices()">Clear All Services</button>
             <div id="selected-items"></div>
             <hr>
             <div class="total-price" id="total-price">Total Price: $0</div>
         </div>
     </div>
 </div>
-<br>
-<br>
-<br>
 
 <div class="main">
-    <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-        <h1 class="mb-5">Book Now</h1>
-    </div>
+    <h1 class="mb-5">Book Now</h1>
 
-    <form action="{{ route('bookings.store') }}" method="POST" class="p-5 bg-white">
+    <form action="{{ route('bookings.store') }}" method="POST" class="p-5 bg-white" onsubmit="return validateAndSubmit()">
         @csrf
         <input type="hidden" name="services" id="services-input">
         <h6>Welcome {{ auth()->user()->name }}</h6>
         <h5>You can book here:</h5>
-        <div class="row form-group">
-            @if(auth()->user()->isOwner())
-            <div class="col-md-6 mb-3 mb-md-0">
-                <label class="text-black" for="fname">Your Name</label>
-                <input type="text" name="name" value="{{ auth()->user()->name }}" class="form-control" required>
-            </div>
-            @endif
+
+        @php
+            $workingDays = [];
+            foreach($categories as $category) {
+                $days = optional($category->subsalon)->working_days;
+                if (is_array($days) && count($days) > 0) {
+                    $workingDays = array_merge($workingDays, $days);
+                }
+            }
+            $workingDays = array_unique($workingDays); // إزالة التكرارات
+        @endphp
+
+        <div class="form-group">
+            <label class="text-black" for="date">Date</label>
+            <input type="date" name="date" id="date" class="form-control" required>
         </div>
 
-        <div class="row form-group">
-            <div class="col-md-6 mb-3 mb-md-0">
-                <label class="text-black" for="date">Date</label>
-                <input type="date" name="date" id="date" class="form-control" required>
-            </div>
-            <div class="col-md-6">
-                <label class="text-black" for="time">Time</label>
-                <input type="time" name="time" id="time" class="form-control" required>
-            </div>
+        <h3>Opening Hours: {{ date('H:i', strtotime($subsalon->opening_hours_start)) }} - {{ date('H:i', strtotime($subsalon->opening_hours_end)) }}</h3>
+        <div class="form-group">
+            <label class="text-black" for="available_time">Available Time</label>
+            <select name="time" id="available_time" class="form-control" required>
+                <option value="">Select a time</option>
+                <!-- سيتم إضافة الخيارات هنا بواسطة JavaScript -->
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="text-black">Number of Associated Users: </label>
+            <span>
+                {{ $categorie->subsalon->usersCount() > 0 ? $categorie->subsalon->usersCount() : 'No associated users' }}
+            </span>
         </div>
 
-        <div class="row form-group">
-            @if(auth()->user()->isOwner())
-            <div class="col-md-6 mb-3 mb-md-0">
-                <label class="text-black" for="email">Email</label>
-                <input type="email" name="email" value="{{ auth()->user()->email }}" class="form-control" required>
-            </div>
-            @endif
 
-            <div class="col-md-6">
-                <label class="text-black" for="note">Notes</label>
-                <textarea name="note" id="note" cols="30" rows="5" class="form-control" placeholder="Write your notes or questions here..."></textarea>
-            </div>
+
+        <div class="form-group">
+            <label class="text-black" for="note">Notes</label>
+            <textarea name="note" id="note" cols="30" rows="5" class="form-control" placeholder="Write your notes or questions here..."></textarea>
         </div>
 
-        <div class="row form-group">
-            <div class="col-md-12">
-                <input type="submit" value="Send" class="btn btn-primary py-2 px-4 text-white" onclick="validateAndSubmit()">
-            </div>
+        <div class="form-group">
+            <input type="submit" value="Send" class="btn btn-primary">
         </div>
     </form>
 </div>
 
 <script>
-     document.addEventListener('DOMContentLoaded', (event) => {
-        // ضبط الحد الأدنى للتاريخ ليكون اليوم الحالي
-        const today = new Date().toISOString().split('T')[0];
-        document.getElementById('date').setAttribute('min', today);
-
-        const dateInput = document.getElementById('date');
-        const timeInput = document.getElementById('time');
-
-        function updateMinTime() {
-            const now = new Date();
-            const selectedDate = new Date(dateInput.value);
-
-            // إذا كان التاريخ المختار هو اليوم، اجعل الحد الأدنى للوقت هو الآن
-            if (selectedDate.toDateString() === now.toDateString()) {
-                const hours = now.getHours();
-                const minutes = now.getMinutes();
-                const minTime = `${hours}:${minutes < 10 ? '0' + minutes : minutes}`;
-                timeInput.setAttribute('min', minTime);
-            } else {
-                // إذا كان تاريخ الحجز بعد اليوم، قم بإعادة تعيين الحد الأدنى للوقت إلى منتصف الليل
-                timeInput.removeAttribute('min');
-            }
-        }
-
-        // عند تغيير التاريخ، تأكد من تحديث الحد الأدنى للوقت
-        dateInput.addEventListener('change', updateMinTime);
-
-        // استدعاء الدالة لضبط الحد الأدنى للوقت عند التحميل
-        updateMinTime();
-    });
     const selectedServices = new Set();
+    let totalPrice = 0;
+    const subSalonId = '{{ $subsalon->id }}';
+    const workingDays = @json($workingDays); // جلب أيام العمل من PHP
 
     function toggleServices(categorieId) {
         const servicesDropdown = document.getElementById(`services-${categorieId}`);
-        if (servicesDropdown) {
-            servicesDropdown.style.display = (servicesDropdown.style.display === "none" || servicesDropdown.style.display === "") ? "block" : "none";
-        } else {
-            console.error("Dropdown not found");
-        }
+        servicesDropdown.style.display = servicesDropdown.style.display === "none" || servicesDropdown.style.display === "" ? "block" : "none";
     }
 
     function addService(serviceId, serviceName, servicePrice) {
-        const selectedItemsContainer = document.getElementById('selected-items');
-        const totalPriceElement = document.getElementById('total-price');
-        const servicesInput = document.getElementById('services-input');
-
         if (selectedServices.has(serviceId)) {
-            alert("This service is already added.");
+            alert("Service already selected.");
             return;
         }
+
         selectedServices.add(serviceId);
+        totalPrice += servicePrice;
 
-        const item = document.createElement('div');
-        item.className = 'selected-item';
-        item.innerHTML = `<span>${serviceName} - $${servicePrice}</span> <button onclick="removeService('${serviceId}', ${servicePrice})" style="background-color: #dc3545; color: white; border: none; border-radius: 5px; cursor: pointer;">✖</button>`;
-        selectedItemsContainer.appendChild(item);
+        const selectedItemsContainer = document.getElementById('selected-items');
+        const itemDiv = document.createElement('div');
+        itemDiv.classList.add('selected-item');
+        itemDiv.innerHTML = `
+            <span>${serviceName} - $${servicePrice}</span>
+            <button onclick="removeService('${serviceId}', ${servicePrice})">Remove</button>
+        `;
+        selectedItemsContainer.appendChild(itemDiv);
 
-        updateTotalPrice(servicePrice);
-        servicesInput.value = Array.from(selectedServices).join(',');
+        document.getElementById('total-price').innerText = `Total Price: $${totalPrice}`;
+        updateServicesInput();
     }
 
+    function fetchAvailableTimes(selectedDate) {
+        fetch(`/available-times/${subSalonId}?date=${selectedDate}`)
+            .then(response => response.json())
+            .then(data => {
+                const timeSelect = document.getElementById('available_time');
+                timeSelect.innerHTML = '';
+
+                if (data.length === 0) {
+                    timeSelect.innerHTML = '<option value="">No available times</option>';
+                    return;
+                }
+
+                const currentTime = new Date();
+                const currentDate = currentTime.toISOString().split('T')[0];
+                const currentHour = currentTime.getHours();
+                const currentMinute = currentTime.getMinutes();
+
+                let hasAvailableTime = false;
+
+                data.forEach(time => {
+                    const [hour, minute] = time.split(':').map(Number);
+                    if (selectedDate === currentDate && (hour < currentHour || (hour === currentHour && minute <= currentMinute))) {
+                        return;
+                    }
+                    hasAvailableTime = true;
+                    const option = document.createElement('option');
+                    option.value = time;
+                    option.textContent = time;
+                    timeSelect.appendChild(option);
+                });
+
+                if (!hasAvailableTime) {
+                    timeSelect.innerHTML = '<option value="">No available times</option>';
+                }
+            })
+            .catch(error => console.error('Error fetching available times:', error));
+    }
+
+    document.getElementById('date').addEventListener('change', function() {
+        const selectedDate = this.value;
+        const today = new Date().toISOString().split('T')[0];
+        if (selectedDate < today) {
+            alert("Cannot select past dates.");
+            this.value = '';
+            document.getElementById('available_time').innerHTML = '';
+            return;
+        }
+
+        // تحقق مما إذا كان اليوم المحدد من ضمن أيام العمل
+        const selectedDay = new Date(selectedDate).toLocaleDateString('en-US', { weekday: 'long' });
+        if (!workingDays.includes(selectedDay)) {
+            alert("The selected date is not a working day.");
+            this.value = '';
+            document.getElementById('available_time').innerHTML = '';
+            return;
+        }
+
+        fetchAvailableTimes(selectedDate);
+    });
+
     function removeService(serviceId, servicePrice) {
+        if (!selectedServices.has(serviceId)) return;
+
+        selectedServices.delete(serviceId);
+        totalPrice -= servicePrice;
+        document.getElementById('total-price').innerText = `Total Price: $${totalPrice}`;
+
         const selectedItemsContainer = document.getElementById('selected-items');
-        const items = Array.from(selectedItemsContainer.children);
-        items.forEach(item => {
-            if (item.innerHTML.includes(serviceId)) {
+        selectedItemsContainer.querySelectorAll('.selected-item').forEach(item => {
+            if (item.querySelector('span').innerText.includes(serviceId)) {
                 selectedItemsContainer.removeChild(item);
-                selectedServices.delete(serviceId);
-                updateTotalPrice(-servicePrice);
             }
         });
+        updateServicesInput();
+    }
+
+    function updateServicesInput() {
+        document.getElementById('services-input').value = Array.from(selectedServices).join(',');
     }
 
     function clearServices() {
-        const selectedItemsContainer = document.getElementById('selected-items');
-        selectedItemsContainer.innerHTML = '';
         selectedServices.clear();
-        updateTotalPrice(-parseFloat(document.getElementById('total-price').innerText.replace('Total Price: $', '')));
-    }
-
-    function updateTotalPrice(priceChange) {
-        const totalPriceElement = document.getElementById('total-price');
-        let currentTotal = parseFloat(totalPriceElement.innerText.replace('Total Price: $', ''));
-        currentTotal += priceChange;
-        totalPriceElement.innerText = `Total Price: $${currentTotal.toFixed(2)}`;
+        totalPrice = 0;
+        document.getElementById('total-price').innerText = `Total Price: $0`;
+        document.getElementById('selected-items').innerHTML = '';
+        updateServicesInput();
     }
 
     function validateAndSubmit() {
-        const servicesInput = document.getElementById('services-input');
         if (selectedServices.size === 0) {
-            alert("Please select at least one service before submitting.");
+            alert("Please select at least one service.");
             return false;
         }
-        servicesInput.value = Array.from(selectedServices).join(',');
+        document.getElementById('services-input').value = Array.from(selectedServices).join(',');
         return true;
     }
 </script>
-
 @endsection

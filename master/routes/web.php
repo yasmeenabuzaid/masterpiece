@@ -20,6 +20,7 @@ use App\Http\Controllers\WorkingHourController;
 use App\Http\Controllers\ChatMessageController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\ContactController;
 // use App\Http\Controllers\ProfileController;
 
 use  App\Http\Middleware\Admin;
@@ -109,14 +110,18 @@ Route::get('/user-booking', function () {
 
 // Route::resource('/home', TestimonialController::class)->name('home_psge');
 Route::get('/select-services', [BookingController::class, 'showServices'])->name('services.index')->middleware('auth');
-
+Route::resource('/contacts', ContactController::class);
 
 Route::get('/services', [BookingController::class, 'showServices'])->name('services.index');
 Route::get('/booking/{subSalonId}', [BookingController::class, 'showBookingForm'])->name('booking.form');
 // Route::get('/available-times', [BookingController::class, 'availableTimes'])->name('available.times');
 Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.store');
-Route::get('/my-booking', [BookingController::class, 'get'])->name('my_booking');
-Route::get('/available-times', [BookingController::class, 'getAvailableTimes']);
+Route::get('/my-booking', [BookingController::class, 'get'])->name('my_booking')->middleware('auth') ;
+Route::get('/available-times/{subSalonId}', [BookingController::class, 'showAvailableTimes'])->name('available.times');
+Route::get('/user_side/booking', [BookingController::class, 'showBookingForm'])->name('user_side.booking');
+// use App\Http\Controllers\FeedController;
+
+Route::resource('feeds', FeedController::class);
 
 Route::middleware(['auth', 'admin'])->group(function () {
 
@@ -130,7 +135,7 @@ Route::resource('services', ServiceController::class);
 Route::resource('employees', EmployeeController::class);
 Route::resource('categories', CategorieController::class);
 // Route::resource('bookings', BookingController::class);
-Route::resource('feedbacks', FeedController::class);
+// Route::resource('feedbacks', FeedController::class);
 Route::resource('castomors', CastomorController::class);
 Route::resource('profile', ProfileController::class);
 Route::resource('castomors',  CastomorController::class);

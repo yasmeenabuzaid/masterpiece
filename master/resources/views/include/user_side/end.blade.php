@@ -44,14 +44,14 @@
                     <h3 class="footer-heading mb-2">Subscribe Newsletter</h3>
                     <p>We’re here to help! If you have any questions or feedback, please don’t hesitate to reach out. The "Your Salon" team is eager to assist you and answer any inquiries you may have.
                     </p>
-                    <form action="#" method="post">
+                    {{-- <form action="#" method="post">
                         <div class="input-group mb-3">
                             <input type="text" class="form-control border-secondary text-white bg-transparent" placeholder="Enter Email" aria-label="Enter Email" aria-describedby="button-addon2">
                             <div class="input-group-append">
                                 <button class="btn btn-primary text-white" type="button" id="button-addon2">Send</button>
                             </div>
                         </div>
-                    </form>
+                    </form> --}}
                 </div>
             </div>
         </div>
