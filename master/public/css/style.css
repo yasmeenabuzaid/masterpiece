@@ -1092,5 +1092,14 @@ h1, h2, h3, h4, h5,
 
 .container {
     position: relative;
-    z-index: 2; 
+    z-index: 2;
+    margin: 0px;
+
 }
+body {
+    font-family: 'Arial', sans-serif; /* خط عام للموقع */
+    color: #333; /* لون النص */
+    background-color: #f8f9fa; /* خلفية خافتة */
+}
+
+

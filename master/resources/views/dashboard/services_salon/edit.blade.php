@@ -54,7 +54,7 @@
             <input type="number" class="form-control" id="minutes" name="minutes" value="{{ old('minutes', $service->duration % 60) }}" placeholder="Minutes" min="0" max="59">
         </div>
 
-        <button type="submit"  class="btn btn-gradient-success btn-rounded btn-fw">Update Service</button>
+        <button type="submit"  class="btn btn-gradient-success  btn-fw">Update Service</button>
         <a href="{{ route('services.index') }}" class="btn btn-light">Cancel</a>
     </form>
 </div>

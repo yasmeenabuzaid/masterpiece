@@ -55,7 +55,7 @@
                 <input type="number" class="form-control" id="price" name="price" placeholder="Enter service price" min="0" step="0.01" required>
             </div>
 
-            <button type="submit" class="btn btn-gradient-success btn-rounded btn-fw">Create Service</button>
+            <button type="submit" class="btn btn-gradient-success  btn-fw">Create Service</button>
             <a href="{{ route('services.index') }}" class="btn btn-light">Cancel</a>
         </form>
     </div>

@@ -3,80 +3,64 @@
 @section('content')
 <div class="container">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h3 class="title-1">Categories</h3>
+        <h3><i class="fas fa-tags me-2"></i> Categories (Total: {{ $categories->count() }})</h3>
         @if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()))
             <a href="{{ route('categories.create') }}">
-            <button type="button" class="btn btn-gradient-success btn-rounded btn-fw"><i class="fa-solid fa-plus" style="margin-right: 5px"></i>
-                    <i class="zmdi zmdi-plus"></i> Add New Category
+                <button type="button" class="btn btn-success">
+                    <i class="fa-solid fa-plus" style="margin-right: 5px"></i> Add New Category
                 </button>
             </a>
         @endif
     </div>
 
-    <div class="row">
-        <div class="col-12 grid-margin">
-            <div class="card">
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead class="thead-light">
-                                <tr>
-                                    <th scope="col">ID</th>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Description</th>
-                                    <th scope="col">Date</th>
-                                    @if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()))
-                                        <th scope="col">Actions</th>
-                                    @endif
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($categories as $categorie)
-                                    <tr>
-                                        <th scope="row">{{ $categorie->id }}</th>
-                                        <td>{{ $categorie->name }}</td>
-                                        <td>{{ $categorie->description }}</td>
-                                        <td>{{ $categorie->created_at->format('Y-m-d') }}</td>
-                                        <td>
-                                            @if ($categorie->subSalon)
-                                                {{ $categorie->subSalon->name }} <!-- عرض اسم الصالون -->
-                                            @else
-                                               no salons found
-                                            @endif
-                                        </td>
-                                        @if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()))
-                                            <td>
-                                                {{-- <a href="{{ route('categories.edit', $categorie->id) }}">
-                                                    <button type="button" class="btn btn-secondary">
-                                                        <i class="fa-solid fa-pen-to-square"></i>
-                                                    </button>
-                                                </a> --}}
-                                                {{-- <button type="button" class="btn btn-danger" onclick="confirmDeletion(event, '{{ route('categories.destroy', $categorie->id) }}')">
-                                                    <i class="fa-solid fa-trash"></i>
-                                                </button> --}}
-                                                {{-- --------------- --}}
-                                                <button type="button" class="btn btn-gradient-danger btn-rounded btn-icon" onclick="confirmDeletion(event, '{{ route('categories.destroy', $categorie->id) }}')">
-                                                    <i class="fa-solid fa-trash"></i>
-                                                </button>
-                                                <button type="button" class="btn btn-gradient-dark btn-rounded btn-icon">
-                                                  <i class="fa-solid fa-eye"></i>
-                                               </button>
-                                               <a href="{{ route('categories.edit', $categorie->id) }}">
-                                                <button type="button" class="btn btn-gradient-info btn-rounded btn-icon">
-                                                  <i class="fa-solid fa-pen-to-square"></i>
-                                              </button>
-                                              </a>
-                                            </td>
-                                        @endif
-                                    </tr>
-                                @endforeach
-                            </tbody>
-
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Category Image</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Date Created</th>
+                    @if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()))
+                        <th>Actions</th>
+                    @endif
+                </tr>
+            </thead>
+            <tbody>
+                @if($categories->isEmpty())
+                    <tr>
+                        <td colspan="{{ auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()) ? 5 : 4 }}" class="text-center">No Categories Available</td>
+                    </tr>
+                @else
+                    @foreach($categories as $category)
+                        <tr>
+                            <td>
+                                @if ($category->image)
+                                    <img src="{{ asset($category->image) }}" alt="Category Image" class="me-2" style="border-radius: 3px; width: 100px;">
+                                @else
+                                    <span>No image found</span>
+                                @endif
+                            </td>
+                            <td>{{ $category->name }}</td>
+                            <td>{{ $category->description }}</td>
+                            <td>Date: {{ $category->created_at->format('Y-m-d') }}<br>Time: {{ $category->created_at->format('H:i') }}</td>
+                            @if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()))
+                                <td>
+                                    <button type="button" class="btn btn-danger" onclick="confirmDeletion(event, '{{ route('categories.destroy', $category->id) }}')">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                    <a href="{{ route('categories.edit', $category->id) }}">
+                                        <button type="button" class="btn btn-info">
+                                            <i class="fa-solid fa-pen-to-square"></i>
+                                        </button>
+                                    </a>
+                                </td>
+                            @endif
+                        </tr>
+                    @endforeach
+                @endif
+            </tbody>
+        </table>
     </div>
 </div>
 

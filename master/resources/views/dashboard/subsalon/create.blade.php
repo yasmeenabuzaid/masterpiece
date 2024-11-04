@@ -10,9 +10,10 @@
                 <form class="forms-sample" action="{{ route('subsalons.store') }}" method="POST" enctype="multipart/form-data" novalidate>
                     @csrf
 
+
                     <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" class="form-control" id="name" name="name" placeholder="Insert name" required>
+                        <label for="description">Description</label>
+                        <input type="text" class="form-control" id="description" name="description" placeholder="Insert description" required>
                     </div>
 
                     <div class="form-group">
@@ -20,10 +21,6 @@
                         <input type="text" class="form-control" id="address" name="address" placeholder="Insert address" required>
                     </div>
 
-                    <div class="form-group">
-                        <label for="description">Description</label>
-                        <input type="text" class="form-control" id="description" name="description" placeholder="Insert description" required>
-                    </div>
 
                     <div class="form-group">
                         <label for="location">Location</label>
@@ -33,16 +30,6 @@
                         <label for="iframe">iframe Location</label>
                         <textarea name="map_iframe" placeholder="iframe Location" required></textarea>
                     </div>
-                    <div class="form-group">
-                        <label for="phone">Phone</label>
-                        <input type="text" class="form-control" id="phone" name="phone" placeholder="Insert phone" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="images">Choose Featured Works of the Salon</label>
-                        <input type="file" name="images[]" id="images" class="form-control" multiple />
-                    </div>
-
                     <label for="salon_id">Salon</label>
                     <select class="form-control" name="salon_id" id="salon_id" required>
                         @foreach ($salons as $salon)
@@ -54,6 +41,19 @@
                     @error('salon_id')
                         <div class="alert alert-danger mt-2">{{ $message }}</div>
                     @enderror
+                    <br>
+                    <div class="form-group">
+                        <label for="phone">Phone</label>
+                        <input type="text" class="form-control" id="phone" name="phone" placeholder="Insert phone" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="images">Choose Featured Works of the Salon</label>
+                        <input type="file" name="images[]" id="images" class="form-control" multiple />
+                        <small class="form-text text-muted">Please upload images in JPEG, PNG, or GPJ formats .</small>
+
+                    </div>
+
 
                     <!-- Working Days -->
                     <div class="form-group">
@@ -85,7 +85,8 @@
     <option value="AM">AM</option>
     <option value="PM">PM</option>
 </select>
-
+<br>
+<br>
 <!-- Opening Hours End -->
 <label for="opening_hours_end_hour">Opening Hours End:</label>
 <select name="opening_hours_end_hour" id="opening_hours_end_hour">
@@ -105,6 +106,8 @@
     <option value="PM">PM</option>
 </select>
 
+<br>
+<br>
 
 
                     <div class="form-group">
@@ -115,9 +118,13 @@
                             <option value="mixed">Mixed</option>
                         </select>
                     </div>
-
-                    <button type="submit" class="btn btn-gradient-primary me-2">Create</button>
-                    <a href="{{ route('subsalons.index') }}" class="btn btn-light">Cancel</a>
+                    <div class="form-group">
+                        <label for="is_available">Available</label>
+                        <input type="checkbox" id="is_available" name="is_available" value="1">
+                        {{-- <label for="is_available">Check if the SubSalon is available</label> --}}
+                    </div>
+                    <button type="submit" class="btn btn-gradient-success btn-fw">Save</button>
+                    <button type="button" class="btn btn-light" onclick="window.history.back();">Back to List</button>
                     @if ($errors->any())
                         <div class="alert alert-danger">
                             <ul>

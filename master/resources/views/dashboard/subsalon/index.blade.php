@@ -2,94 +2,68 @@
 
 @section('content')
 <div class="container">
-    <div class="d-flex justify-content-between align-items-center ">
-        <h3 class="title-1">Sub Salons</h3>
-
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3><i class="fas fa-cut me-2"></i> Sub Salons (Total: {{ $subsalons->count() }})</h3>
         <a href="{{ route('subsalons.create') }}">
-            <button type="button" class="btn btn-gradient-success btn-rounded btn-fw"><i class="fa-solid fa-plus" style="margin-right: 5px"></i>
-                 Add New Sub Salon
-            </button>
+            <button type="button" class="btn btn-success"><i class="fa-solid fa-plus" style="margin-right: 5px"></i> Add New Sub Salon</button>
         </a>
     </div>
 
-    <div class="row">
-        <div class="col-12 grid-margin">
-            <div class="card">
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Image</th>
-                                    <th>Name</th>
-                                    <th>Salon Name</th>
-                                    <th>Description</th>
-                                    <th>Address</th>
-                                    <th>User Count</th> <!-- إضافة عمود عدد المستخدمين -->
-                                    <th>Phone</th>
-                                    <th>Date</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if($subsalons->isEmpty())
-                                    <tr>
-                                        <td colspan="9" class="text-center">No Sub Salons Available</td>
-                                    </tr>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Parent Salon</th>
+                    <th>Address</th>
+                    <th>Number of Employees</th>
+                    <th>Phone</th>
+                    <th>Created At</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if($subsalons->isEmpty())
+                    <tr>
+                        <td colspan="7" class="text-center">No Sub Salons Available</td>
+                    </tr>
+                @else
+                    @foreach($subsalons as $subsalon)
+                        <tr>
+                            <td>
+                                @if($subsalon->salon->image)
+                                    <img src="{{ asset($subsalon->salon->image) }}" alt="Image not found" class="me-2" style="border-radius: 3px; width: 100px;">
                                 @else
-                                    @foreach($subsalons as $subsalon)
-                                        <tr>
-                                            <td>
-                                                @if($subsalon->salon->image)
-                                                    <img src="{{ asset($subsalon->salon->image) }}" alt="Image" class="me-2" >{{ $subsalon->name }}
-                                                @else
-                                                {{ $subsalon->name }}
-
-                                                @endif
-                                            </td>                                            <td>{{ $subsalon->salon->name }}</td>
-                                            {{-- <td>{{ $subsalon->users()->count() }}</td> <!-- إضافة عدد المستخدمين --> --}}
-
-                                            <td>{{ $subsalon->description }}</td>
-                                            <td>{{ $subsalon->address }}</td>
-                                            <td>{{ $subsalon->phone }}</td>
-                                            <td>
-                                                {{ $subsalon->created_at->format('Y-m-d') }}<br>
-                                                {{ $subsalon->created_at->format('H:i') }}
-                                            </td>                                            <td>
-                                                {{-- <a href="{{ route('subsalons.edit', $subsalon->id) }}">
-                                                    <button type="button" class="btn btn-secondary">
-                                                        <i class="fa-solid fa-pen-to-square"></i>
-                                                    </button>
-                                                </a> --}}
-                                                {{-- <button type="button" class="btn btn-danger" onclick="confirmDeletion(event, '{{ route('subsalons.destroy', $subsalon->id) }}')">
-                                                    <i class="fa-solid fa-trash"></i>
-                                                </button> --}}
-                                                {{-- ========================== --}}
-                                                <button type="button" class="btn btn-gradient-danger btn-rounded btn-icon" onclick="confirmDeletion(event, '{{ route('subsalons.destroy', $subsalon->id) }}')">
-                                                    <i class="fa-solid fa-trash"></i>
-                                                </button>
-                                                <a href="{{route('subsalons.show',$subsalon->id)}}">
-                                                <button type="button" class="btn btn-gradient-dark btn-rounded btn-icon">
-                                                  <i class="fa-solid fa-eye"></i>
-                                               </button>
-                                               </a>
-                                               <a href="{{ route('subsalons.edit', $subsalon->id) }}">
-                                                <button type="button" class="btn btn-gradient-info btn-rounded btn-icon">
-                                                  <i class="fa-solid fa-pen-to-square"></i>
-                                              </button>
-                                              </a>
-                                            </td>
-                                        </tr>
-                                    @endforeach
+                                    <span>No Image</span>
                                 @endif
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+                            </td>
+                            <td>{{ $subsalon->salon->name }}</td>
+                            <td>{{ $subsalon->address }}</td>
+                            <td>{{ $subsalon->usersCount() > 0 ? $categorie->subsalon->usersCount() : 'No associated employees'  }}</td> <!-- افترض وجود حقل employee_count -->
+                            <td>{{ $subsalon->phone }}</td>
+                            <td>Date: {{ $subsalon->created_at->format('Y-m-d') }}<br>Time: {{ $subsalon->created_at->format('H:i') }}</td>
+                            <td>
 
+                                <button type="button" class="btn btn-danger" onclick="confirmDeletion(event, '{{ route('subsalons.destroy', $subsalon->id) }}')">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                                <a href="{{ route('subsalons.view', $subsalon->id) }}">
+                                    <button type="button" class="btn btn-dark">
+                                        <i class="fa-solid fa-eye"></i>
+                                    </button>
+                                </a>
+                                <a href="{{ route('subsalons.edit', $subsalon->id) }}">
+                                    <button type="button" class="btn btn-info">
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                    </button>
+                                </a>
+                            </td>
+                        </tr>
+                    @endforeach
+                @endif
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <!-- Custom Confirmation Modal -->

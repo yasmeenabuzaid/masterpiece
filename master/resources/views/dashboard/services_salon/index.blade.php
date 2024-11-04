@@ -1,12 +1,16 @@
 @extends('layouts.dashboard_master')
+
 @section('content')
 <div class="container">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h3 class="title-1">Services</h3>
+        <h3 class="title-1">
+            <i class="fas fa-concierge-bell me-2"></i> Services (Total: {{ $services->count() }})
+        </h3>
         @if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()))
             <a href="{{ route('services.create') }}">
-                <button type="button" class="btn btn-gradient-success btn-rounded btn-fw"><i class="fa-solid fa-plus" style="margin-right: 5px"></i>
-                    <i class="zmdi zmdi-plus"></i> Add New Service
+                <button type="button" class="btn btn-gradient-success  btn-fw">
+                    <i class="fa-solid fa-plus" style="margin-right: 5px"></i>
+                    Add New Service
                 </button>
             </a>
         @endif
@@ -17,7 +21,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table">
+                        <table class="table table-striped">
                             <thead class="thead-light">
                                 <tr>
                                     <th scope="col">ID</th>
@@ -31,31 +35,40 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($services as $service)
+                                @if($services->isEmpty())
                                     <tr>
-                                        <th scope="row">{{ $service->id }}</th>
-                                        <td>{{ $service->name }}</td>
-                                        <td>{{ $service->description }}</td>
-                                        <td>{{ $service->categorie->name }}</td>
-                                        <td>{{ $service->created_at->format('Y-m-d') }}</td>
-                                        @if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()))
-                                            <td>
-
-                                                <button type="button" class="btn btn-gradient-danger btn-rounded btn-icon" onclick="confirmDeletion(event, '{{ route('services.destroy', $service->id) }}')">
-                                                    <i class="fa-solid fa-trash"></i>
-                                                </button>
-                                                <button type="button" class="btn btn-gradient-dark btn-rounded btn-icon">
-                                                  <i class="fa-solid fa-eye"></i>
-                                               </button>
-                                               <a href="{{ route('services.edit', $service->id) }}">
-                                                <button type="button" class="btn btn-gradient-info btn-rounded btn-icon">
-                                                  <i class="fa-solid fa-pen-to-square"></i>
-                                              </button>
-                                              </a>
-                                            </td>
-                                        @endif
+                                        <td colspan="{{ auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()) ? 6 : 5 }}" class="text-center">
+                                            No services available. Please add a new service.
+                                        </td>
                                     </tr>
-                                @endforeach
+                                @else
+                                    @foreach($services as $service)
+                                        <tr>
+                                            <th scope="row">{{ $service->id }}</th>
+                                            <td>{{ $service->name }}</td>
+                                            <td>{{ $service->description }}</td>
+                                            <td>{{ $service->categorie->name }}</td>
+                                            <td>{{ $service->created_at->format('Y-m-d') }}</td>
+                                            @if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()))
+                                                <td>
+                                                    <button type="button" class="btn btn-gradient-danger btn-rounded btn-icon" onclick="confirmDeletion(event, '{{ route('services.destroy', $service->id) }}')">
+                                                        <i class="fa-solid fa-trash"></i>
+                                                    </button>
+                                                    <a href="{{ route('services.show', $service->id) }}">
+                                                        <button type="button" class="btn btn-gradient-dark btn-rounded btn-icon">
+                                                            <i class="fa-solid fa-eye"></i>
+                                                        </button>
+                                                    </a>
+                                                    <a href="{{ route('services.edit', $service->id) }}">
+                                                        <button type="button" class="btn btn-gradient-info btn-rounded btn-icon">
+                                                            <i class="fa-solid fa-pen-to-square"></i>
+                                                        </button>
+                                                    </a>
+                                                </td>
+                                            @endif
+                                        </tr>
+                                    @endforeach
+                                @endif
                             </tbody>
                         </table>
                     </div>

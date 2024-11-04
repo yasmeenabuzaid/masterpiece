@@ -5,6 +5,7 @@ use App\Models\users;
 use App\Models\SubSalon;
 use App\Models\Categorie;
 use App\Models\Massage;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 // -------------------------------------------------------
 use Illuminate\Database\Eloquent\Model;
@@ -12,15 +13,24 @@ use Illuminate\Database\Eloquent\Model;
 // -------------------------------------------------------
 class Salon extends Model
 {
-    use HasFactory;
+
+        use SoftDeletes;
+
+        protected $fillable = ['name', 'description', 'image'];
+
+        protected $dates = ['deleted_at'];
+
+
 
     public function users()
     {
         return $this->hasMany(User::class); //->owners
     }
-    public function subsalon(){ //many
-        return $this->hasMany(SubSalon::class,'sub_salons_id');
-       }
+    public function subSalons()
+    {
+        return $this->hasMany(SubSalon::class, 'salon_id'); // تأكد من أن 'salon_id' هو اسم العمود في جدول sub_salons
+    }
+
     public function chatMessage(){ //many
         return $this->hasMany(ChatMessage::class,'chatMessage_id');
        }

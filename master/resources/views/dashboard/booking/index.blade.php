@@ -6,8 +6,8 @@
         <h3 class="title-1">Bookings</h3>
         @if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()))
             <a href="{{ route('bookings.create') }}">
-                <button type="button" class="btn btn-gradient-success btn-rounded btn-fw"><i class="fa-solid fa-plus" style="margin-right: 5px"></i>
-                    <i class="zmdi zmdi-plus"></i> Add New Category
+                <button type="button" class="btn btn-gradient-success btn-rounded btn-fw">
+                    <i class="fa-solid fa-plus" style="margin-right: 5px"></i> Add New Booking
                 </button>
             </a>
         @endif
@@ -22,8 +22,11 @@
                             <thead class="thead-light">
                                 <tr>
                                     <th scope="col">ID</th>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Description</th>                                    <th scope="col">Appointment Date</th>
+                                    <th scope="col">User Name</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Time</th>
+                                    <th scope="col">Note</th>
                                     <th scope="col">Creation Date</th>
                                     @if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()))
                                         <th scope="col">Actions</th>
@@ -31,32 +34,42 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($bookings as $booking)
+                                @if ($bookings->isEmpty())
                                     <tr>
-                                        <th scope="row">{{ $booking->id }}</th>
-                                        <td>{{ $booking->name }}</td>
-                                        <td>{{ $booking->description }}</td>
-                                        <td>{{ $booking->appointment_date }}</td>
-                                        <td>{{ $booking->created_at->format('Y-m-d') }}</td>
-                                        @if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()))
-                                        <td>
-                                                <button type="button"  class="btn btn-gradient-danger btn-rounded btn-icon" onclick="confirmDeletion(event, '{{ route('bookings.destroy', $booking->id) }}')">
-                                                    <i class="fa-solid fa-trash"></i>
-                                                </button>
-                                                <a href="{{ route('bookings.show', $booking->id) }}">
-                                                    <button type="button" class="btn btn-gradient-dark btn-rounded btn-icon">
-                                                        <i class="fa-solid fa-eye"></i>
-                                                    </button>
-                                                </a>
-                                                <a href="{{ route('bookings.edit', $booking->id) }}">
-                                                    <button type="button" class="btn btn-gradient-info btn-rounded btn-icon">
-                                                        <i class="fa-solid fa-pen-to-square"></i>
-                                                    </button>
-                                                </a>
-                                            </td>
-                                        @endif
+                                        <td colspan="{{ auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()) ? '8' : '7' }}" class="text-center">
+                                            No bookings available.
+                                        </td>
                                     </tr>
-                                @endforeach
+                                @else
+                                    @foreach($bookings as $booking)
+                                        <tr>
+                                            <th scope="row">{{ $booking->id }}</th>
+                                            <td>{{ $booking->first_name }} {{ $booking->name }}</td>
+                                            <td>{{ $booking->email }}</td>
+                                            <td>{{ $booking->date }}</td>
+                                            <td>{{ $booking->time }}</td>
+                                            <td>{{ $booking->note ?? 'N/A' }}</td>
+                                            <td>{{ $booking->created_at->format('Y-m-d') }}</td>
+                                            @if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()))
+                                                <td>
+                                                    <button type="button" class="btn btn-gradient-danger btn-rounded btn-icon" onclick="confirmDeletion(event, '{{ route('bookings.destroy', $booking->id) }}')">
+                                                        <i class="fa-solid fa-trash"></i>
+                                                    </button>
+                                                    <a href="{{ route('bookings.show', $booking->id) }}">
+                                                        <button type="button" class="btn btn-gradient-dark btn-rounded btn-icon">
+                                                            <i class="fa-solid fa-eye"></i>
+                                                        </button>
+                                                    </a>
+                                                    <a href="{{ route('bookings.edit', $booking->id) }}">
+                                                        <button type="button" class="btn btn-gradient-info btn-rounded btn-icon">
+                                                            <i class="fa-solid fa-pen-to-square"></i>
+                                                        </button>
+                                                    </a>
+                                                </td>
+                                            @endif
+                                        </tr>
+                                    @endforeach
+                                @endif
                             </tbody>
                         </table>
                     </div>

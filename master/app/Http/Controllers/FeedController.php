@@ -12,7 +12,7 @@ class FeedController extends Controller
     public function index()
     {
         $feeds = Feed::with(['user', 'subsalon'])->get();
-        return view('feeds.index', compact('feeds'));
+        return view('dashboard.feedbacks.index', compact('feeds'));
     }
 
     public function create($subSalonId)

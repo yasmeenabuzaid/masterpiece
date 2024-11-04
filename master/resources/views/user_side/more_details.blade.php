@@ -1,6 +1,7 @@
 @extends('layouts.app-user')
 
 @section('content')
+<link rel="stylesheet" type="text/css" href="{{asset('fonts/iconic/css/material-design-iconic-font.min.css')}}">
 <style>
     .paragraph-description, .paragraph-hours, .paragraph-info {
         font-size: 16px;
@@ -161,7 +162,7 @@
                 @foreach($subsalon->images as $image)
                     <div class="item mb-3">
                         <div class="site-block-feature-7">
-                            <img src="{{ asset($image->image) }}" alt="Salon Image" class="img-fluid">
+                            <img src="{{ asset($image->image) }}" alt="Salon Image" class="img-fluid" style="width: 180px">
                         </div>
                     </div>
                 @endforeach
@@ -172,7 +173,8 @@
             <h1 class="text-primary">Welcome to {{ $subsalon->name }} Salon</h1>
             <p class="paragraph-description mb-4">{{ $subsalon->description }}</p>
             <div class="row gy-2 gx-4 mb-4">
-                <div class="col-sm-6"><p class="mb-0"><i class="bi bi-check"></i> Expert Stylists</p></div>
+                <div class="col-sm-6"><p class="mb-0"><i class="bi bi-star"></i>
+                    Expert Stylists</p></div>
                 <div class="col-sm-6"><p class="mb-0"><i class="bi bi-check"></i> Easy Online Booking</p></div>
                 <div class="col-sm-6"><p class="mb-0"><i class="bi bi-check"></i> Transparent Pricing</p></div>
                 <div class="col-sm-6"><p class="mb-0"><i class="bi bi-check"></i> Customer Reviews</p></div>
@@ -225,14 +227,17 @@
                     <img src="{{ $feed->user->image ?? 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjhNf9omxKz2fKDDGINL73mREg3C9H29w8NObPfh7Is55R63Tjp7GFsZvOeq-qXYDltDg&usqp=CAU' }}" alt="User Image" class="img-fluid w-50 rounded-circle mb-4">
                     <h3 class="text-black font-weight-light mb-3">{{ $feed->feedback }}</h3>
                     <div class="rating mb-4">
-                        @for ($i = 1; $i <= 5; $i++)
-                            <span class="star {{ $i <= $feed->rating ? 'selected' : '' }}">★</span>
-                        @endfor
+                        <span class="fs-18 cl11">
+                            @for ($i = 1; $i <= 5; $i++)
+                                <i class="bi {{ $i <= $feed->rating ? 'bi-star-fill' : 'bi-star' }}" style="color: #f9ba48;"></i>
+                            @endfor
+                        </span>
                     </div>
                     <p class="mb-4">Rating: {{ $feed->rating }}</p>
                 </div>
             @endforeach
         </div>
+
 
 
         <!-- Feedback Submission Section -->
@@ -246,15 +251,39 @@
                             <textarea name="feedback" class="form-control" rows="3" placeholder="Write your feedback here" required></textarea>
                         </div>
                         <div class="form-group">
-                            <div class="stars" id="rating">
-                                <span class="star" data-value="1">★</span>
-                                <span class="star" data-value="2">★</span>
-                                <span class="star" data-value="3">★</span>
-                                <span class="star" data-value="4">★</span>
-                                <span class="star" data-value="5">★</span>
+                            <div class="flex-w flex-m p-t-50 p-b-23">
+                                <span class="stext-102 cl3 m-r-16">
+                                    Your Rating *
+                                </span>
+
+                                <span class="wrap-rating fs-18 cl11 pointer">
+                                    <i class="item-rating pointer bi bi-star" style="color: #f9ba48;" onclick="setRating(1)"></i>
+                                    <i class="item-rating pointer bi bi-star" style="color: #f9ba48;" onclick="setRating(2)"></i>
+                                    <i class="item-rating pointer bi bi-star" style="color: #f9ba48;" onclick="setRating(3)"></i>
+                                    <i class="item-rating pointer bi bi-star" style="color: #f9ba48;" onclick="setRating(4)"></i>
+                                    <i class="item-rating pointer bi bi-star" style="color: #f9ba48;" onclick="setRating(5)"></i>
+                                    <input class="dis-none" type="hidden" name="rating" id="rating" value="" required>
+                                </span>
                             </div>
-                            <input type="hidden" name="rating" id="rating-value" value="0">
+
+                            <script>
+                                function setRating(rating) {
+                                    document.getElementById('rating').value = rating;
+                                    // Update star visuals based on selected rating
+                                    const stars = document.querySelectorAll('.item-rating');
+                                    stars.forEach((star, index) => {
+                                        if (index < rating) {
+                                            star.classList.add('bi-star-fill'); // Filled star class
+                                            star.classList.remove('bi-star'); // Outline star class
+                                        } else {
+                                            star.classList.add('bi-star'); // Outline star class
+                                            star.classList.remove('bi-star-fill');
+                                        }
+                                    });
+                                }
+                            </script>
                         </div>
+
                         <input type="hidden" name="users_id" value="{{ Auth::id() }}">
                         <input type="hidden" name="sub_salons_id" value="{{ $subsalon->id }}">
                         <button type="submit" class="btn btn-primary">Submit Feedback</button>
@@ -370,4 +399,4 @@ $(document).ready(function(){
 <style>
 
 </style>
-@endsection
+@endsection  

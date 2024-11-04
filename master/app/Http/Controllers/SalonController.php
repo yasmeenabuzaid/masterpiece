@@ -1,69 +1,59 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Salon;
-use App\Models\User;
+use App\Models\Feed; // تأكد من استيراد هذا النموذج
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 
-if(auth()->check() && (auth()->user()->isSuperAdmin() ||auth()->user()->isOwner() )) {
-class SalonController  extends Controller
+class SalonController extends Controller
 {
-
-
-    public function index()
+    public function index(Request $request)
     {
-        $user = auth()->user();
+        $status = $request->get('status', 'all');
 
-        if ($user->isSuperAdmin()) {
-            $salons = Salon::all();
-        } elseif ($user->isOwner()) {
-            $salons = $user->salon()->get();
-
+        if ($status === 'active') {
+            $salons = Salon::whereNull('deleted_at')->get();
+        } elseif ($status === 'trashed') {
+            $salons = Salon::onlyTrashed()->get();
         } else {
-            abort(403, 'Unauthorized access.');
+            $salons = Salon::all();
         }
 
-        return view('dashboard.salon.index', ['salons' => $salons]);
-    }
+        $activeSalonsCount = Salon::whereNull('deleted_at')->count();
+        $trashedSalonsCount = Salon::onlyTrashed()->count();
 
+        return view('dashboard.salon.index', compact('salons', 'activeSalonsCount', 'trashedSalonsCount'));
+    }
 
 
     public function create()
     {
-        if (auth()->check() && (auth()->user()->isSuperAdmin() )) {
+        if (auth()->check() && auth()->user()->isSuperAdmin()) {
             return view('dashboard/salon/create');
         }
-        else{
-            abort(403, 'You do not have permission to access this page.');
 
-        }
+        abort(403, 'You do not have permission to access this page.');
     }
-
-
 
     public function store(Request $request)
     {
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'address' => 'required|string',
             'description' => 'required|string',
-
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $salon = new Salon();
         $salon->name = $validatedData['name'];
-        $salon->address = $validatedData['address'];
         $salon->description = $validatedData['description'];
-
 
         if ($request->hasFile('image')) {
             $file = $request->file('image');
             $filename = time() . '.' . $file->getClientOriginalExtension();
             $path = public_path('uploads/salon/');
             $file->move($path, $filename);
-
             $salon->image = 'uploads/salon/' . $filename;
         }
 
@@ -71,38 +61,33 @@ class SalonController  extends Controller
 
         return redirect()->route('salons.index')->with('success', 'Salon created successfully.');
     }
-    public function show()
+    public function show(Salon $salon)
     {
-        // $salons = Salon::all();
-        // return view('dashboard/salon/view', ['salons' => $salons]);
-    }
+        // Check authorization if needed
+        if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner() && $salon->owner_id === auth()->user()->id)) {
+            return view('dashboard.salon.index', compact('salon'));
+        }
 
+        abort(403, 'Unauthorized access.');
+    }
     public function edit(Salon $salon)
     {
-        if (auth()->check() && (auth()->user()->isSuperAdmin())){
+        if (auth()->check() && auth()->user()->isSuperAdmin()) {
             return view('dashboard/salon/edit', ['salon' => $salon]);
         }
-        else{
-            abort(403, 'You do not have permission to access this page.');
 
-        }
-        //
-    //    return view('dashboard/salon/edit', ['salon' => $salon]);
-
+        abort(403, 'You do not have permission to access this page.');
     }
 
     public function update(Request $request, Salon $salon)
     {
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'address' => 'required|string',
             'description' => 'required|string',
-
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $salon->name = $validatedData['name'];
-        $salon->address = $validatedData['address'];
         $salon->description = $validatedData['description'];
 
         if ($request->hasFile('image')) {
@@ -114,7 +99,6 @@ class SalonController  extends Controller
             $filename = time() . '.' . $file->getClientOriginalExtension();
             $path = public_path('uploads/salon/');
             $file->move($path, $filename);
-
             $salon->image = 'uploads/salon/' . $filename;
         }
 
@@ -123,18 +107,62 @@ class SalonController  extends Controller
         return redirect()->route('salons.index')->with('success', 'Salon updated successfully.');
     }
 
-
-
-    public function destroy(Salon $salon)
+    public function destroy($id)
     {
-        if ($salon->image && File::exists(public_path($salon->image))) {
-            File::delete(public_path($salon->image));
+        $salon = Salon::find($id);
+        if ($salon) {
+            $salon->delete();
+            return redirect()->route('salons.index')->with('success', 'Salon deleted successfully.');
         }
 
+        return redirect()->route('salons.index')->with('error', 'Salon not found.');
+    }
+    public function restore($id)
+    {
+        $salon = Salon::withTrashed()->find($id);
+        if ($salon) {
+            $salon->restore();
+            return redirect()->route('salons.index')->with('success', 'Salon restored successfully.');
+        }
 
-        $salon->delete();
+        return redirect()->route('salons.index')->with('error', 'Salon not found.');
+    }
+    public function forceDelete($id)
+    {
+        $salon = Salon::with('subSalons.feeds')->onlyTrashed()->find($id);
+
+        if (!$salon) {
+            return redirect()->route('salons.trashed')->with('error', 'Salon not found.'); // لا يزال لا ينجح
+        }
+
+        // احذف جميع السجلات المرتبطة في جدول feeds من كل الصب صالونات
+        foreach ($salon->subSalons as $subSalon) {
+            $subSalon->feeds()->delete();
+        }
+
+        // ثم حذف الصالون نفسه
+        $salon->forceDelete();
 
         return redirect()->route('salons.index')->with('success', 'Salon deleted successfully.');
     }
-}
+
+    public function trashed(Request $request)
+    {
+        $user = auth()->user();
+
+        if ($user->isSuperAdmin()) {
+            $salons = Salon::onlyTrashed()->get();
+        } elseif ($user->isOwner()) {
+            $salons = $user->salon()->onlyTrashed()->get();
+        } else {
+            abort(403, 'Unauthorized access.');
+        }
+
+        return view('dashboard.salon.trashed', ['salons' => $salons]);
+    }
+
+
+
+
+
 }

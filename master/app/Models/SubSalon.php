@@ -103,7 +103,13 @@ public function bookings()
 {
     return $this->hasManyThrough(Booking::class, Service::class);
 }
-public function feedback(){
-    return $this->hasMany(Feed::class,'feedback_id');
-   }
+public function feeds()
+{
+    return $this->hasMany(Feed::class, 'sub_salons_id'); // تأكد من أن 'sub_salons_id' هو اسم العمود في جدول feeds
+}
+public function averageRating()
+{
+    return $this->feeds()->average('rating'); 
+}
+
 }

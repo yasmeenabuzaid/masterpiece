@@ -37,13 +37,35 @@ class CategorieController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'sub_salons_id' => 'required|exists:sub_salons,id',
         ]);
 
-        Categorie::create($validatedData);
+        // إنشاء كائن جديد لفئة
+        $categorie = new Categorie($validatedData);
+
+        // تخزين الصورة إذا تم رفعها
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $path = public_path('uploads/salon/');
+
+            // تأكد من وجود المجلد
+            if (!file_exists($path)) {
+                mkdir($path, 0755, true);
+            }
+
+            // نقل الصورة إلى المجلد
+            $file->move($path, $filename);
+            $categorie->image = 'uploads/salon/' . $filename; // تعيين مسار الصورة
+        }
+
+        // حفظ الفئة
+        $categorie->save();
 
         return redirect()->route('categories.index')->with('success', 'Category created successfully.');
     }
+
 
     public function show($id)
     {
@@ -69,13 +91,32 @@ class CategorieController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'sub_salons_id' => 'required|exists:sub_salons,id',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // إضافة تحقق للصورة
         ]);
 
         $categorie = Categorie::findOrFail($id);
+
+        // تحديث خصائص الفئة
         $categorie->update($validatedData);
+
+        // تخزين الصورة إذا تم رفعها
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $path = public_path('uploads/salon/');
+
+            if (!file_exists($path)) {
+                mkdir($path, 0755, true);
+            }
+
+            $file->move($path, $filename);
+            $categorie->image = 'uploads/salon/' . $filename; // تعيين مسار الصورة
+            $categorie->save(); // حفظ التحديثات
+        }
 
         return redirect()->route('categories.index')->with('success', 'Category updated successfully.');
     }
+
 
     public function destroy($id)
     {

@@ -21,6 +21,7 @@ use App\Http\Controllers\ChatMessageController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\ImageController;
 // use App\Http\Controllers\ProfileController;
 
 use  App\Http\Middleware\Admin;
@@ -127,15 +128,20 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
 Route::get('/dashboard',  [DashboardController::class, 'index'])->name('count');
 Route::resource('salons', SalonController::class);
+Route::post('salons/{id}/restore', [SalonController::class, 'restore'])->name('salons.restore');
+Route::delete('salons/{id}/force-delete', [SalonController::class, 'forceDelete'])->name('salons.forceDelete');
+Route::get('salons/trashed', [SalonController::class, 'trashed'])->name('salons.trashed');
+
 Route::resource('subsalons', SubSalonController::class);
-// Route::resource('owners', OwnerController::class);
+Route::get('/show-subsalons/{id}', [SubSalonController::class, 'viewSubSalon'])->name('subsalons.view');
+Route::delete('/images/{id}', [ImageController::class, 'destroy'])->name('images.destroy');
 
 Route::resource('users', UserController::class);
 Route::resource('services', ServiceController::class);
 Route::resource('employees', EmployeeController::class);
 Route::resource('categories', CategorieController::class);
-// Route::resource('bookings', BookingController::class);
-// Route::resource('feedbacks', FeedController::class);
+Route::resource('bookings', BookingController::class);
+Route::resource('feedbacks', FeedController::class);
 Route::resource('castomors', CastomorController::class);
 Route::resource('profile', ProfileController::class);
 Route::resource('castomors',  CastomorController::class);

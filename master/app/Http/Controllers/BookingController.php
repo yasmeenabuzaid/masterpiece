@@ -11,6 +11,19 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 class BookingController extends Controller
 {
+
+    public function index()
+    {
+        // تحقق مما إذا كان المستخدم هو سوبر أدمين
+        if (!Auth::check() || !Auth::user()->isSuperAdmin()) {
+            return redirect()->route('home')->with('error', 'ليس لديك صلاحية للوصول إلى هذه الصفحة.');
+        }
+
+        // جلب جميع الحجوزات
+        $bookings = Booking::with('subSalon', 'customer')->get(); // تأكد من إضافة العلاقات المناسبة
+
+        return view('dashboard.booking.index', compact('bookings'));
+    }
     public function showServices($subsalonId) // تأكد من إضافة المعرف كوسيلة إدخال
     {
         if (!Auth::check()) {

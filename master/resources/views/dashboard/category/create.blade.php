@@ -20,13 +20,21 @@
                         <label for="description">Description</label>
                         <input type="text" class="form-control" id="description" name="description" placeholder="Description" required>
                     </div>
-
+                    <div class="form-group">
+                        <label for="image">Upload Image or Logo for Your Salon</label>
+                        <input type="file" name="image" id="fileUpload"
+                            class="form-control @error('image') is-invalid @enderror" required>
+                        @error('image')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                        <p class="mt-2 text-muted">Preferably upload images with dimensions around 1920x1080.</p>
+                    </div>
                     @if (auth()->user()->isSuperAdmin())
                         <div class="form-group">
-                            <label for="sub_salons_id">SubSalon</label>
+                            <label for="sub_salons_id">Select SubSalon Address</label>
                             <select class="form-control form-control-sm" name="sub_salons_id" id="sub_salons_id" required>
                                 @foreach ($subsalons as $subsalon)
-                                    <option value="{{ $subsalon->id }}">{{ $subsalon->name }}</option>
+                                    <option value="{{ $subsalon->id }}">{{ $subsalon->address }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -43,7 +51,7 @@
                         {{-- <input type="hidden" name="user_id" value="{{ auth()->user()->id }}"> --}}
                     @endif
 
-                    <button type="submit"  class="btn btn-gradient-success btn-rounded btn-fw">Submit New Category</button>
+                    <button type="submit"  class="btn btn-gradient-success  btn-fw">Submit New Category</button>
                     <button class="btn btn-light" type="button" onclick="window.history.back();">Cancel</button>
                 </form>
 

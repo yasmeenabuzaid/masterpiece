@@ -38,7 +38,6 @@ class SubSalonController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
             'location' => 'required|string|max:255',
             'address' => 'required|string|max:255',
             'description' => 'required|string|max:255',
@@ -51,7 +50,7 @@ class SubSalonController extends Controller
             'opening_hours_end_hour' => 'required',
             'opening_hours_end_minute' => 'required',
             'opening_hours_end_ampm' => 'required|string|in:AM,PM',
-            'images.*' => 'nullable|image|max:2048',
+            'images.*' => 'nullable|image|max:4096',
             'type' => 'required|in:women,men,mixed',
             'map_iframe' => 'nullable',
         ]);
@@ -80,19 +79,26 @@ class SubSalonController extends Controller
         if ($request->hasFile('images')) {
             $images = [];
             foreach ($request->file('images') as $file) {
-                $filename = uniqid() . '_' . $file->getClientOriginalName();
-                $path = public_path('uploads/subsalons/');
-                $file->move($path, $filename);
+                // التأكد من أن الملف هو صورة
+                if ($file->isValid()) {
+                    $filename = uniqid() . '_' . $file->getClientOriginalName();
+                    $path = public_path('uploads/subsalons/');
+                    $file->move($path, $filename);
 
-                $images[] = [
-                    'image' => 'uploads/subsalons/' . $filename,
-                    'sub_salons_id' => $subsalon->id, // Link to the subsalon
-                ];
+                    $images[] = [
+                        'image' => 'uploads/subsalons/' . $filename,
+                        'sub_salons_id' => $subsalon->id, // ربط الصورة بالصالون الفرعي
+                    ];
+                } else {
+                    // تسجيل رسالة خطأ أو التعامل مع الحالة عند عدم صلاحية الملف
+                    Log::error('Invalid image file: ' . $file->getClientOriginalName());
+                }
             }
 
-            // Ensure the Image model is properly set up for data insertion
+            // إدخال الصور في قاعدة البيانات
             Image::insert($images);
         }
+
 
         return redirect()->route('subsalons.index')->with('success', 'Sub salon created successfully.');
     }
@@ -103,19 +109,29 @@ class SubSalonController extends Controller
     private function convertTo24HourFormat($hour, $period)
     {
         if ($period === 'PM' && $hour < 12) {
-            return $hour + 12; // تحويل PM
+            return $hour + 12; 
         }
         if ($period === 'AM' && $hour == 12) {
-            return 0; // تحويل 12 AM إلى 0
+            return 0;
         }
-        return $hour; // لا حاجة لتغيير
+        return $hour;
     }
 
     public function showAllSubSalons()
     {
-        $subsalons = SubSalon::all();
-        return view('user_side.landing', ['subsalons' => $subsalons]);
+        $subsalons = SubSalon::with('feeds')->get();
+
+        $filteredSubsalons = $subsalons->filter(function ($subsalon) {
+            $averageRating = $subsalon->feeds->isEmpty() ? 0 : $subsalon->feeds->avg('rating');
+            return $averageRating >= 3;
+        });
+
+        return view('user_side.landing', [
+            'filteredSubsalons' => $filteredSubsalons,
+            'allSubsalons' => $subsalons,
+        ]);
     }
+
     public function MoreAllSubSalons(Request $request)
     {
         $query = SubSalon::with('salon');
@@ -167,63 +183,109 @@ class SubSalonController extends Controller
         ]);
     }
 
+    public function viewSubSalon($id)
+    {
+        $subsalon = SubSalon::with(['salon', 'images'])->find($id);
 
+        if (!$subsalon) {
+            return redirect()->back()->with('error', 'SubSalon not found.');
+        }
 
-
-
-    public function edit(SubSalon $subsalon)
-{
-    $user = auth()->user();
-
-    if ($user->isOwner()) {
-        $salon = Salon::find($user->salon_id);
-        return view('dashboard.subsalon.edit', [
+        $images = $subsalon->images;
+        return view('dashboard.subsalon.show', [
             'subsalon' => $subsalon,
-            'salons' => [$salon]
+            'images' => $images,
         ]);
     }
 
-    $salons = Salon::all();
-
-    return view('dashboard.subsalon.edit', [
-        'subsalon' => $subsalon,
-        'salons' => $salons
-    ]);
-}
-
-
-
-    public function update(Request $request, SubSalon $subsalon)
+    public function edit($id)
     {
+        $subsalon = SubSalon::findOrFail($id);
+        $Images = Image::where('sub_salons_id', $subsalon->id)->get(); // Adjust foreign key if necessary
+        $salons = Salon::all(); // Assuming you are getting all salons
+        $workingDays = $subsalon->working_days; // No need to decode if it's already an array
+
+        return view('dashboard.subsalon.edit', compact('subsalon', 'Images', 'salons', 'workingDays'));
+    }
+
+
+
+    public function update(Request $request, $id)
+    {
+        // Log the incoming request data
+        Log::info('Update Request Data:', $request->all());
+
+        // Find the SubSalon or fail
+        $subsalon = SubSalon::findOrFail($id);
+
+        // Validate the incoming request
         $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
+            'location' => 'required|string|max:255',
             'address' => 'required|string|max:255',
             'description' => 'required|string|max:255',
             'phone' => 'required|string|max:15',
-            'salons_id' => 'required|exists:salons,id',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'salon_id' => 'required|exists:salons,id',
+            'working_days' => 'required|array',
+            'opening_hours_start_hour' => 'required|integer',
+            'opening_hours_start_minute' => 'required|integer|between:0,59',
+            'opening_hours_start_ampm' => 'required|string|in:AM,PM',
+            'opening_hours_end_hour' => 'required|integer',
+            'opening_hours_end_minute' => 'required|integer|between:0,59',
+            'opening_hours_end_ampm' => 'required|string|in:AM,PM',
+            'type' => 'required|string|in:women,men,mixed',
+            'is_available' => 'nullable|boolean',
+            'map_iframe' => 'nullable|string',
         ]);
 
-        $subsalon->name = $validatedData['name'];
-        $subsalon->address = $validatedData['address'];
-        $subsalon->description = $validatedData['description'];
-        $subsalon->phone = $validatedData['phone'];
-        $subsalon->salons_id = $validatedData['salons_id'];
+        // Convert times to 24-hour format
+        $validatedData['opening_hours_start'] = sprintf(
+            '%02d:%02d:00',
+            $this->convertTo24HourFormat($validatedData['opening_hours_start_hour'], $validatedData['opening_hours_start_ampm']),
+            $validatedData['opening_hours_start_minute']
+        );
 
-        // Handle the image if it exists
-        if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $filename = time() . '.' . $file->getClientOriginalExtension();
-            $path = public_path('uploads/subsalon/');
-            $file->move($path, $filename);
-            $subsalon->image = 'uploads/subsalon/' . $filename;
+        $validatedData['opening_hours_end'] = sprintf(
+            '%02d:%02d:00',
+            $this->convertTo24HourFormat($validatedData['opening_hours_end_hour'], $validatedData['opening_hours_end_ampm']),
+            $validatedData['opening_hours_end_minute']
+        );
+
+        // Update the SubSalon with validated data
+        $subsalon->update($validatedData);
+
+        // Process images if any
+        if ($request->hasFile('images')) {
+            // حذف الصور القديمة إذا كانت موجودة
+            foreach ($subsalon->images as $image) {
+                $imagePath = public_path($image->image);
+                if (file_exists($imagePath)) {
+                    unlink($imagePath); // حذف الصورة من القرص
+                }
+            }
+
+            // إعداد مصفوفة لتخزين الصور الجديدة
+            $images = [];
+            foreach ($request->file('images') as $file) {
+                if ($file->isValid()) {
+                    $filename = uniqid() . '_' . $file->getClientOriginalName();
+                    $path = public_path('uploads/subsalons/');
+                    $file->move($path, $filename);
+
+                    $images[] = [
+                        'image' => 'uploads/subsalons/' . $filename,
+                        'sub_salons_id' => $subsalon->id, // ربط الصورة بالصالون الفرعي
+                    ];
+                } else {
+                    // تسجيل رسالة خطأ
+                    Log::error('Invalid image file: ' . $file->getClientOriginalName());
+                }
+            }
+
+            // إدخال الصور الجديدة في قاعدة البيانات
+            Image::insert($images);
         }
 
-        // Save the updated data in the database
-        $subsalon->save();
-
-        // Redirect after updating
-        return redirect()->route('subsalons.index')->with('success', 'SubSalon updated successfully.');
+        return redirect()->route('subsalons.index')->with('success', 'SubSalon updated successfully!');
     }
 
     /**

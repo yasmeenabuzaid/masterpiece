@@ -75,21 +75,27 @@
       </a>
   </li> --}}
 
-  @if (auth()->check() && (auth()->user()->isSuperAdmin() ||auth()->user()->isOwner() ))
   <li class="nav-item">
-      <a class="nav-link" href="{{route('contacts.index')}}">
-          <span class="menu-title" style=" color: #fff;">contact us</span>
-          <i class="fa-solid fa-square-poll-horizontal menu-icon"></i>
-      </a>
+      <a class="nav-link" href="{{route('bookings.index')}}">
+          <span style=" color: #fff;"  class="menu-title">booking</span>
+          <i class="fa-solid fa-server menu-icon"></i>
+        </a>
     </li>
-    @endif
+
     <li class="nav-item">
-        <a class="nav-link" href="">
-            <span style=" color: #fff;"  class="menu-title">testimonial</span>
+        <a class="nav-link" href="{{route('feedbacks.index')}}">
+            <span style=" color: #fff;"  class="menu-title">feedbacks</span>
             <i class="fa-solid fa-server menu-icon"></i>
         </a>
     </li>
-    {{-- {{route('home.index')}} --}}
+    @if (auth()->check() && (auth()->user()->isSuperAdmin() ||auth()->user()->isOwner() ))
+    <li class="nav-item">
+        <a class="nav-link" href="{{route('contacts.index')}}">
+            <span class="menu-title" style=" color: #fff;">contact us</span>
+            <i class="fa-solid fa-square-poll-horizontal menu-icon"></i>
+        </a>
+        </li>
+        @endif
     <li class="nav-item">
         <a class="nav-link" href="{{route('all_subsalons')}}">
             <span style=" color: #fff;"  class="menu-title">logout</span>

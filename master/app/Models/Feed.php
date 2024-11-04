@@ -24,4 +24,12 @@ class Feed extends Model
     {
         return $this->belongsTo(Salon::class);
     }
+    public function feeds()
+{
+    return $this->hasMany(Feed::class, 'sub_salons_id');
+}
+public static $rules = [
+    'feedback' => 'required|string',
+    'rating' => 'required|integer|min:1|max:5', 
+];
 }

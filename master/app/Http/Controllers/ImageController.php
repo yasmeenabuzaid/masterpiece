@@ -58,8 +58,20 @@ class ImageController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Image $image)
+    public function destroy($id)
     {
-        //
+        // العثور على الصورة باستخدام المعرف
+        $image = Image::findOrFail($id);
+
+        // حذف الصورة من النظام
+        if (file_exists(public_path($image->image))) {
+            unlink(public_path($image->image)); // حذف الملف من السيرفر
+        }
+
+        // حذف السجل من قاعدة البيانات
+        $image->delete();
+
+        return redirect()->back()->with('success', 'Image deleted successfully.');
     }
+
 }

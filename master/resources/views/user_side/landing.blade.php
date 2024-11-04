@@ -2,56 +2,22 @@
 
 @section('content')
 
-<div class="slide-one-item home-slider owl-carousel" id="hero-sec">
-    <div class="site-blocks-cover" style="background-image: url('{{ asset('salon-landing.png') }}');" data-aos="fade" data-stellar-background-ratio="0.5">
-        <div class="filter-overlay"></div>
-        <div class="container">
-            <div class="row align-items-center justify-content-center text-center">
-                <div class="col-md-8" data-aos="fade-up" data-aos-delay="400">
-                    <h2  >Welcome to salonak</h2>
-                    <h1 class="text-white font-weight-light mb-2">Book your aesthetic experience at the touch of a button!</h1>
-                    {{-- <p><a href="{{route('more_subsalons')}}" class="btn btn-black py-3 px-5">Book Now!</a></p> --}}
-<button >
-    <a href="{{route('more_subsalons')}}" style="color: #333333">Book Now!</a>  <div class="star-1">
-        <svg
-      xmlns:xlink="http://www.w3.org/1999/xlink"
-      viewBox="0 0 784.11 815.53"
-      style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
-      version="1.1"
-      xml:space="preserve"
-      xmlns="http://www.w3.org/2000/svg"
-      >
-      <defs></defs>
-      <g id="Layer_x0020_1">
-          <metadata id="CorelCorpID_0Corel-Layer"></metadata>
-          <path
-          d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z"
-          class="fil0"
-          ></path>
-      </g>
-    </svg>
-</div>
-  <div class="star-2">
-      <svg
-      xmlns:xlink="http://www.w3.org/1999/xlink"
-      viewBox="0 0 784.11 815.53"
-      style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
-      version="1.1"
-      xml:space="preserve"
-      xmlns="http://www.w3.org/2000/svg"
-      >
-      <defs></defs>
-      <g id="Layer_x0020_1">
-        <metadata id="CorelCorpID_0Corel-Layer"></metadata>
-        <path
-          d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z"
-          class="fil0"
-        ></path>
-      </g>
-    </svg>
-  </div>
-  <div class="star-3">
-      <svg
+
+<!-- Hero Slider -->
+<div class="hero-slider owl-carousel" id="hero-sec">
+    <div class="slider-item" style="background-image: url('{{ asset('salon-landing.png') }}');" data-aos="fade">
+        <div class="overlay"></div>
+        <div class="content">
+            <h2>Welcome to salonak</h2>
+            <h1 class="text-white">Book your aesthetic experience at the touch of a button!</h1>
+
+
+            {{-- /* From Uiverse.io by dalbrechtmartin */ --}}
+<a href="{{ route('more_subsalons') }}">
+<button>
+    Book Now!
+  <div class="star-1">
+    <svg
       xmlns:xlink="http://www.w3.org/1999/xlink"
       viewBox="0 0 784.11 815.53"
       style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
@@ -68,8 +34,46 @@
         ></path>
       </g>
     </svg>
-</div>
-<div class="star-4">
+  </div>
+  <div class="star-2">
+    <svg
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      viewBox="0 0 784.11 815.53"
+      style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+      version="1.1"
+      xml:space="preserve"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <defs></defs>
+      <g id="Layer_x0020_1">
+        <metadata id="CorelCorpID_0Corel-Layer"></metadata>
+        <path
+          d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z"
+          class="fil0"
+        ></path>
+      </g>
+    </svg>
+  </div>
+  <div class="star-3">
+    <svg
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      viewBox="0 0 784.11 815.53"
+      style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+      version="1.1"
+      xml:space="preserve"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <defs></defs>
+      <g id="Layer_x0020_1">
+        <metadata id="CorelCorpID_0Corel-Layer"></metadata>
+        <path
+          d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z"
+          class="fil0"
+        ></path>
+      </g>
+    </svg>
+  </div>
+  <div class="star-4">
     <svg
       xmlns:xlink="http://www.w3.org/1999/xlink"
       viewBox="0 0 784.11 815.53"
@@ -89,14 +93,14 @@
     </svg>
   </div>
   <div class="star-5">
-      <svg
+    <svg
       xmlns:xlink="http://www.w3.org/1999/xlink"
       viewBox="0 0 784.11 815.53"
       style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
       version="1.1"
       xml:space="preserve"
       xmlns="http://www.w3.org/2000/svg"
-      >
+    >
       <defs></defs>
       <g id="Layer_x0020_1">
         <metadata id="CorelCorpID_0Corel-Layer"></metadata>
@@ -106,8 +110,8 @@
         ></path>
       </g>
     </svg>
-</div>
-<div class="star-6">
+  </div>
+  <div class="star-6">
     <svg
       xmlns:xlink="http://www.w3.org/1999/xlink"
       viewBox="0 0 784.11 815.53"
@@ -127,63 +131,48 @@
     </svg>
   </div>
 </button>
-
+</a>
+        </div>
+    </div>
 </div>
-</div>
-</div>
-</div>
-</div>
-
-
 
 <style>
-    .filter-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(63, 63, 63, 0.703);
-        z-index: 1;
-    }
-    .site-blocks-cover {
-        position: relative;
-    }
     /* From Uiverse.io by dalbrechtmartin */
-    button {
-        position: relative;
-        padding: 10px 35px;
-        background: #ffffff;
-        font-size: 15px;
-        font-weight: 900;
-        color: #333333;
-        box-shadow: 0px 0px 10px 0px rgb(255, 255, 255);
-        border-radius: 50px;
-        border: none;
-        transition: all 0.3s ease-in-out;
-        cursor: pointer;
-    }
+button {
+  position: relative;
+  margin-top: 10px;
+  padding: 8px 35px;
+  background: #dddddd;
+  font-size: 14px;
+  /* font-weight: 600; */
+  color: #484848;
+  /* box-shadow: 0px 0px 10px 0px rgb(110, 110, 110); */
+  border-radius: 100px;
+  border: none;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+}
 
-    .star-1 {
-        position: absolute;
-        top: 20%;
-        left: 20%;
-        width: 25px;
-        height: auto;
-        filter: drop-shadow(0 0 0 #fffdef);
-        z-index: -5;
+.star-1 {
+  position: absolute;
+  top: 20%;
+  left: 20%;
+  width: 25px;
+  height: auto;
+  filter: drop-shadow(0 0 0 #fffdef);
+  z-index: -5;
   transition: all 0.8s cubic-bezier(0.05, 0.83, 0.43, 0.96);
 }
 
 .star-2 {
-    position: absolute;
-    top: 45%;
-    left: 45%;
-    width: 15px;
-    height: auto;
-    filter: drop-shadow(0 0 0 #fffdef);
-    z-index: -5;
-    transition: all 0.8s cubic-bezier(0, 0.4, 0, 1.01);
+  position: absolute;
+  top: 45%;
+  left: 45%;
+  width: 15px;
+  height: auto;
+  filter: drop-shadow(0 0 0 #fffdef);
+  z-index: -5;
+  transition: all 0.8s cubic-bezier(0, 0.4, 0, 1.01);
 }
 
 .star-3 {
@@ -198,47 +187,45 @@
 }
 
 .star-4 {
-    position: absolute;
-    top: 20%;
-    left: 40%;
-    width: 8px;
-    height: auto;
-    filter: drop-shadow(0 0 0 #fffdef);
-    z-index: -5;
-    transition: all 0.8s cubic-bezier(0, 0.4, 0, 1.01);
+  position: absolute;
+  top: 20%;
+  left: 40%;
+  width: 8px;
+  height: auto;
+  filter: drop-shadow(0 0 0 #fffdef);
+  z-index: -5;
+  transition: all 0.8s cubic-bezier(0, 0.4, 0, 1.01);
 }
 
 .star-5 {
-    position: absolute;
-    top: 25%;
-    left: 45%;
-    width: 15px;
-    height: auto;
-    filter: drop-shadow(0 0 0 #fffdef);
-    z-index: -5;
-    transition: all 0.8s cubic-bezier(0, 0.4, 0, 1.01);
+  position: absolute;
+  top: 25%;
+  left: 45%;
+  width: 15px;
+  height: auto;
+  filter: drop-shadow(0 0 0 #fffdef);
+  z-index: -5;
+  transition: all 0.8s cubic-bezier(0, 0.4, 0, 1.01);
 }
-a{
-    text-decoration: none;
-}
+
 .star-6 {
-    position: absolute;
-    top: 5%;
-    left: 50%;
-    width: 5px;
-    height: auto;
-    filter: drop-shadow(0 0 0 #fffdef);
-    z-index: -5;
-    transition: all 0.8s cubic-bezier(0, 0.4, 0, 1.01);
+  position: absolute;
+  top: 5%;
+  left: 50%;
+  width: 5px;
+  height: auto;
+  filter: drop-shadow(0 0 0 #fffdef);
+  z-index: -5;
+  transition: all 0.8s cubic-bezier(0, 0.4, 0, 1.01);
 }
 
 /* button:hover {
-    background: #000000;
-    color: #ffffff;
-    box-shadow: 0 0 80px #ffffff8c;
-    } */
+  background: #908f8f;
+  color: #ffffff;
+  box-shadow: 0 0 80px #ffffff8c;
+} */
 
-    button:hover .star-1 {
+button:hover .star-1 {
   position: absolute;
   top: -20%;
   left: -20%;
@@ -249,68 +236,175 @@ a{
 }
 
 button:hover .star-2 {
-    position: absolute;
-    top: 35%;
-    left: -25%;
-    width: 15px;
-    height: auto;
-    filter: drop-shadow(0 0 10px #fffdef);
-    z-index: 2;
+  position: absolute;
+  top: 35%;
+  left: -25%;
+  width: 15px;
+  height: auto;
+  filter: drop-shadow(0 0 10px #fffdef);
+  z-index: 2;
 }
 
 button:hover .star-3 {
-    position: absolute;
-    top: 80%;
-    left: -10%;
-    width: 10px;
-    height: auto;
-    filter: drop-shadow(0 0 10px #fffdef);
-    z-index: 2;
+  position: absolute;
+  top: 80%;
+  left: -10%;
+  width: 10px;
+  height: auto;
+  filter: drop-shadow(0 0 10px #fffdef);
+  z-index: 2;
 }
 
 button:hover .star-4 {
-    position: absolute;
-    top: -25%;
-    left: 105%;
-    width: 20px;
-    height: auto;
-    filter: drop-shadow(0 0 10px #fffdef);
-    z-index: 2;
+  position: absolute;
+  top: -25%;
+  left: 105%;
+  width: 20px;
+  height: auto;
+  filter: drop-shadow(0 0 10px #fffdef);
+  z-index: 2;
 }
 
 button:hover .star-5 {
-    position: absolute;
-    top: 30%;
-    left: 115%;
-    width: 15px;
-    height: auto;
-    filter: drop-shadow(0 0 10px #fffdef);
-    z-index: 2;
+  position: absolute;
+  top: 30%;
+  left: 115%;
+  width: 15px;
+  height: auto;
+  filter: drop-shadow(0 0 10px #fffdef);
+  z-index: 2;
 }
 
 button:hover .star-6 {
-    position: absolute;
-    top: 80%;
-    left: 105%;
-    width: 10px;
+  position: absolute;
+  top: 80%;
+  left: 105%;
+  width: 10px;
   height: auto;
   filter: drop-shadow(0 0 10px #fffdef);
   z-index: 2;
 }
 
 .fil0 {
-    fill: #fffdef;
+  fill: #fffdef;
 }
 
+.hero-slider {
+    position: relative;
+    overflow: hidden;
+}
+
+.slider-item {
+    position: relative;
+    height: 100vh; /* ارتفاع الشريحة */
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5); /* ظل داكن */
+}
+
+.content {
+    position: relative;
+    text-align: center;
+    z-index: 1; /* يجعل النص فوق الظل */
+}
+
+h1 {
+    font-size: 2.5rem; /* حجم الخط للعناوين */
+    margin: 0.5rem 0;
+}
+
+h2 {
+    font-size: 1.5rem; /* حجم الخط للعنوان الفرعي */
+}
+
+.btn {
+    background-color: #ff7f50; /* لون الزر */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #ff4500; /* تغيير لون الزر عند التحويم */
+}
+.hero-slider {
+    position: relative;
+    overflow: hidden;
+}
+
+.slider-item {
+    position: relative;
+    height: 100vh; /* ارتفاع الشريحة */
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(79, 79, 79, 0.48); /* فلتر داكن مع شفافية أقل */
+}
+
+.content {
+    position: relative;
+    text-align: center;
+    z-index: 1; /* يجعل النص فوق الظل */
+}
+
+h1 {
+    font-size: 2.5rem; /* حجم الخط للعناوين */
+    margin: 0.5rem 0;
+}
+
+h2 {
+    font-size: 1.5rem; /* حجم الخط للعنوان الفرعي */
+}
+
+.btn {
+    background-color: #6c6c6c; /* لون الزر */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: rgb(129, 129, 129); /* تغيير لون الزر عند التحويم */
+}
 </style>
+
 <div class="site-section bg-light" id="about">
     <div class="container">
         <div class="row">
             <div class="col-lg-6 mb-5">
-                <video width="100%" height="auto" style="max-height: 400px; object-fit: cover; borderborder:#5b5a5a solid 2px" autoplay muted loop>
-                    <source src="salon_f.mp4" type="video/mp4">
-                </video>
-         </div>
+                <img src="contact.png" alt="Description of the image" style="width: 100%; height: auto; max-height: 400px; object-fit: cover; border: #5b5a5a solid 2px;">
+            </div>
+
         <div class="col-lg-6 bg-white p-md-5 align-self-center" style="border:#5b5a5a dashed  2px">
           <h2 class="display-1  line-height-1 site-section-heading mb-4 pb-3 ">about us</h2>
           <p class="text-black lead">
@@ -325,142 +419,187 @@ button:hover .star-6 {
     </div>
     </div>
 </div>
+<!-- Salon Slider -->
+<div class="site-section">
+    <div class="container">
+        <div class="row justify-content-center mb-5">
+            <div class="col-md-12">
+                <h2 class="site-section-heading font-weight-light text-black text-center">Featured Salons</h2>
+            </div>
+        </div>
+
+        <div class="owl-carousel owl-theme salon-slider">
+            @foreach ($filteredSubsalons as $subsalon)
+            <div class="salon-item">
+                <div class="card">
+                    <img src="{{ $subsalon->salon->image }}" alt="Image" class="card-img-top" style="height: 300px; object-fit: cover;">
+                        <div class="card-body">
+                            <p><i class="fas fa-map-marker-alt"></i> {{$subsalon->location}} | <i class="fas fa-user"></i> for {{$subsalon->type}} </p>
+                            <h5 class="card-title">{{ $subsalon->salon->name }}</h5>
+                            <div class="type-card" style="background-color: {{ $subsalon->type === 'women' ? '#ff69b4' : ($subsalon->type === 'men' ? '#007bff' : '#ff8c00') }};">
+                                {{ $subsalon->type === 'women' ? 'for women' : ($subsalon->type === 'men' ? 'for men' : 'mixed') }}
+                            </div>
+                            @php
+                            $averageRating = $subsalon->averageRating();
+                        @endphp
+
+                        <div class="rating mb-4">
+                            <span class="fs-18 cl11">
+                                @if ($averageRating)
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        <i class="bi {{ $i <= round($averageRating) ? 'bi-star-fill' : 'bi-star' }}" style="color: #f9ba48;"></i>
+                                    @endfor
+                                @else
+                                    <p>No ratings yet</p>
+                                @endif
+                            </span>
+                        </div>
+                        {{-- <p class="mb-4">Average Rating: {{ $averageRating ? round($averageRating, 1) : 'N/A' }}</p> --}}
 
 
+                            <p class="card-text">{{ Str::limit($subsalon->description, 100) }}</p>
+                            <a href="{{ route('single_salon', $subsalon) }}" class="btn btn-primary">see more</a>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
 </div>
 <div class="site-section">
     <div class="container">
         <div class="row justify-content-center mb-5">
-            <div class="col-md-z">
-                <h2 class="site-section-heading font-weight-light text-black text-center">Featured salons</h2>
+            <div class="col-md-12">
+                <h2 class="site-section-heading font-weight-light text-black text-center">more Salons</h2>
+            </div>
         </div>
-    </div>
-    @php
-    $count = $subsalons->count();
-@endphp
 
-<div class="row">
-    @if ($count === 1)
-        @for ($i = 0; $i < 4; $i++)
-            <div class="col-md-6 col-lg-3 text-center mb-1">
-                <div class="h-70 bg-light site-block-feature-7">
-                    <img src="{{ $subsalons->first()->salon->image }}" alt="Image" class="img-fluid"
-                         style="width: 100%; height: 300px; object-fit: cover;">
-                    <div class="p-3 ">
-                        <h3 class="h4">{{ $subsalons->first()->name }}</h3>
-                        <p>At Glamour Touch Salon, we offer you a unique experience in beauty care. Our team of professional  </p>
-                        <a href="{{ route('single_salon', $subsalons->first()) }}">
-                            <button class="font-weight-bold">See More</button>
-                        </a>
+        <div class="owl-carousel owl-theme salon-slider">
+            @foreach ($allSubsalons as $subsalon)
+            <div class="salon-item">
+                <div class="card d-flex align-items-center">
+                    <img src="{{ $subsalon->salon->image }}" alt="Image" class="card-img-top" style="height: 320px; object-fit: cover;">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <p><i class="fas fa-map-marker-alt"></i> {{$subsalon->location}} | <i class="fas fa-user"></i> for {{$subsalon->type}} </p>
+                                <h5 class="card-title">{{ $subsalon->salon->name }}</h5>
+                                <div class="type-card" style="background-color: {{ $subsalon->type === 'women' ? '#ff69b4' : ($subsalon->type === 'men' ? '#007bff' : '#ff8c00') }};">
+                                    {{ $subsalon->type === 'women' ? 'for women' : ($subsalon->type === 'men' ? 'for men' : 'mixed') }}
+                                </div>
+                                <p class="card-text">{{ Str::limit($subsalon->description, 100) }}</p>
+                                <a href="{{ route('single_salon', $subsalon) }}" class="btn btn-primary">see more</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
+                <div style="margin-bottom: 30px">
             </div>
-        @endfor
-    @else
-        @foreach ($subsalons->slice(0, 8) as $subsalon)
-            <div class="col-md-6 col-lg-3 text-center mb-5">
-                <div class="h-70 bg-light site-block-feature-7">
-                    <img src="{{ $subsalon->salon->image }}" alt="Image" class="img-fluid"
-                         style="width: 100%; height: 300px; object-fit: cover;">
-                    <div class="p-3 ">
-                        <h3 class="h4">{{ $subsalon->name }}</h3>
-                        <p>At Glamour Touch Salon, we offer you a unique experience in beauty care. Our team of professional  </p>
-                        <a href="{{ route('single_salon', $subsalon) }}">
-                            <button class="font-weight-bold">See More</button>
-                        </a>
-                    </div>
-                </div>
+
             </div>
-        @endforeach
-    @endif
-</div>
-</div>
-</div>
-</div>
-
-
-@if ($subsalons->isEmpty())
-<p style="text-align: center">No sub-salons found.</p>
-@endif
-
-
-      {{-- <div class="row">
-        @foreach ($subsalons->slice(0, 3) as $subsalon)
-        <div class="col-md-6 col-lg-4 text-center mb-5 mb-lg-5">
-            <div class="h-70 bg-light site-block-feature-7">
-                    <img src="{{ $subsalon->salon->image }}" alt="Image" class="img-fluid"
-                        style="width: 400px; height: 300px; object-fit: cover;">
-                    <div class="p-3 ">
-                        <h3 class=" h4 ">{{ $subsalon->name }}</h3>
-                        <p>At Glamour Touch Salon, we offer you a unique experience in beauty care. Our team of professional hairstylists and artists ensures you achieve a stunning and distinctive look. From trendy haircuts to </p>
-                        <a href="{{ route('single_salon', $subsalon) }}">
-                            <button class="font-weight-bold ">See More</button>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        @endforeach
-        @if ($subsalons->isEmpty())
-            <p>No sub-salons found.</p>
-        @endif
-    </div>
-</div> --}}
-<div class="site-section">
-    <div class="container">
-      <div class="row justify-content-center mb-5">
-        <div class="col-md-7">
-          <h2 class="site-section-heading font-weight-light text-black text-center">more of salons</h2>
+            @endforeach
         </div>
-      </div>
-      @php
-      $count = $subsalons->count();
-  @endphp
-
-  <div class="row">
-      @if ($count === 1)
-          @for ($i = 0; $i < 4; $i++)
-              <div class="col-md-6 col-lg-3 text-center mb-5">
-                  <div class="h-70 bg-light site-block-feature-7">
-                      <img src="{{ $subsalons->first()->salon->image }}" alt="Image" class="img-fluid"
-                           style="width: 100%; height: 300px; object-fit: cover;">
-                      <div class="p-3 ">
-                          <h3 class="h4">{{ $subsalons->first()->name }}</h3>
-                          <p>At Glamour Touch Salon, we offer you a unique experience in beauty care. Our team of professional  </p>
-                          <a href="{{ route('single_salon', $subsalons->first()) }}">
-                              <button class="font-weight-bold">See More</button>
-                          </a>
-                      </div>
-                  </div>
-              </div>
-          @endfor
-      @else
-          @foreach ($subsalons->slice(0, 8) as $subsalon)
-              <div class="col-md-6 col-lg-3 text-center mb-5">
-                  <div class="h-70 bg-light site-block-feature-7">
-                      <img src="{{ $subsalon->salon->image }}" alt="Image" class="img-fluid"
-                           style="width: 100%; height: 300px; object-fit: cover;">
-                      <div class="p-3 ">
-                          <h3 class="h4">{{ $subsalon->name }}</h3>
-                          <p>At Glamour Touch Salon, we offer you a unique experience in beauty care. Our team of professional  </p>
-                          <a href="{{ route('single_salon', $subsalon) }}">
-                              <button class="font-weight-bold">See More</button>
-                          </a>
-                      </div>
-                  </div>
-              </div>
-          @endforeach
-      @endif
-  </div>
-  </div>
-  </div>
-  </div>
 
 
-  @if ($subsalons->isEmpty())
-      <p style="text-align: center">No sub-salons found.</p>
-  @endif
 
 
+    </div>
+</div>
+
+<style>
+.salon-slider .item {
+    margin: 10px;
+}
+
+.card {
+    display: flex; /* لجعل محتوى البطاقة بجوار بعضه */
+    align-items: flex-start; /* لمحاذاة العناصر في الأعلى */
+    position: relative; /* لجعل .type-card في مكانه المناسب */
+}
+
+.type-card {
+    position: absolute; /* لجعلها في موضع مطلق داخل الكارت */
+    right: 10px; /* المسافة من اليمين */
+    top: 10px; /* المسافة من الأعلى */
+    width: auto; /* السماح للعرض بالتكيف حسب النص */
+    height: auto; /* السماح للارتفاع بالتكيف حسب النص */
+    color: white; /* لون النص */
+    padding: 5px; /* حشوة البطاقة */
+    border-radius: 5px; /* زوايا دائرية */
+    font-weight: bold; /* جعل النص سميك */
+    z-index: 10; /* لجعلها فوق الصورة */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* إضافة ظل */
+    text-transform: capitalize; /* تحويل النص إلى حالة الأحرف الأولى */
+}
+
+
+
+</style>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="path/to/owl.carousel.min.js"></script>
+<style>
+    .hero-slider .item {
+        margin: 10px;
+    }
+
+    .owl-nav {
+        position: absolute;
+        top: 50%;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        transform: translateY(-50%);
+    }
+
+    .owl-nav .owl-prev, .owl-nav .owl-next {
+        background-color: rgba(255, 127, 80, 0.8);
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 50%;
+        transition: background-color 0.3s ease;
+    }
+
+    .owl-nav .owl-prev:hover, .owl-nav .owl-next:hover {
+        background-color: rgba(255, 69, 0, 0.9);
+    }
+
+
+</style>
+
+<script>
+    $(document).ready(function(){
+        $('.hero-slider').owlCarousel({
+            loop: true,
+            nav: true,
+            items: 1,
+            autoplay: true,
+            autoplayTimeout: 5000,
+            autoplayHoverPause: true,
+        });
+
+        $('.salon-slider').owlCarousel({
+            loop: true,
+            margin: 10,
+            nav: true,
+            autoplay: true,
+            autoplayTimeout: 3000,
+            autoplayHoverPause: true,
+            responsive: {
+                0: {
+                    items: 1
+                },
+                600: {
+                    items: 2
+                },
+                1000: {
+                    items: 4
+                }
+            }
+        });
+    });
+</script>
 
 
 
@@ -471,22 +610,22 @@ button:hover .star-6 {
         <div class="col-md-6 col-lg-4 text-start">
           <h3 class="line-height-1 mb-3">
               <span class="d-block display-4 line-height-1 text-black">Contact us with</span>
-              <span class="d-block display-4 line-height-1"><em class=" font-weight-bold">salonak</em></span>
+              <span class="d-block display-4 line-height-1"><p class=" font-weight-bold" style="color: #6c6c6c">salonak</p></span>
           </h3>
           <p>
             We’re here to help! If you have any questions or feedback, please don’t hesitate to reach out. The "Your Salon" team is eager to assist you and answer any inquiries you may have.
         </p>
-          <div>
+          {{-- <div>
             <a href="#"><i class="fas fa-envelope"></i> Email</a><br>
             <a href="#" target="_blank"><i class="fab fa-facebook"></i> Facebook</a><br>
             <a href="#" target="_blank"><i class="fab fa-twitter"></i> Twitter</a><br>
             <a href="#" target="_blank"><i class="fab fa-instagram"></i> Instagram</a><br>
             <a href="#" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
-        </div>
+        </div> --}}
         </div>
         <div class="col-md-6 col-lg-4">
           <figure class="h-100 hover-bg-enlarge">
-            <div class="bg-image h-100 bg-image-md-height" style="background-image: url('images/img_2.jpg');"></div>
+            <div class="bg-image h-100 bg-image-md-height" style="background-image: url('about.png');"></div>
           </figure>
         </div>
         <div class="col-md-6 col-lg-4">
@@ -518,7 +657,7 @@ button:hover .star-6 {
                     <label for="message">Message</label>
                     <textarea id="message" name="message" class="form-control" rows="5" required></textarea>
                 </div>
-                <button type="submit" class="btn" style="background-color: #333333; color:white">Send Message</button>
+                <button type="submit" class="btn" style="color:white">Send Message</button>
             </form>
 
               </div>
