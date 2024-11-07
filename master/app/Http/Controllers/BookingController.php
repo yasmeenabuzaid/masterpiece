@@ -7,6 +7,7 @@ use App\Models\BookingService;
 use App\Models\SubSalon;
 use App\Models\Time;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 class BookingController extends Controller
@@ -47,39 +48,47 @@ class BookingController extends Controller
     }
 
 
- // في BookingController
  public function store(Request $request)
  {
-     // احصل على الصالون الفرعي المرتبط بالحجز باستخدام sub_salon_id من الطلب
-     $subSalon = SubSalon::find($request->sub_salon_id);
+     $request->validate([
+    //     'services' => 'required|array',
+    // 'services.*' => 'exists:services,id',
+         'date' => 'required|date',
+         'time' => 'required|date_format:H:i',
+         'note' => 'nullable',
+        ]);
 
-     // تحقق مما إذا كان sub_salon موجودًا
-     if (!$subSalon) {
-         return redirect()->back()->withErrors(['sub_salon_id' => 'The selected salon does not exist.']);
+
+     try {
+         $booking = new Booking();
+         $booking->sub_salons_id = $request->sub_salons_id;
+         $booking->user_id = auth()->id();  // Assuming the user is authenticated
+         $booking->date = $request->date;  // Store the selected date
+         $booking->time = $request->time;  // Store the selected time
+         $booking->note = $request->note;  // Store any special notes
+         $booking->save();  // Save the booking to the database
+
+         $bookingServices = [];
+         foreach ($request->services as $serviceId) {
+             $bookingServices[] = [
+                 'booking_id' => $booking->id,
+                 'service_id' => $serviceId,
+
+             ];
+         }
+         BookingService::insert($bookingServices);
+
+
+         return redirect()->route('booking.success')->with('message', 'Booking successful!');
+     } catch (\Exception $e) {
+         DB::rollBack();
+         Log::error("Error saving booking: " . $e->getMessage());
+         return redirect()->back()->withErrors(['error' => 'Failed to save booking. Please try again.']);
      }
-
-     // تحقق من عدد المستخدمين المرتبطين بالصالون
-     $maxBookingsPerHour = $subSalon->usersCount();
-
-     // احسب عدد الحجوزات الحالية في الساعة المطلوبة
-     $currentBookingsAtHour = Booking::where('sub_salon_id', $subSalon->id)
-         ->where('booking_time', $request->booking_time)
-         ->count();
-
-     // تحقق من توافر الحجوزات
-     if ($currentBookingsAtHour >= $maxBookingsPerHour) {
-         return redirect()->back()->withErrors(['booking_time' => 'This time slot is fully booked. Please choose another time.']);
-     }
-
-     // أكمل عملية الحجز إذا كانت الساعة متاحة
-     $booking = new Booking();
-     $booking->sub_salon_id = $request->sub_salon_id;
-     $booking->booking_time = $request->booking_time;
-     $booking->customer_id = auth()->id();
-     $booking->save();
-
-     return redirect()->route('booking.success')->with('message', 'Booking successful!');
  }
+
+
+
 
 
 
@@ -89,11 +98,9 @@ class BookingController extends Controller
         $openingStart = \Carbon\Carbon::createFromFormat('H:i:s', $subSalon->opening_hours_start);
         $openingEnd = \Carbon\Carbon::createFromFormat('H:i:s', $subSalon->opening_hours_end);
 
-        // Retrieve the booked times on the selected date
         $bookedTimes = Booking::where('date', $request->query('date'))
             ->pluck('time')->toArray();
 
-        // Generate all possible times within opening hours in 15-minute intervals (adjust as necessary)
         $availableTimes = [];
         for ($time = $openingStart->copy(); $time->lte($openingEnd); $time->addMinutes(15)) {
             $timeString = $time->format('H:i');
@@ -104,19 +111,15 @@ class BookingController extends Controller
 
         return response()->json($availableTimes);
     }
-// داخل BookingController
-// داخل BookingController
+
 public function get()
 {
-    // تأكد من أن المستخدم قد قام بتسجيل الدخول
     if (!Auth::check()) {
         return redirect()->route('login')->with('error', 'يرجى تسجيل الدخول لعرض حجوزاتك.');
     }
 
-    // جلب الحجوزات الخاصة بالمستخدم الذي قام بتسجيل الدخول
     $userBookings = Booking::where('user_id', Auth::id())->with('subSalon')->get();
 
-    // تمرير المتغير إلى الـ View
 
         return view('user_side.confirmation', compact('userBookings'));
     }

@@ -195,7 +195,11 @@
         background-size: cover;
         background-position: center;
     }
-
+    .site-blocks-cover {
+        background-attachment: fixed; /* تثبيت الصورة */
+        background-size: cover; /* تغطية العنصر بالكامل بالصورة */
+        background-position: center; /* تحديد مركز الصورة */
+    }
 
 
 
@@ -306,12 +310,13 @@
             <input type="date" name="date" id="date" class="form-control" required>
         </div>
 
+        <input type="hidden" name="sub_salons_id" value="{{ $subsalon->id }}">
+
         <h3>Opening Hours: {{ date('H:i', strtotime($subsalon->opening_hours_start)) }} - {{ date('H:i', strtotime($subsalon->opening_hours_end)) }}</h3>
         <div class="form-group">
             <label class="text-black" for="available_time">Available Time</label>
             <select name="time" id="available_time" class="form-control" required>
                 <option value="">Select a time</option>
-                <!-- سيتم إضافة الخيارات هنا بواسطة JavaScript -->
             </select>
         </div>
         <div class="form-group">

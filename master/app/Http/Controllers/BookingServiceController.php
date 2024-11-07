@@ -28,15 +28,26 @@ class BookingServiceController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'booking_id' => 'required|exists:bookings,id',
-            'service_id' => 'required|exists:services,id',
-        ]);
+        // $request->validate([
+        //     'booking_id' => 'required|exists:bookings,id',
+        //     'service_id' => 'required|exists:services,id',
+        // ]);
 
-        BookingService::create($request->only('booking_id', 'service_id'));
+        // $bookingServices = [];
+        // foreach ($request->services as $serviceId) {
+        //     $bookingServices[] = [
+        //         'booking_id' => $request->booking_id,
+        //         'service_id' => $serviceId,
+        //         'created_at' => now(),
+        //         'updated_at' => now(),
+        //     ];
+        // }
 
-        return redirect()->route('booking_services.index')->with('success', 'Service added successfully!');
+        // BookingService::insert($bookingServices); // Efficiently insert multiple services
+
+        // return redirect()->route('booking_services.index')->with('success', 'Service(s) added successfully!');
     }
+
 
     /**
      * Display the specified resource.
