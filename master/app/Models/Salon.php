@@ -22,14 +22,19 @@ class Salon extends Model
 
 
 
-    public function users()
-    {
-        return $this->hasMany(User::class); //->owners
-    }
-    public function subSalons()
-    {
-        return $this->hasMany(SubSalon::class, 'salon_id'); // تأكد من أن 'salon_id' هو اسم العمود في جدول sub_salons
-    }
+ // في نموذج Salon
+// في نموذج Salon
+public function users()
+{
+    return $this->hasMany(User::class, 'salons_id'); // ربط العلاقة بين الصالون والمستخدمين
+}
+
+
+public function subSalons()
+{
+    return $this->hasMany(SubSalon::class, 'salon_id');
+}
+
 
     public function chatMessage(){ //many
         return $this->hasMany(ChatMessage::class,'chatMessage_id');

@@ -4,7 +4,7 @@
 <div class="container">
 
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h3 class="title-1">Employees</h3>
+        <h3><i class="fas fa-user-tie me-2"></i> Employees</h3>
         <a href="{{ route('users.create') }}">
             <button type="button" class="btn btn-gradient-success btn-rounded btn-fw"><i class="fa-solid fa-plus" style="margin-right: 5px"></i>
                 <i class="zmdi zmdi-plus"></i> Add New Employee
@@ -12,63 +12,63 @@
         </a>
     </div>
 
-    <div class="row">
-        <div class="col-12 grid-margin">
-          <div class="card">
-            <div class="card-body">
-              <div class="table-responsive">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th> Assignee </th>
-                      <th> User Type </th>
-                      <th> Email </th>
-                      <th> Date </th>
-                      <th> Actions </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    @forelse($users as $user)
-                    <tr>
-                      <td>
-                        <img src="{{ $user->image ? asset($user->image) : 'default-image-path.jpg' }}" class="me-2" alt="image"> {{ $user->name }}
-                      </td>
-                      <td>
-
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Assignee</th>
+                    <th>User Type</th>
+                    <th>work in</th>
+                    <th>Email</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($users as $user)
+                <tr>
+                    <td>
+                        <img src="{{ $user->image ? asset($user->image) : 'default-image-path.jpg' }}" class="me-2" alt="image" style="border-radius: 3px; width: 50px;"> {{ $user->name }}
+                    </td>
+                    <td>
                         @if($user->usertype === 'employee')
                             <label class="badge" style="background-color: blue; color: white;">Employee</label>
-
                         @endif
                     </td>
-
-
-                      <td>{{ $user->email }}</td>
-                      <td>{{ $user->created_at->format('Y-m-d') }}</td>
-                      <td>
+                    <td>
+                        {{ optional($user->salon)->name }}.{{ optional($user->subsalon)->address }}
+                    </td>
+                    <td>{{ $user->email }}</td>
+                    <td>{{ $user->created_at->format('Y-m-d') }}</td>
+                    <td>
+                        <!-- Delete Button -->
                         <button type="button" class="btn btn-gradient-danger btn-rounded btn-icon" onclick="confirmDeletion(event, '{{ route('users.destroy', $user->id) }}')">
                             <i class="fa-solid fa-trash"></i>
                         </button>
-                        <button type="button" class="btn btn-gradient-dark btn-rounded btn-icon">
-                          <i class="fa-solid fa-eye"></i>
-                       </button>
-                           <a href="{{ route('users.edit', $user->id) }}" >
-                              <button type="button" class="btn btn-gradient-info btn-rounded btn-icon">
-                                  <i class="fa-solid fa-pen-to-square"></i>
-                              </button>                          </a>
-                      </td>
+
+                        <!-- View Button -->
+                        <a href="{{ route('users.show', $user->id) }}">
+                            <button type="button" class="btn btn-gradient-dark btn-rounded btn-icon">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                        </a>
+
+                        <!-- Edit Button -->
+                        <a href="{{ route('users.edit', $user->id) }}">
+                            <button type="button" class="btn btn-gradient-info btn-rounded btn-icon">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
+                        </a>
+                    </td>
+                </tr>
+                @empty
+                    <tr>
+                        <td colspan="5" class="text-center">No users found.</td>
                     </tr>
-                    @empty
-                        <tr>
-                            <td colspan="10" class="text-center">No users found.</td>
-                        </tr>
-                    @endforelse
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <!-- Custom Confirmation Modal -->
@@ -115,4 +115,5 @@
         };
     }
 </script>
+
 @endsection

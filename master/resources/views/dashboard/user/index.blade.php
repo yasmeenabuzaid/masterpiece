@@ -2,81 +2,81 @@
 
 @section('content')
 <div class="container">
-
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h3 class="title-1"> All Users</h3>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3><i class="fas fa-users me-2"></i> All Users (Total: {{ $users->count() }})</h3>
         <a href="{{ route('users.create') }}">
-            <button type="button" class="btn btn-gradient-success btn-rounded btn-fw"><i class="fa-solid fa-plus" style="margin-right: 5px"></i>
-                Add New Owner
-            </button>
+            <button type="button" class="btn btn-success"><i class="fa-solid fa-plus" style="margin-right: 5px"></i> Add New User</button>
         </a>
     </div>
+    @if(session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
 
-    <div class="row">
-        <div class="col-12 grid-margin">
-          <div class="card">
-            <div class="card-body">
-              <div class="table-responsive">
-                <table class="table">
-                  <thead>
+@if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
+
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Assignee</th>
+                    <th>User Type</th>
+                    <th>Email</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if($users->isEmpty())
                     <tr>
-                      <th> Assignee </th>
-                      <th> User Type </th>
-                      <th> Email </th>
-                      <th> Date </th>
-                      <th> Actions </th>
+                        <td colspan="5" class="text-center">No users found</td>
                     </tr>
-                  </thead>
-                  <tbody>
-                    @forelse($users as $user)
-                    <tr>
-                      <td>
-                        <img src="{{ $user->image ? asset($user->image) : 'default-image-path.jpg' }}" class="me-2" alt="image"> {{ $user->name }}
-                      </td>
-                      <td>
-                        @if($user->usertype === 'user')
-                            <label class="badge" style="background-color: red; color: white;">Customer</label>
-                        @elseif($user->usertype === 'employee')
-                            <label class="badge" style="background-color: blue; color: white;">Employee</label>
-                        @elseif($user->usertype === 'owner')
-                            <label class="badge" style="background-color: orange; color: white;">Owner</label>
-                        @elseif($user->usertype === 'super_admin')
-                            <label class="badge" style="background-color: green; color: white;">Super Admin</label>
-                        @endif
-                    </td>
-
-
-                      <td>{{ $user->email }}</td>
-                      <td>{{ $user->created_at->format('Y-m-d') }}</td>
-                      <td>
-
-                          <button type="button" class="btn btn-gradient-danger btn-rounded btn-icon" onclick="confirmDeletion(event, '{{ route('users.destroy', $user->id) }}')">
-                              <i class="fa-solid fa-trash"></i>
-                          </button>
-                          <button type="button" class="btn btn-gradient-dark btn-rounded btn-icon">
-                            <i class="fa-solid fa-eye"></i>
-                         </button>
-                             <a href="{{ route('users.edit', $user->id) }}" >
-                                <button type="button" class="btn btn-gradient-info btn-rounded btn-icon">
-                                    <i class="fa-solid fa-pen-to-square"></i>
-                                </button>                          </a>
-
-
-
-                      </td>
-                    </tr>
-                    @empty
+                @else
+                    @foreach($users as $user)
                         <tr>
-                            <td colspan="10" class="text-center">No users found.</td>
+                            <td>
+                                <img src="{{ $user->image ? asset($user->image) : 'default-image-path.jpg' }}" class="me-2" alt="image" style="border-radius: 50%; width: 50px; height: 50px;">
+                                {{ $user->name }}
+                            </td>
+                            <td>
+                                @if($user->usertype === 'user')
+                                    <label class="badge" style="background-color: red; color: white;">Customer</label>
+                                @elseif($user->usertype === 'employee')
+                                    <label class="badge" style="background-color: blue; color: white;">Employee</label>
+                                @elseif($user->usertype === 'owner')
+                                    <label class="badge" style="background-color: orange; color: white;">Owner</label>
+                                @elseif($user->usertype === 'super_admin')
+                                    <label class="badge" style="background-color: green; color: white;">Super Admin</label>
+                                @endif
+                            </td>
+                            <td>{{ $user->email }}</td>
+                            <td>{{ $user->created_at->format('Y-m-d') }}</td>
+                            <td>
+                                <button type="button" class="btn btn-danger" onclick="confirmDeletion(event, '{{ route('users.destroy', $user->id) }}')">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                                {{-- <a href="{{ route('users.view', $user->id) }}">
+                                    <button type="button" class="btn btn-dark">
+                                        <i class="fa-solid fa-eye"></i>
+                                    </button>
+                                </a> --}}
+                                <a href="{{ route('users.edit', $user->id) }}">
+                                    <button type="button" class="btn btn-info">
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                    </button>
+                                </a>
+                            </td>
                         </tr>
-                    @endforelse
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+                    @endforeach
+                @endif
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <!-- Custom Confirmation Modal -->

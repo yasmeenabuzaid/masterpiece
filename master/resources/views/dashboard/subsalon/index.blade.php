@@ -8,6 +8,17 @@
             <button type="button" class="btn btn-success"><i class="fa-solid fa-plus" style="margin-right: 5px"></i> Add New Sub Salon</button>
         </a>
     </div>
+    @if(session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
+
+@if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
 
     <div class="table-responsive">
         <table class="table table-striped table-bordered">
@@ -39,7 +50,7 @@
                             </td>
                             <td>{{ $subsalon->salon->name }}</td>
                             <td>{{ $subsalon->address }}</td>
-                            <td>{{ $subsalon->usersCount() > 0 ? $categorie->subsalon->usersCount() : 'No associated employees'  }}</td> <!-- افترض وجود حقل employee_count -->
+                            <td>{{ $subsalon->usersCount() > 0 ? $subsalon->usersCount() : 'No associated employees'  }}</td> <!-- افترض وجود حقل employee_count -->
                             <td>{{ $subsalon->phone }}</td>
                             <td>Date: {{ $subsalon->created_at->format('Y-m-d') }}<br>Time: {{ $subsalon->created_at->format('H:i') }}</td>
                             <td>

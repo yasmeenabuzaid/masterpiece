@@ -25,10 +25,11 @@ class Categorie extends Model
         return $this->hasMany(Category_Details::class, 'cat_det_id');
     }
 
-    public function subsalon()
-    {
-        return $this->belongsTo(SubSalon::class, 'sub_salons_id');
-    }
+public function subSalon()
+{
+    return $this->belongsTo(SubSalon::class, 'sub_salons_id'); 
+}
+
 
 
 }

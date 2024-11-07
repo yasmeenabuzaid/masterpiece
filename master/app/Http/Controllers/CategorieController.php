@@ -7,6 +7,7 @@ use App\Models\BookingService;
 use App\Models\SubSalon;
 use App\Models\Booking;
 use App\Models\Service; // تأكد من استيراد نموذج الخدمة
+use App\Models\Salon; // تأكد من استيراد نموذج الخدمة
 use Illuminate\Http\Request;
 
 class CategorieController extends Controller
@@ -14,17 +15,23 @@ class CategorieController extends Controller
     public function index()
     {
         $user = auth()->user();
-
+        $categories = collect();
         if ($user->isSuperAdmin()) {
             $categories = Categorie::all();
         } elseif ($user->isOwner()) {
-            $categories = Categorie::where('sub_salons_id', $user->sub_salons_id)->get();
-        } else {
-            $categories = collect();
+            $subSalons = $user->salon->subSalons;
+            if ($subSalons->isNotEmpty()) {
+                $categories = Categorie::whereIn('sub_salons_id', $subSalons->pluck('id'))
+                                       ->with('subSalon.salon')
+                                       ->get();
+            }
         }
 
         return view('dashboard.category.index', compact('categories'));
     }
+
+
+
 
     public function create()
     {
@@ -117,6 +124,22 @@ class CategorieController extends Controller
         return redirect()->route('categories.index')->with('success', 'Category updated successfully.');
     }
 
+    public function showCategoriesBySalon($salonId = null, $subSalonId = null)
+    {
+        // إذا كان id الصالون موجود
+        if ($salonId) {
+            $salon = Salon::findOrFail($salonId);
+            $categories = Categorie::whereIn('sub_salons_id', $salon->subSalons->pluck('id'))->get();
+        }
+
+        // إذا كان id للصالون الفرعي موجود
+        elseif ($subSalonId) {
+            $subSalon = SubSalon::findOrFail($subSalonId);
+            $categories = Categorie::where('sub_salons_id', $subSalon->id)->get();
+        }
+
+        return view('your_view', compact('categories', 'salon', 'subSalon'));
+    }
 
     public function destroy($id)
     {

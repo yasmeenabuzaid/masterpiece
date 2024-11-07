@@ -1,6 +1,7 @@
 @extends('layouts.dashboard_master')
 @section('headTitle', 'Edit SubSalon')
 @section('content')
+
 <div class="form-group">
     <label>Current Images</label><br>
     <div class="row">
@@ -33,6 +34,7 @@
                     @csrf
                     @method('PUT')
 
+                    <!-- Description -->
                     <div class="form-group">
                         <label for="description">Description</label>
                         <input type="text" class="form-control" id="description" name="description"
@@ -43,6 +45,7 @@
                         @enderror
                     </div>
 
+                    <!-- Address -->
                     <div class="form-group">
                         <label for="address">Address</label>
                         <input type="text" class="form-control" id="address" name="address"
@@ -52,6 +55,7 @@
                         @enderror
                     </div>
 
+                    <!-- Location -->
                     <div class="form-group">
                         <label for="location">Location</label>
                         <input type="text" class="form-control" id="location" name="location"
@@ -61,6 +65,7 @@
                         @enderror
                     </div>
 
+                    <!-- iframe Location -->
                     <div class="form-group">
                         <label for="map_iframe">iframe Location</label>
                         <textarea name="map_iframe" class="form-control" placeholder="iframe Location" required>{{ old('map_iframe', $subsalon->map_iframe) }}</textarea>
@@ -69,19 +74,25 @@
                         @enderror
                     </div>
 
-                    <label for="salon_id">Salon</label>
-                    <select class="form-control" name="salon_id" id="salon_id" required>
-                        @foreach ($salons as $salon)
-                            <option value="{{ $salon->id }}"
-                                {{ $subsalon->salon_id == $salon->id ? 'selected' : '' }}>
-                                {{ $salon->name }}
-                            </option>
-                        @endforeach
-                    </select>
-                    @error('salon_id')
-                        <div class="alert alert-danger mt-2">{{ $message }}</div>
-                    @enderror
+                    <!-- Salon Selection for Super Admin or Hidden for Owner -->
+                    @if (auth()->user()->isSuperAdmin())
+                        <label for="salon_id">Salon</label>
+                        <select class="form-control" name="salon_id" id="salon_id" required>
+                            @foreach ($salons as $salon)
+                                <option value="{{ $salon->id }}"
+                                    {{ old('salon_id', $subsalon->salon_id) == $salon->id ? 'selected' : '' }}>
+                                    {{ $salon->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('salon_id')
+                            <div class="alert alert-danger mt-2">{{ $message }}</div>
+                        @enderror
+                    @elseif (auth()->user()->isOwner())
+                        <input type="hidden" name="salon_id" value="{{ auth()->user()->salons_id }}">
+                    @endif
 
+                    <!-- Phone -->
                     <div class="form-group">
                         <label for="phone">Phone</label>
                         <input type="text" class="form-control" id="phone" name="phone"
@@ -91,6 +102,7 @@
                         @enderror
                     </div>
 
+                    <!-- Image Upload -->
                     <div class="form-group">
                         <label for="images">Choose Featured Works of the Salon</label>
                         <input type="file" name="images[]" id="images" class="form-control" multiple />
@@ -114,20 +126,19 @@
                         @enderror
                     </div>
 
+                    <!-- Opening Hours Start -->
                     <div class="form-group">
                         <label for="opening_hours_start">Opening Hours Start:</label>
                         <div class="form-inline">
                             <select name="opening_hours_start_hour" id="opening_hours_start_hour" required>
                                 @for ($hour = 1; $hour <= 12; $hour++)
-                                    <option value="{{ $hour }}" {{ date('h', strtotime($subsalon->opening_hours_start)) == $hour ? 'selected' : '' }}>
-                                        {{ sprintf('%02d', $hour) }}</option>
+                                    <option value="{{ $hour }}" {{ date('h', strtotime($subsalon->opening_hours_start)) == $hour ? 'selected' : '' }}>{{ sprintf('%02d', $hour) }}</option>
                                 @endfor
                             </select>
 
                             <select name="opening_hours_start_minute" id="opening_hours_start_minute" required>
                                 @for ($minute = 0; $minute < 60; $minute += 5)
-                                    <option value="{{ $minute }}" {{ date('i', strtotime($subsalon->opening_hours_start)) == $minute ? 'selected' : '' }}>
-                                        {{ sprintf('%02d', $minute) }}</option>
+                                    <option value="{{ $minute }}" {{ date('i', strtotime($subsalon->opening_hours_start)) == $minute ? 'selected' : '' }}>{{ sprintf('%02d', $minute) }}</option>
                                 @endfor
                             </select>
 
@@ -138,20 +149,19 @@
                         </div>
                     </div>
 
+                    <!-- Opening Hours End -->
                     <div class="form-group">
                         <label for="opening_hours_end">Opening Hours End:</label>
                         <div class="form-inline">
                             <select name="opening_hours_end_hour" id="opening_hours_end_hour" required>
                                 @for ($hour = 1; $hour <= 12; $hour++)
-                                    <option value="{{ $hour }}" {{ date('h', strtotime($subsalon->opening_hours_end)) == $hour ? 'selected' : '' }}>
-                                        {{ sprintf('%02d', $hour) }}</option>
+                                    <option value="{{ $hour }}" {{ date('h', strtotime($subsalon->opening_hours_end)) == $hour ? 'selected' : '' }}>{{ sprintf('%02d', $hour) }}</option>
                                 @endfor
                             </select>
 
                             <select name="opening_hours_end_minute" id="opening_hours_end_minute" required>
                                 @for ($minute = 0; $minute < 60; $minute += 5)
-                                    <option value="{{ $minute }}" {{ date('i', strtotime($subsalon->opening_hours_end)) == $minute ? 'selected' : '' }}>
-                                        {{ sprintf('%02d', $minute) }}</option>
+                                    <option value="{{ $minute }}" {{ date('i', strtotime($subsalon->opening_hours_end)) == $minute ? 'selected' : '' }}>{{ sprintf('%02d', $minute) }}</option>
                                 @endfor
                             </select>
 
@@ -162,6 +172,7 @@
                         </div>
                     </div>
 
+                    <!-- Type of SubSalon -->
                     <div class="form-group">
                         <label for="type">Type of SubSalon</label>
                         <select class="form-control" name="type" id="type" required>
@@ -171,15 +182,18 @@
                         </select>
                     </div>
 
+                    <!-- Availability -->
                     <div class="form-group">
                         <label for="is_available">Available</label>
                         <input type="checkbox" id="is_available" name="is_available" value="1"
                             {{ $subsalon->is_available ? 'checked' : '' }}>
                     </div>
 
+                    <!-- Submit -->
                     <button type="submit" class="btn btn-gradient-success btn-fw">Update</button>
                     <button type="button" class="btn btn-light" onclick="window.history.back();">Back to List</button>
 
+                    <!-- Display Errors -->
                     @if ($errors->any())
                         <div class="alert alert-danger">
                             <ul>
@@ -204,4 +218,5 @@ function confirmDeletion(event, url) {
     }
 }
 </script>
+
 @endsection

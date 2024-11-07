@@ -2,33 +2,54 @@
     namespace App\Http\Controllers;
 
     use Illuminate\Http\Request;
-    use App\Models\Feed; // Adjust if your Feedback model is named differently
-    use App\Models\SubSalon; // Adjust if your Feedback model is named differently
+    use App\Models\Feed;
+    use App\Models\User;
+    use App\Models\SubSalon;
     use Illuminate\Support\Facades\Auth;
 
 class FeedController extends Controller
 {
-    // عرض قائمة التقييمات
     public function index()
     {
-        $feeds = Feed::with(['user', 'subsalon'])->get();
+        $user = auth()->user();
+        $feeds = collect();
+
+        if ($user->isSuperAdmin()) {
+            $users=User::all();
+            $feeds = Feed::with(['user', 'subsalon'])->get();
+        } elseif ($user->isOwner()) {
+            $user->load('salon.subSalons');
+
+            if ($user->salon && $user->salon->subSalons->isNotEmpty()) {
+                $feeds = Feed::with(['user', 'subsalon'])
+                    ->whereIn('sub_salons_id', $user->salon->subSalons->pluck('id'))
+                    ->get();
+            } else {
+                $feeds = collect();
+            }
+        }
+
         return view('dashboard.feedbacks.index', compact('feeds'));
     }
 
+
+
+
+
+
     public function create($subSalonId)
     {
-        $subsalon = SubSalon::findOrFail($subSalonId); // تأكد من أنك تستورد النموذج الصحيح
+        $subsalon = SubSalon::findOrFail($subSalonId);
         $feeds = Feed::with('user')->where('sub_salons_id', $subsalon)->get(); // الحصول على التقييمات الخاصة بهذا الصالون
         return view('user_side.more_details', compact('subSalon', 'feeds'));
     }
 
-    // تخزين تقييم جديد
     public function store(Request $request)
     {
         $request->validate([
             'feedback' => 'required|string|max:255',
             'rating' => 'required|integer|between:1,5',
-            'sub_salons_id' => 'required|exists:sub_salons,id', // تحقق من أن هناك تحقق من وجود معرف الصالون
+            'sub_salons_id' => 'required|exists:sub_salons,id',
         ]);
 
         Feed::create([
@@ -37,26 +58,24 @@ class FeedController extends Controller
             'users_id' => Auth::id(),
             'sub_salons_id' => $request->sub_salons_id,
         ]);
+   session()->flash('success', 'تم إضافة التعليق بنجاح!');
 
-        return redirect()->back()->with('success', 'تم إرسال التقييم بنجاح!');
+   return back();
     }
 
 
 
 
-    // عرض تقييم معين
     public function show(Feed $feed)
     {
         return view('feeds.show', compact('feed'));
     }
 
-    // عرض نموذج لتحرير تقييم معين
     public function edit(Feed $feed)
     {
         return view('feeds.edit', compact('feed'));
     }
 
-    // تحديث تقييم معين
     public function update(Request $request, Feed $feed)
     {
         $request->validate([
@@ -69,7 +88,6 @@ class FeedController extends Controller
         return redirect()->route('feeds.index')->with('success', 'تم تحديث التقييم بنجاح!');
     }
 
-    // حذف تقييم معين
     public function destroy(Feed $feed)
     {
         $feed->delete();

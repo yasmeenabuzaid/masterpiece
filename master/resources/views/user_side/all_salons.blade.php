@@ -33,10 +33,34 @@
         height: 300px;
         object-fit: cover;
     }
-     .mb-10 {
+
+    .mb-10 {
         margin-bottom: 20px;
-     }
-    </style>
+    }
+
+    /* تعديل محاذاة النص إلى اليسار */
+    .card-body {
+        text-align: left; /* التأكد من أن النص محاذي لليسار */
+    }
+
+    .card-title,
+    .card-text {
+        text-align: left;
+    }
+
+    .card p {
+        text-align: left;
+    }
+    .btn-primary {
+        background-color: #484848; /* تغيير لون الخلفية */
+        border-color: #484848; /* تغيير لون الحدود */
+    }
+
+    .btn-primary:hover {
+        background-color: #333333; /* تغيير اللون عند المرور فوق الزر */
+        border-color: #333333; /* تغيير اللون عند المرور فوق الزر */
+    }
+</style>
 
 <div class="container">
     <div class="text-center wow fadeInUp mb-10 mt-5" data-wow-delay="0.1s">
@@ -72,7 +96,6 @@
         </form>
     </div>
 
-
     <div id="salon-results" class="row">
         @foreach ($subsalons as $subsalon)
             <div class="col-md-6 col-lg-3 text-center mb-5">
@@ -86,9 +109,10 @@
                                     <i class="fas fa-user"></i> for {{ $subsalon->type }}
                                 </p>
                                 <h5 class="card-title">{{ $subsalon->salon->name }}</h5>
-                                <div class="type-card" style="background-color: {{ $subsalon->type === 'women' ? '#ff69b4' : ($subsalon->type === 'men' ? '#007bff' : '#ff8c00') }};">
-                                    {{ $subsalon->type === 'women' ? 'for women' : ($subsalon->type === 'men' ? 'for men' : 'mixed') }}
+                                <div class="type-card" style="background-color: #dadada;color:rgb(0, 0, 0)">
+                                    {{ $subsalon->type === 'women' ? ' women' : ($subsalon->type === 'men' ? ' men' : 'mixed') }}
                                 </div>
+
                                 <p class="card-text">{{ Str::limit($subsalon->description, 100) }}</p>
                                 <a href="{{ route('single_salon', $subsalon) }}" class="btn btn-primary">See More</a>
                             </div>

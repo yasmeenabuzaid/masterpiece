@@ -68,7 +68,156 @@
         border-radius: 5px;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
+    /* جعل العناوين الكبيرة في المنتصف */
+    h1, h2, h3, h4 {
+        text-align: center;
+    }
+
+    /* تخصيص ألوان الأزرار */
+    .btn-primary {
+        background-color: #484848;
+        border-color: #484848;
+    }
+
+    .btn-primary:hover {
+        background-color: #626161; /* لون أزرق داكن عند التمرير */
+        border-color: #484848;
+    }
+    .main h1 {
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+    }
+    button{
+        background-color: #626161; /* لون أزرق داكن عند التمرير */
+        border-color: #484848;
+        color: white;
+    }
+    .site-blocks-cover {
+        background-attachment: fixed; /* تثبيت الصورة */
+        background-size: cover; /* تغطية العنصر بالكامل بالصورة */
+        background-position: center; /* تحديد مركز الصورة */
+    }
+    <style>
+    /* CSS هنا يمكن نقله إلى ملف خارجي */
+    .main {
+        display: flex;
+        flex-direction: column;
+        margin: 50px;
+    }
+    .container {
+        display: flex;
+        align-items: flex-start;
+    }
+    .categories {
+        flex: 2;
+        margin-right: 20px;
+    }
+    .selected-services {
+        flex: 1;
+        border-left: 1px solid #ddd;
+        padding-left: 20px;
+    }
+    .card {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 10px;
+        margin: 0;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+    }
+    .card h3 {
+        margin: 0;
+        font-size: 1.5em;
+    }
+    .services-dropdown {
+        display: none;
+        margin-top: 10px;
+        padding: 10px;
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+    .service-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+        justify-content: space-between;
+    }
+    .selected-item {
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: space-between;
+        background: #e9f5ff;
+        padding: 10px;
+        border-radius: 5px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    }
+    .total-price {
+        font-weight: bold;
+        margin-top: 15px;
+    }
+    input[type="date"], input[type="time"] {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    h1, h2, h3, h4 {
+        text-align: center;
+    }
+    .btn-primary {
+        background-color: #484848;
+        border-color: #484848;
+    }
+    .btn-primary:hover {
+        background-color: #626161;
+        border-color: #484848;
+    }
+    .main h1 {
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+    }
+    button {
+        background-color: #626161;
+        border-color: #484848;
+        color: white;
+    }
+    .site-blocks-cover {
+        background-attachment: fixed;
+        background-size: cover;
+        background-position: center;
+    }
+
+
+
+
+
 </style>
+
+<div class="slide-one-item home-slider owl-carousel">
+    <div class="site-blocks-cover inner-page-cover" style="background-image: url('{{ asset($subsalon->salon->image ?? 'default_image.jpg') }}');" data-aos="fade" data-stellar-background-ratio="0.5">
+        <div class="filter-overlay"></div>
+        <div class="container" style="position: relative; height: 90%; padding: 0; margin: 0;">
+            <div class="text-container" style="position: absolute; bottom: 20px; left: 0; text-align: left;">
+                <div class="col-md-8" data-aos="fade-up" data-aos-delay="400">
+                    <h2 class="text-white font-weight-light mb-2 display-1">{{ $subsalon->salon->name }}.{{ $subsalon->address }}</h2>
+                    <div class="search-section">
+                        <h4>Location: {{$subsalon->location}}</h4>
+                        <h4>Type of this salon: {{$subsalon->type}}</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 @if(session('success'))
     <script>
@@ -119,7 +268,10 @@
 
         <div class="selected-services">
             <h3>Selected Services</h3>
-            <button onclick="clearServices()">Clear All Services</button>
+            <br>
+            <br>
+
+            {{-- <button onclick="clearServices()">Clear All Services</button> --}}
             <div id="selected-items"></div>
             <hr>
             <div class="total-price" id="total-price">Total Price: $0</div>
@@ -128,7 +280,9 @@
 </div>
 
 <div class="main">
-    <h1 class="mb-5">Book Now</h1>
+    <h1 class="m-4">Book Now</h1>
+
+
 
     <form action="{{ route('bookings.store') }}" method="POST" class="p-5 bg-white" onsubmit="return validateAndSubmit()">
         @csrf
@@ -175,7 +329,7 @@
         </div>
 
         <div class="form-group">
-            <input type="submit" value="Send" class="btn btn-primary">
+            <input type="submit" value="Send" class="btn btn-primary" style="width: 170px">
         </div>
     </form>
 </div>

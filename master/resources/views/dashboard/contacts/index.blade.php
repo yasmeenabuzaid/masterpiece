@@ -1,3 +1,5 @@
+@if (auth()->check() && (auth()->user()->isSuperAdmin()))
+
 @extends('layouts.dashboard_master')
 
 @section('content')
@@ -98,3 +100,4 @@
     }
 </script>
 @endsection
+@endif

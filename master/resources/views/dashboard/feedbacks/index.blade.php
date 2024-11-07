@@ -16,8 +16,8 @@
                             <thead class="thead-light">
                                 <tr>
                                     <th scope="col">ID</th>
-                                    <th scope="col">User ID</th>
-                                    <th scope="col">Sub Salon ID</th>
+                                    <th scope="col">User Name</th>
+                                    <th scope="col">Sub Salon Name</th>
                                     <th scope="col">Feedback</th>
                                     <th scope="col">Rating</th>
                                     <th scope="col">Date</th>
@@ -27,17 +27,18 @@
                             <tbody>
                                 @if($feeds->isEmpty())
                                     <tr>
-                                        <td colspan="7" class="text-center">No feedbacks available.</td>
+                                        <td colspan="7" class="text-center">No feedbacks.</td>
                                     </tr>
                                 @else
                                     @foreach($feeds as $feed)
                                         <tr>
                                             <th scope="row">{{ $feed->id }}</th>
-                                            <td>{{ $feed->users_id }}</td>
-                                            <td>{{ $feed->sub_salons_id }}</td>
+                                            <td>{{ optional($feed->subsalon)->name ?? 'No Name Available' }}</td>
+                                            <td>{{ optional($feed->subsalon)->address ?? 'No Address Available' }}</td>
+
                                             <td>{{ $feed->feedback }}</td>
                                             <td>{{ $feed->rating }}</td>
-                                            <td>{{ $feed->created_at->format('Y-m-d') }}</td>
+                                            {{-- <td>{{ $feed->created_at->format('Y-m-d') }}</td> --}}
                                             <td>
                                                 <button type="button" class="btn btn-danger" onclick="confirmDeletion(event, '{{ route('feeds.destroy', $feed->id) }}')">
                                                     <i class="fa-solid fa-trash"></i>

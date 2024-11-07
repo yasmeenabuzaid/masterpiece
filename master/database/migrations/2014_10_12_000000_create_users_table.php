@@ -1,5 +1,4 @@
 <?php
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,13 +14,15 @@ return new class extends Migration
             $table->engine = 'InnoDB';
             $table->id();
             $table->string('name');
-            $table->foreignId('salon_id')->nullable();
-            $table->foreignId('sub_salons_id')->nullable();
-            $table->enum('usertype', ['super_admin', 'owner', 'employee','user'])->default('super_admin');
+
+            $table->unsignedBigInteger('salons_id')->nullable();
+            $table->unsignedBigInteger('sub_salons_id')->nullable();
+
+
+            $table->enum('usertype', ['super_admin', 'owner', 'employee', 'user'])->default('super_admin');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-
             $table->string('image')->nullable();
             $table->rememberToken();
             $table->timestamps();

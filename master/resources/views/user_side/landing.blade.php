@@ -11,8 +11,6 @@
             <h2>Welcome to salonak</h2>
             <h1 class="text-white">Book your aesthetic experience at the touch of a button!</h1>
 
-
-            {{-- /* From Uiverse.io by dalbrechtmartin */ --}}
 <a href="{{ route('more_subsalons') }}">
 <button>
     Book Now!
@@ -137,16 +135,13 @@
 </div>
 
 <style>
-    /* From Uiverse.io by dalbrechtmartin */
 button {
   position: relative;
   margin-top: 10px;
   padding: 8px 35px;
   background: #dddddd;
   font-size: 14px;
-  /* font-weight: 600; */
   color: #484848;
-  /* box-shadow: 0px 0px 10px 0px rgb(110, 110, 110); */
   border-radius: 100px;
   border: none;
   transition: all 0.3s ease-in-out;
@@ -408,13 +403,9 @@ h2 {
         <div class="col-lg-6 bg-white p-md-5 align-self-center" style="border:#5b5a5a dashed  2px">
           <h2 class="display-1  line-height-1 site-section-heading mb-4 pb-3 ">about us</h2>
           <p class="text-black lead">
-            <h5>&ldquo; Salonak is a website that allows you to book appointments at various salons regardless of their geographical location. Enjoy competitive and affordable prices at times that suit you, with the opportunity to receive multiple discounts. You can also view experiences and reviews from others before making your booking.&rdquo;</h5>
+            <h5> Salonak is a website that allows you to book appointments at various salons regardless of their geographical location. Enjoy competitive and affordable prices at times that suit you, with the opportunity to receive multiple discounts. You can also view experiences and reviews from others before making your booking.</h5>
         </p>
-        <p class="lead text-black">
-            <button style="background-color:  rgba(63, 63, 63, 0.703); border-radius: 10px; color: white; padding: 10px 20px; border: none; cursor: pointer;">
-                See more about this website
-            </button>
-        </p>
+    
   </div>
     </div>
     </div>
@@ -432,12 +423,12 @@ h2 {
             @foreach ($filteredSubsalons as $subsalon)
             <div class="salon-item">
                 <div class="card">
-                    <img src="{{ $subsalon->salon->image }}" alt="Image" class="card-img-top" style="height: 300px; object-fit: cover;">
+                    <img src="{{ $subsalon->salon->image }}" alt="Image" class="card-img-top" style="height: 200px; object-fit: cover;">
                         <div class="card-body">
                             <p><i class="fas fa-map-marker-alt"></i> {{$subsalon->location}} | <i class="fas fa-user"></i> for {{$subsalon->type}} </p>
                             <h5 class="card-title">{{ $subsalon->salon->name }}</h5>
-                            <div class="type-card" style="background-color: {{ $subsalon->type === 'women' ? '#ff69b4' : ($subsalon->type === 'men' ? '#007bff' : '#ff8c00') }};">
-                                {{ $subsalon->type === 'women' ? 'for women' : ($subsalon->type === 'men' ? 'for men' : 'mixed') }}
+                            <div class="type-card" style="background-color: #dadada;color:rgb(0, 0, 0)">
+                                {{ $subsalon->type === 'women' ? ' women' : ($subsalon->type === 'men' ? ' men' : 'mixed') }}
                             </div>
                             @php
                             $averageRating = $subsalon->averageRating();
@@ -473,32 +464,29 @@ h2 {
                 <h2 class="site-section-heading font-weight-light text-black text-center">more Salons</h2>
             </div>
         </div>
-
-        <div class="owl-carousel owl-theme salon-slider">
-            @foreach ($allSubsalons as $subsalon)
-            <div class="salon-item">
-                <div class="card d-flex align-items-center">
-                    <img src="{{ $subsalon->salon->image }}" alt="Image" class="card-img-top" style="height: 320px; object-fit: cover;">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-start">
-                            <div>
-                                <p><i class="fas fa-map-marker-alt"></i> {{$subsalon->location}} | <i class="fas fa-user"></i> for {{$subsalon->type}} </p>
-                                <h5 class="card-title">{{ $subsalon->salon->name }}</h5>
-                                <div class="type-card" style="background-color: {{ $subsalon->type === 'women' ? '#ff69b4' : ($subsalon->type === 'men' ? '#007bff' : '#ff8c00') }};">
-                                    {{ $subsalon->type === 'women' ? 'for women' : ($subsalon->type === 'men' ? 'for men' : 'mixed') }}
-                                </div>
-                                <p class="card-text">{{ Str::limit($subsalon->description, 100) }}</p>
-                                <a href="{{ route('single_salon', $subsalon) }}" class="btn btn-primary">see more</a>
-                            </div>
+<div class="owl-carousel owl-theme salon-slider">
+    @foreach ($allSubsalons as $subsalon)
+    <div class="salon-item">
+        <div class="card">
+            <img src="{{ $subsalon->salon->image }}" alt="Image" class="card-img-top" style="height: 250px; object-fit: cover;">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <p><i class="fas fa-map-marker-alt"></i> {{$subsalon->location}} |
+                           <i class="fas fa-user"></i> for {{$subsalon->type}}</p>
+                        <h5 class="card-title">{{ $subsalon->salon->name }}</h5>
+                        <div class="type-card" style="background-color: #dadada;color:rgb(0, 0, 0)">
+                            {{ $subsalon->type === 'women' ? ' women' : ($subsalon->type === 'men' ? ' men' : 'mixed') }}
                         </div>
+                        <p class="card-text">{{ Str::limit($subsalon->description, 100) }}</p>
+                        <a href="{{ route('single_salon', $subsalon) }}" class="btn btn-primary">See more</a>
                     </div>
                 </div>
-                <div style="margin-bottom: 30px">
             </div>
-
-            </div>
-            @endforeach
         </div>
+    </div>
+    @endforeach
+</div>
 
 
 

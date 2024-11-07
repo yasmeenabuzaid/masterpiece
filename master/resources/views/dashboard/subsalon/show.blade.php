@@ -10,7 +10,7 @@
         @if($images->isEmpty())
             <div class="col-12">
                 <img src="{{ asset('path/to/default-image.jpg') }}" alt="No images available" class="img-fluid" style="height: 200px; object-fit: cover;">
-                <p>No images available.</p>
+                {{-- <p>No images available.</p> --}}
             </div>
         @else
             @foreach($images as $image)
@@ -75,7 +75,7 @@
                     </tr>
                     <tr>
                         <td><strong>Number of Employees:</strong></td>
-                        <td>{{ $subsalon->usersCount() > 0 ? $categorie->subsalon->usersCount() : 'No associated employees'  }}</td>
+                        <td>{{ $subsalon->usersCount() > 0 ? $subsalon->usersCount() : 'No associated employees'  }}</td>
                     </tr>
                 </tbody>
             </table>

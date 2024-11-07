@@ -87,56 +87,77 @@ class UserController extends Controller
      */
     public function create()
     {
-        $subsalons =SubSalon::all();
-
+        $subsalons = SubSalon::all();
         $salons = Salon::all();
-        return view('dashboard.user.create', compact('salons','subsalons'));
+        return view('dashboard.user.create', compact('salons', 'subsalons'));
     }
-
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:6',
-            'salons_id' => 'nullable|exists:salons,id',
-            'sub_salons_id' => 'nullable|exists:sub_salons,id',
-            'usertype' => 'required|in:super_admin,owner,employee,user',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ]);
+   // في دالة store() أو update()
 
-        DB::transaction(function () use ($validatedData, $request) {
-            $user = new User();
-            $user->fill([
-                'name' => $validatedData['name'],
-                'email' => $validatedData['email'],
-                'salons_id' => $validatedData['usertype'] === 'owner' ? $validatedData['salons_id'] : null,
-'sub_salons_id' => $validatedData['usertype'] === 'employee' ? 'required|exists:sub_salons,id' : 'nullable|exists:sub_salons,id',
-'usertype' => $validatedData['usertype'],
-                'password' => bcrypt($validatedData['password']),
-            ]);
+   public function store(Request $request)
+   {
+       // التحقق من القيم المرسلة
+       $validatedData = $request->validate([
+           'name' => 'required|string|max:255',
+           'email' => 'required|email|unique:users,email',
+           'password' => 'required|string|min:6',
+           'salons_id' => 'nullable|exists:salons,id',  // تحقق من الصالون
+           'sub_salons_id' => 'nullable|exists:sub_salons,id',  // تحقق من السب صالون
+           'usertype' => 'required|in:super_admin,owner,employee,user',
+           'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+       ]);
 
-            if ($request->hasFile('image')) {
-                $file = $request->file('image');
-                $filename = time() . '.' . $file->getClientOriginalExtension();
-                $path = public_path('uploads/user/');
+       // حفظ البيانات داخل قاعدة البيانات
+       DB::transaction(function () use ($validatedData, $request) {
+           $user = new User();
+           $user->name = $validatedData['name'];
+           $user->email = $validatedData['email'];
+           $user->usertype = $validatedData['usertype'];
 
-                if (!file_exists($path)) {
-                    mkdir($path, 0755, true);
-                }
+           // إذا كان المستخدم من نوع "owner"، خزّن الصالون
+           if ($validatedData['usertype'] === 'owner') {
+               $user->salons_id = $validatedData['salons_id'];
+           } else {
+               $user->salons_id = null;
+           }
 
-                $file->move($path, $filename);
-                $user->image = 'uploads/user/' . $filename;
-            }
+           // إذا كان المستخدم من نوع "employee"، خزّن السب صالون
+           if ($validatedData['usertype'] === 'employee') {
+               $user->sub_salons_id = $validatedData['sub_salons_id'];
+           } else {
+               $user->sub_salons_id = null;
+           }
 
-            $user->save();
-        });
+           // تشفير كلمة المرور
+           $user->password = bcrypt($validatedData['password']);
 
-        return redirect()->route('users.index')->with('success', 'User created successfully.');
-    }
+           // إذا كان هناك صورة، قم بتحميلها
+           if ($request->hasFile('image')) {
+               $file = $request->file('image');
+               $filename = time() . '.' . $file->getClientOriginalExtension();
+               $path = public_path('uploads/user/');
+
+               if (!file_exists($path)) {
+                   mkdir($path, 0755, true);
+               }
+
+               $file->move($path, $filename);
+               $user->image = 'uploads/user/' . $filename;
+           }
+
+           // حفظ المستخدم في قاعدة البيانات
+           $user->save();
+       });
+
+       return redirect()->route('users.index')->with('success', 'User created successfully.');
+   }
+
+
+
+
+
 
 
     /**
@@ -147,8 +168,7 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $salons = Salon::all();
         $subsalons = SubSalon::all();
-
-        return view('dashboard.user.edit', compact('user', 'salons' ,'subsalons'));
+        return view('dashboard.user.edit', compact('user', 'salons', 'subsalons'));
     }
 
     /**
@@ -156,28 +176,50 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        // التحقق من القيم المدخلة
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $id,
             'password' => 'nullable|string|min:6',
             'usertype' => 'required|in:super_admin,owner,employee,user',
             'salons_id' => 'nullable|exists:salons,id',
-            'sub_salons_id' => 'nullable|exists:sub_salons,id',
+            'sub_salons_id' => 'nullable|exists:sub_salons,id',  // تأكد من وجود الحقل
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
+        // استرجاع المستخدم
         $user = User::findOrFail($id);
+
+        // تحديث بيانات المستخدم
         $user->name = $validatedData['name'];
         $user->email = $validatedData['email'];
         $user->usertype = $validatedData['usertype'];
         $user->salons_id = $validatedData['salons_id'] ?? null;
-        $user->sub_salons_id = $validatedData['usertype'] === 'employee' ? $validatedData['sub_salons_id'] : null;
 
+        // إذا كان نوع المستخدم هو "employee"، تحديث sub_salons_id فقط
+        if ($validatedData['usertype'] === 'employee') {
+            // تأكد من أن الحقل موجود في الطلب
+            if ($request->has('sub_salons_id')) {
+                $user->sub_salons_id = $validatedData['sub_salons_id'];
+            } else {
+                $user->sub_salons_id = null; // إذا لم يكن موجودًا، تعيينه إلى null
+            }
+        } else {
+            $user->sub_salons_id = null; // إذا لم يكن المستخدم من نوع employee، تعيينه إلى null
+        }
+
+        // تحديث كلمة المرور إذا كانت موجودة في الطلب
         if ($request->filled('password')) {
             $user->password = bcrypt($validatedData['password']);
         }
 
+        // إذا كانت هناك صورة جديدة، تحميلها
         if ($request->hasFile('image')) {
+            // حذف الصورة القديمة إذا كانت موجودة
+            if ($user->image && file_exists(public_path($user->image))) {
+                @unlink(public_path($user->image));
+            }
+
             $file = $request->file('image');
             $filename = time() . '.' . $file->getClientOriginalExtension();
             $path = public_path('uploads/user/');
@@ -185,10 +227,15 @@ class UserController extends Controller
             $user->image = 'uploads/user/' . $filename;
         }
 
+        // حفظ البيانات
         $user->save();
 
+        // إعادة التوجيه مع رسالة نجاح
         return redirect()->route('users.index')->with('success', 'User updated successfully.');
     }
+
+
+
 
 
     /**
@@ -197,6 +244,14 @@ class UserController extends Controller
     public function destroy(string $id)
     {
         $user = User::findOrFail($id);
+
+        // تحقق إذا كان المستخدم هو سوبر أدمن
+        if ($user->usertype === 'super_admin') {
+            // إذا كان سوبر أدمن، منع الحذف
+            return redirect()->route('users.index')->with('error', 'Cannot delete the super admin user.');
+        }
+
+        // إذا لم يكن سوبر أدمن، قم بحذف المستخدم
         if ($user->image) {
             @unlink(public_path($user->image));
         }
@@ -204,4 +259,5 @@ class UserController extends Controller
 
         return redirect()->route('users.index')->with('success', 'User deleted successfully.');
     }
+
 }

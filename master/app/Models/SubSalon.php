@@ -36,6 +36,7 @@ class SubSalon extends Model
         return $this->belongsTo(Salon::class, 'salon_id');
     }
 
+
     public function images()
     {
         return $this->hasMany(Image::class, 'sub_salons_id');
@@ -47,10 +48,11 @@ class SubSalon extends Model
         return $this->hasMany(Service::class, 'services_id');
     }
 
-    public function users()
-    {
-        return $this->hasMany(User::class, 'sub_salons_id');
-    }
+// في نموذج SubSalon
+public function users()
+{
+    return $this->hasMany(User::class, 'sub_salons_id');
+}
 
     public function usersCount()
     {
@@ -109,7 +111,7 @@ public function feeds()
 }
 public function averageRating()
 {
-    return $this->feeds()->average('rating'); 
+    return $this->feeds()->average('rating');
 }
 
 }

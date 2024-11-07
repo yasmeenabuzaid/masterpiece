@@ -4,7 +4,7 @@
     <div class="container">
         <h4 class="card-title">Create Service</h4>
 
-        <!-- Display validation errors -->
+        <!-- عرض الأخطاء إذا كانت موجودة -->
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -18,16 +18,19 @@
         <form action="{{ route('services.store') }}" method="POST">
             @csrf
 
+            <!-- اسم الخدمة -->
             <div class="form-group">
                 <label for="name">Service Name</label>
                 <input type="text" class="form-control" id="name" name="name" placeholder="Enter service name" required>
             </div>
 
+            <!-- الوصف -->
             <div class="form-group">
                 <label for="description">Description</label>
                 <textarea class="form-control" id="description" name="description" placeholder="Enter service description"></textarea>
             </div>
 
+            <!-- الفئة -->
             <div class="form-group">
                 <label for="categories_id">Category</label>
                 <select id="categories_id" name="categories_id" class="form-control" required>
@@ -37,6 +40,7 @@
                 </select>
             </div>
 
+            <!-- المدة -->
             <div class="form-group">
                 <label for="hours">Duration (Hours)</label>
                 <input type="number" class="form-control" id="hours" name="hours" placeholder="Please enter duration as hours" min="0" max="23" value="0" required>
@@ -47,15 +51,14 @@
                 <input type="number" class="form-control" id="minutes" name="minutes" placeholder="Please enter duration as minutes (00-59)." min="0" max="59" value="0" required>
             </div>
 
-            {{-- <small class="form-text text-muted">Please enter duration as hours (00-23) and minutes (00-59).</small> --}}
-
-
+            <!-- السعر -->
             <div class="form-group">
                 <label for="price">Price ($)</label>
                 <input type="number" class="form-control" id="price" name="price" placeholder="Enter service price" min="0" step="0.01" required>
             </div>
 
-            <button type="submit" class="btn btn-gradient-success  btn-fw">Create Service</button>
+            <!-- أزرار التحكم -->
+            <button type="submit" class="btn btn-gradient-success btn-fw">Create Service</button>
             <a href="{{ route('services.index') }}" class="btn btn-light">Cancel</a>
         </form>
     </div>

@@ -7,7 +7,7 @@
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title">Edit User</h4>
-                <form class="forms-sample" action="{{ route('users.update', $user->id) }}" method="POST" enctype="multipart/form-data">
+                <form id="editForm" action="{{ route('users.update', $user->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
 
@@ -62,12 +62,12 @@
 
                     <div class="form-group" id="subsalonsField" style="display: {{ $user->usertype === 'employee' ? 'block' : 'none' }};">
                         <label for="subsalons_id">SubSalon</label>
-                        <select class="form-control form-control-sm @error('subsalons_id') is-invalid @enderror" name="subsalons_id" id="subsalons_id">
+                        <select class="form-control form-control-sm @error('sub_salons_id') is-invalid @enderror" name="sub_salons_id" id="sub_salons_id">
                             @foreach ($subsalons as $subsalon)
-                                <option value="{{ $subsalon->id }}" {{ $user->sub_salons_id == $subsalon->id ? 'selected' : '' }}>{{ $subsalon->name }}</option>
+                                <option value="{{ $subsalon->id }}" {{ $user->sub_salons_id == $subsalon->id ? 'selected' : '' }}>{{ $subsalon->address }}</option>
                             @endforeach
                         </select>
-                        @error('subsalons_id')
+                        @error('sub_salons_id')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
@@ -78,11 +78,21 @@
                     </div>
                     <img id="imagePreview" style="display: {{ $user->image ? 'block' : 'none' }}; width: 100px; margin-top: 10px;" src="{{ asset($user->image) }}" />
 
-                    <button type="submit"  class="btn btn-gradient-success btn-rounded btn-fw">Update</button>
+                    <button type="button" class="btn btn-gradient-success btn-fw" onclick="confirmEdit(event)">Update</button>
                     <a href="{{ route('users.index') }}" class="btn btn-light">Cancel</a>
                 </form>
             </div>
         </div>
+    </div>
+</div>
+
+<!-- Confirmation Modal -->
+<div id="confirmationModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); justify-content: center; align-items: center; z-index: 1000; padding:20px;">
+    <div style="background: #fff; padding: 20px; border-radius: 5px; text-align: center;">
+        <h3><i class="fas fa-pencil-alt" style="font-size: 2rem; color: #007bff;"></i></h3>
+        <p>Are you sure you want to edit this user?</p>
+        <button id="confirmButton" class="btn btn-primary">Edit</button>
+        <button id="cancelButton" class="btn btn-secondary">Cancel</button>
     </div>
 </div>
 
@@ -98,6 +108,29 @@
         document.getElementById('salonsField').style.display = userType === 'owner' ? 'block' : 'none';
         document.getElementById('subsalonsField').style.display = userType === 'employee' ? 'block' : 'none';
     });
+
+    // تنشيط التحديث بناءً على النوع عند تحميل الصفحة
+    window.onload = function() {
+        const userType = document.getElementById('usertype').value;
+        document.getElementById('salonsField').style.display = userType === 'owner' ? 'block' : 'none';
+        document.getElementById('subsalonsField').style.display = userType === 'employee' ? 'block' : 'none';
+    };
+
+    function confirmEdit(event) {
+        event.preventDefault();
+        var modal = document.getElementById('confirmationModal');
+        var confirmButton = document.getElementById('confirmButton');
+        var cancelButton = document.getElementById('cancelButton');
+        modal.style.display = 'flex';
+
+        confirmButton.onclick = function() {
+            document.getElementById('editForm').submit();
+        };
+
+        cancelButton.onclick = function() {
+            modal.style.display = 'none';
+        };
+    }
 </script>
 
 @endsection

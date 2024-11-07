@@ -14,22 +14,27 @@ class SubSalonController extends Controller
 {
     public function index()
     {
+        $user = auth()->user();
+        if ($user->isSuperAdmin()) {
+            $salons = Salon::all();
+            $subsalons = SubSalon::all(); 
+            return view('dashboard/subsalon/index', ['subsalons' => $subsalons, 'salons' => $salons]);
+        }
+        elseif ($user->isOwner()) {
+            $salon = Salon::find($user->salons_id);
 
-            $user = auth()->user();
-
-            if ($user->isSuperAdmin()) {
-                $salons = Salon::all();
-                $subsalons = SubSalon::all();
-                return view('dashboard/subsalon/index', ['subsalons' => $subsalons, 'salons' => $salons]);
-            } elseif ($user->isOwner()) {
-                $subsalons = SubSalon::where('salons_id', $user->salon_id)->get();
-                return view('dashboard/subsalon/index', ['subsalons' => $subsalons]);
-            } else {
-                abort(403, 'Unauthorized access.');
+            if (!$salon) {
+                abort(404, 'Salon not found');
             }
 
+            $subsalons = $salon->subSalons;
+            return view('dashboard/subsalon/index', ['subsalons' => $subsalons]);
+        } else {
+            abort(403, 'Unauthorized access.');
         }
-    public function create()
+    }
+
+        public function create()
     {
         $user = auth()->user();
         $salons = $user->isOwner() ? Salon::where('id', $user->salon_id)->get() : Salon::all();
@@ -109,7 +114,7 @@ class SubSalonController extends Controller
     private function convertTo24HourFormat($hour, $period)
     {
         if ($period === 'PM' && $hour < 12) {
-            return $hour + 12; 
+            return $hour + 12;
         }
         if ($period === 'AM' && $hour == 12) {
             return 0;

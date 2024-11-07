@@ -23,9 +23,23 @@ class ServiceController extends Controller
      */
     public function create()
     {
-        $categories = Categorie::all();
-        return view('dashboard.services_salon.create', ['categories' => $categories]);
+        $user = auth()->user();
+        $categories = collect(); // مجموعة فارغة لافتراض عدم وجود فئات
+
+        if ($user->isSuperAdmin()) {
+            // إذا كان المستخدم SuperAdmin، نعرض جميع الفئات
+            $categories = Categorie::all();
+        } elseif ($user->isOwner()) {
+            // إذا كان المستخدم Owner، نعرض الفئات المرتبطة بالـ SubSalon الخاص به
+            $subSalons = $user->salon->subSalons; // احصل على الصالونات الفرعية المرتبطة بالصالون الخاص بالمستخدم
+            if ($subSalons->isNotEmpty()) {
+                $categories = Categorie::whereIn('sub_salons_id', $subSalons->pluck('id'))->get(); // جلب الفئات المرتبطة بالـ SubSalons
+            }
+        }
+
+        return view('dashboard.services_salon.create', compact('categories'));
     }
+
 
     /**
      * Store a newly created resource in storage.

@@ -14,10 +14,6 @@ class BookingController extends Controller
 
     public function index()
     {
-        // تحقق مما إذا كان المستخدم هو سوبر أدمين
-        if (!Auth::check() || !Auth::user()->isSuperAdmin()) {
-            return redirect()->route('home')->with('error', 'ليس لديك صلاحية للوصول إلى هذه الصفحة.');
-        }
 
         // جلب جميع الحجوزات
         $bookings = Booking::with('subSalon', 'customer')->get(); // تأكد من إضافة العلاقات المناسبة
@@ -108,7 +104,22 @@ class BookingController extends Controller
 
         return response()->json($availableTimes);
     }
+// داخل BookingController
+// داخل BookingController
+public function get()
+{
+    // تأكد من أن المستخدم قد قام بتسجيل الدخول
+    if (!Auth::check()) {
+        return redirect()->route('login')->with('error', 'يرجى تسجيل الدخول لعرض حجوزاتك.');
+    }
 
+    // جلب الحجوزات الخاصة بالمستخدم الذي قام بتسجيل الدخول
+    $userBookings = Booking::where('user_id', Auth::id())->with('subSalon')->get();
+
+    // تمرير المتغير إلى الـ View
+
+        return view('user_side.confirmation', compact('userBookings'));
+    }
 
 
 }

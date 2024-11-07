@@ -36,7 +36,7 @@
         </a>
     </li> --}}
 
-    @if (auth()->check() && (auth()->user()->isSuperAdmin() ))
+    @if (auth()->check() && (auth()->user()->isSuperAdmin()||auth()->user()->isOwner() ))
 
     <li class="nav-item">
         <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
@@ -46,11 +46,15 @@
         </a>
         <div class="collapse" id="ui-basic">
           <ul class="nav flex-column sub-menu">
+            @if (auth()->check() && (auth()->user()->isSuperAdmin() ))
             <li class="nav-item"> <a class="nav-link" style=" color: #fff;" href="{{route('users.index')}}">all users</a></li>
             <li class="nav-item"> <a class="nav-link" style=" color: #fff;" href="{{ route('superAdmins.index') }}">super admin</a></li>
+            @endif
             <li class="nav-item"> <a class="nav-link" style=" color: #fff;" href="{{ route('owners.index') }}">owners</a></li>
             <li class="nav-item"> <a class="nav-link" style=" color: #fff;" href="{{ route('employees.index') }}">employees</a></li>
+            @if (auth()->check() && (auth()->user()->isSuperAdmin() ))
             <li class="nav-item"> <a class="nav-link" style=" color: #fff;"  href="{{ route('castomors.index') }}">customers</a></li>
+            @endif
           </ul>
         </div>
       </li>
@@ -88,7 +92,7 @@
             <i class="fa-solid fa-server menu-icon"></i>
         </a>
     </li>
-    @if (auth()->check() && (auth()->user()->isSuperAdmin() ||auth()->user()->isOwner() ))
+    @if (auth()->check() && (auth()->user()->isSuperAdmin()))
     <li class="nav-item">
         <a class="nav-link" href="{{route('contacts.index')}}">
             <span class="menu-title" style=" color: #fff;">contact us</span>

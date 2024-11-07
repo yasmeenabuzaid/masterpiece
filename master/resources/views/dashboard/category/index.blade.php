@@ -20,6 +20,7 @@
                     <th>Category Image</th>
                     <th>Name</th>
                     <th>Description</th>
+                    <th>this category is in</th>
                     <th>Date Created</th>
                     @if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()))
                         <th>Actions</th>
@@ -43,7 +44,16 @@
                             </td>
                             <td>{{ $category->name }}</td>
                             <td>{{ $category->description }}</td>
-                            <td>Date: {{ $category->created_at->format('Y-m-d') }}<br>Time: {{ $category->created_at->format('H:i') }}</td>
+                            <td>
+                                @if ($category->subSalon && $category->subSalon->salon)
+                                    {{ $category->subSalon->salon->name }} <!-- عرض اسم الصالون -->
+                                @else
+                                    No Salon Found
+                                @endif
+                            </td>
+
+
+                           <td>Date: {{ $category->created_at->format('Y-m-d') }}<br>Time: {{ $category->created_at->format('H:i') }}</td>
                             @if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()))
                                 <td>
                                     <button type="button" class="btn btn-danger" onclick="confirmDeletion(event, '{{ route('categories.destroy', $category->id) }}')">

@@ -18,7 +18,20 @@
         object-fit: cover;
         transform: translate(-50%, -50%);
     }
-  
+    .search-button {
+    padding: 10px 35px;
+    font-size: 16px;
+    background-color: #484848; /* لون الزر الجديد */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.search-button:hover {
+    background-color: #363636; /* التدرج للون أغمق عند التمرير فوق الزر */
+}
+
 </style>
 <!-- Carousel Start -->
 

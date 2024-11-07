@@ -17,19 +17,18 @@ class Feed extends Model
     ];
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'users_id');
     }
 
-    public function salon()
-    {
-        return $this->belongsTo(Salon::class);
-    }
-    public function feeds()
+
+
+public function subsalon()
 {
-    return $this->hasMany(Feed::class, 'sub_salons_id');
+    return $this->belongsTo(SubSalon::class, 'sub_salons_id');
 }
+
 public static $rules = [
     'feedback' => 'required|string',
-    'rating' => 'required|integer|min:1|max:5', 
+    'rating' => 'required|integer|min:1|max:5',
 ];
 }
