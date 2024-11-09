@@ -338,6 +338,18 @@
         </div>
     </form>
 </div>
+@if (session('success'))
+    <script>
+        alert("{{ session('success') }}");
+    </script>
+@endif
+
+@if (session('error'))
+    <script>
+        alert("{{ session('error') }}");
+    </script>
+@endif
+
 
 <script>
     const selectedServices = new Set();
@@ -460,13 +472,6 @@
         updateServicesInput();
     }
 
-    function validateAndSubmit() {
-        if (selectedServices.size === 0) {
-            alert("Please select at least one service.");
-            return false;
-        }
-        document.getElementById('services-input').value = Array.from(selectedServices).join(',');
-        return true;
-    }
+  
 </script>
 @endsection

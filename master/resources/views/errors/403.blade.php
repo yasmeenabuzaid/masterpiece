@@ -80,7 +80,6 @@
         <h1 class="display-1">403</h1>
         <h2>Unauthorized Access</h2>
         <p>You do not have permission to access this page.</p>
-        <a href="{{ route('home_psge') }}" class="btn">Go Back to Home</a>
     </div>
 </body>
 </html>

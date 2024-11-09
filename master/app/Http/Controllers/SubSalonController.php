@@ -17,7 +17,7 @@ class SubSalonController extends Controller
         $user = auth()->user();
         if ($user->isSuperAdmin()) {
             $salons = Salon::all();
-            $subsalons = SubSalon::all(); 
+            $subsalons = SubSalon::all();
             return view('dashboard/subsalon/index', ['subsalons' => $subsalons, 'salons' => $salons]);
         }
         elseif ($user->isOwner()) {
@@ -242,7 +242,6 @@ class SubSalonController extends Controller
             'map_iframe' => 'nullable|string',
         ]);
 
-        // Convert times to 24-hour format
         $validatedData['opening_hours_start'] = sprintf(
             '%02d:%02d:00',
             $this->convertTo24HourFormat($validatedData['opening_hours_start_hour'], $validatedData['opening_hours_start_ampm']),
@@ -255,20 +254,16 @@ class SubSalonController extends Controller
             $validatedData['opening_hours_end_minute']
         );
 
-        // Update the SubSalon with validated data
         $subsalon->update($validatedData);
 
-        // Process images if any
         if ($request->hasFile('images')) {
-            // حذف الصور القديمة إذا كانت موجودة
             foreach ($subsalon->images as $image) {
                 $imagePath = public_path($image->image);
                 if (file_exists($imagePath)) {
-                    unlink($imagePath); // حذف الصورة من القرص
+                    unlink($imagePath);
                 }
             }
 
-            // إعداد مصفوفة لتخزين الصور الجديدة
             $images = [];
             foreach ($request->file('images') as $file) {
                 if ($file->isValid()) {
@@ -286,7 +281,6 @@ class SubSalonController extends Controller
                 }
             }
 
-            // إدخال الصور الجديدة في قاعدة البيانات
             Image::insert($images);
         }
 
@@ -294,14 +288,11 @@ class SubSalonController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
      */
     public function destroy(SubSalon $subsalon)
     {
-        // Delete the subSalon instance
         $subsalon->delete();
 
-        // Redirect after deletion
         return redirect()->route('subsalons.index')->with('success', 'SubSalon deleted successfully.');
     }
 }

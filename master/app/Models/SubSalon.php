@@ -58,10 +58,11 @@ public function users()
     {
         return $this->users()->count();
     }
-    // public function bookings()
-    // {
-    //     return $this->hasMany(Booking::class, 'bookings_id');
-    // }
+    public function bookings()
+{
+    return $this->hasMany(Booking::class, 'sub_salons_id');
+}
+
 
     public function categories()
     {
@@ -101,10 +102,10 @@ public function users()
         return $this->status == 1;
     }
     // In SubSalon.php
-public function bookings()
-{
-    return $this->hasManyThrough(Booking::class, Service::class);
-}
+// public function bookings()
+// {
+//     return $this->hasManyThrough(Booking::class, Service::class);
+// }
 public function feeds()
 {
     return $this->hasMany(Feed::class, 'sub_salons_id'); // تأكد من أن 'sub_salons_id' هو اسم العمود في جدول feeds

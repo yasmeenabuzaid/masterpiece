@@ -93,14 +93,11 @@ Route::get('/service/{categorie}', [ServiceController::class, 'show'])->name('al
 Route::get('home', [SubSalonController::class, 'showAllSubSalons'])->name('all_subsalons');
 Route::get('/', [SubSalonController::class, 'showAllSubSalons'])->name('all_subsalons');
 Route::get('more_subsalons', [SubSalonController::class, 'MoreAllSubSalons'])->name('more_subsalons');
-// راوت للصالونات
 Route::get('/salons/{salonId}/categories', [CategorieController::class, 'showCategoriesBySalon'])->name('salon.categories');
 
-// راوت للصالونات الفرعية
 Route::get('salon/{subsalon}', [SubSalonController::class, 'show'])->name('single_salon');
 
-// إذا أردت إضافة طريقة أخرى لعرض الفئات استنادًا إلى الصالون الفرعي:
-Route::get('/subsalons/{subsalonId}/categories', [CategorieController::class, 'showCategoriesBySalon'])->name('subsalon.categories');
+Route::get('/subsalons/{subsalonId}/categories', action: [CategorieController::class, 'showCategoriesBySalon'])->name('subsalon.categories');
 
 Route::get('/dash', function () {
     return view('dashboard\index');
@@ -130,6 +127,7 @@ Route::get('/user_side/booking', [BookingController::class, 'showBookingForm'])-
 // use App\Http\Controllers\FeedController;
 
 Route::resource('feeds', FeedController::class);
+// Route::get('/bookings', [BookingController::class, 'get'])->name('user.bookings');
 
 Route::middleware(['auth', 'admin'])->group(function () {
 
@@ -142,6 +140,7 @@ Route::get('salons/trashed', [SalonController::class, 'trashed'])->name('salons.
 Route::resource('subsalons', SubSalonController::class);
 Route::get('/show-subsalons/{id}', [SubSalonController::class, 'viewSubSalon'])->name('subsalons.view');
 Route::delete('/images/{id}',   [ImageController::class, 'destroy'])->name('images.destroy');
+Route::delete('bookings/{id}', [BookingController::class, 'destroy'])->name('bookings.destroy');
 
 Route::resource('users', UserController::class);
 Route::resource('services', ServiceController::class);

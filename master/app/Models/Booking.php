@@ -9,19 +9,22 @@ class Booking extends Model
 {
     use HasFactory;
 
-    public function subalon() {
-        return $this->belongsTo(SubSalon::class);
-    }
-
-    public function customer() {
-        return $this->belongsTo(User::class, 'user_id');
-    }
-
-
-    public function bookingServices()
+    public function subalon()
     {
-        return $this->hasMany(BookingService::class);
+        return $this->belongsTo(SubSalon::class, 'sub_salons_id');
     }
 
+
+    public function user()
+{
+    return $this->belongsTo(User::class);
+}
+
+
+
+public function services()
+{
+    return $this->belongsToMany(Service::class, 'booking_services', 'booking_id', 'service_id');
+}
 
 }

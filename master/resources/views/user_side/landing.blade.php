@@ -405,7 +405,7 @@ h2 {
           <p class="text-black lead">
             <h5> Salonak is a website that allows you to book appointments at various salons regardless of their geographical location. Enjoy competitive and affordable prices at times that suit you, with the opportunity to receive multiple discounts. You can also view experiences and reviews from others before making your booking.</h5>
         </p>
-    
+
   </div>
     </div>
     </div>

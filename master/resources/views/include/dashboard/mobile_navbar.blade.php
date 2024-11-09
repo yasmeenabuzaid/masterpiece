@@ -1,10 +1,10 @@
 <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row" style="background-color: rgb(59, 56, 67); color: #fff;">
     <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center"style="background-color: rgb(59, 56, 67); color: #fff;">
         <a class="navbar-brand brand-logo" href="index.html">
-            {{-- <img src="../assets/images/logo2.png" alt="logo"  style="width: 200px; height:60px"/> --}}
+            <img src="logoindash.png" alt="logo"  style="width: 160px; height:50px"/>
         </a>
         <a class="navbar-brand brand-logo-mini" href="index.html">
-            {{-- <img src="../img/logo.png" alt="logo"  style="width: 200px; height:60px"/> --}}
+            <img src="../img/logo.png" alt="logo"  style="width: 200px; height:60px"/>
         </a>
     </div>
     <div class="navbar-menu-wrapper d-flex align-items-stretch">
@@ -15,9 +15,9 @@
             <form class="d-flex align-items-center h-100" action="#">
                 <div class="input-group">
                     <div class="input-group-prepend bg-transparent">
-                        <i class="input-group-text border-0 mdi mdi-magnify"></i>
+                        {{-- <i class="input-group-text border-0 mdi mdi-magnify"></i> --}}
                     </div>
-                    <input type="text" class="form-control bg-transparent border-0" placeholder="Search projects">
+                    {{-- <input type="text" class="form-control bg-transparent border-0" placeholder="Search projects"> --}}
                 </div>
             </form>
         </div>
@@ -38,8 +38,8 @@
                     </li>
                 @endif
             @else
-                <li class="nav-item nav-profile dropdown">
-                    <a class="nav-link dropdown-toggle" id="profileDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                <li class="nav-item nav-profile ">
+                    <a class="nav-link " id="profileDropdown" href="#" >
                         <div class="nav-profile-img">
                             @if(Auth::user()->image)
                                 <img src="{{ asset(Auth::user()->image) }}" alt="User Image" style="width: 100px; border-radius: 0px;">
@@ -51,7 +51,7 @@
                             <p class="mb-1 " style=" color: #fff;">{{ Auth::user()->name }} ({{ Auth::user()->usertype }})</p>
                         </div>
                     </a>
-                    <div class="dropdown-menu navbar-dropdown" aria-labelledby="profileDropdown">
+                    {{-- <div class="dropdown-menu navbar-dropdown" aria-labelledby="profileDropdown">
                         <a class="dropdown-item" href="{{route('profile.index')}}">
                             <i class="fa-solid fa-circle-user mdi-cached me-2"></i>
                            profile
@@ -64,16 +64,16 @@
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                             @csrf
                         </form>
-                    </div>
+                    </div> --}}
                 </li>
             @endguest
-            <li class="nav-item dropdown">
+            {{-- <li class="nav-item dropdown">
                 <a class="nav-link" href="#" data-bs-toggle="dropdown">
                     <i class="fa-regular fa-user"></i>
                   <span class="count-symbol bg-danger"></span>
                 </a>
 
-            </li>
+            </li> --}}
             {{-- <li class="nav-item d-none d-lg-block full-screen-link">
                 <a class="nav-link">
                     <i class="mdi mdi-fullscreen" id="fullscreen-button"></i>

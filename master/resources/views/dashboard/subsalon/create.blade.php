@@ -21,9 +21,16 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="location">Location</label>
-                        <input type="text" class="form-control" id="location" name="location" placeholder="Insert location" required>
+                        <label for="location">Governorates</label>
+                        <select class="form-control" id="location" name="location" required>
+                            @foreach (['Amman', 'Zarqa', 'Irbid', 'Ajloun', 'Jerash', 'Madaba', 'Mafraq', 'Karak', 'Tafilah', 'Ma\'an', 'Aqaba'] as $governorate)
+                                <option value="{{ $governorate }}" {{ old('location') == $governorate ? 'selected' : '' }}>
+                                    {{ $governorate }}
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
+
 
                     <div class="form-group">
                         <label for="iframe">iframe Location</label>

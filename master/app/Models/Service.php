@@ -39,5 +39,8 @@ class Service extends Model
         return $this->hasMany(Feed::class, 'feeds_id');
     }
 
-
+    public function bookings()
+    {
+        return $this->belongsToMany(Booking::class, 'booking_services', 'service_id', 'booking_id');
+    }
 }

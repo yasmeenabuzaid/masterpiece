@@ -16,7 +16,7 @@
     }
 
     .containe {
-        position: relative; /* لجعل النموذج فوق الفيديو */
+        position: relative; /* لجعل النموذج فوق الصورة */
         height: 100vh; /* جعل ارتفاع الحاوية يملأ الشاشة */
         display: flex;
         justify-content: center; /* توسيط المحتوى أفقياً */
@@ -24,22 +24,22 @@
         padding-top: 50px; /* إضافة مسافة من الأعلى */
     }
 
-    .video-container {
-        position: absolute; /* جعل الفيديو في الخلف */
-        top: -20px; /* رفع الفيديو لأعلى */
+    .image-container {
+        position: absolute; /* جعل الصورة في الخلف */
+        top: -20px; /* رفع الصورة لأعلى */
         left: 0;
         width: 100%;
         height: 100%;
         overflow: hidden;
     }
 
-    .video-container video {
+    .image-container img {
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        object-fit: cover; /* تغطي الصورة المساحة بالكامل */
     }
 
-    .video-overlay {
+    .image-overlay {
         position: absolute;
         top: 0;
         left: 0;
@@ -50,12 +50,12 @@
 
     .form-container {
         z-index: 1; /* جعل النموذج في المقدمة */
-        padding: 40px;
-        background-color: #6262627a;
+        padding: 40px; /* تقليص الحشو */
+        background-color: #ffffff; /* تغيير لون الخلفية إلى الأبيض */
         border-radius: 10px;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-        width: 700px; /* عرض النموذج */
-        border: #ffffff solid 2px;
+        width: 600px; /* تصغير عرض النموذج */
+        border: 2px solid #000; /* تغيير الحدود إلى خط مستقيم */
         margin-top: 20px; /* رفع النموذج عن الحافة */
     }
 
@@ -65,33 +65,32 @@
     }
 
     .signup-form h2 {
-        font-size: 44px;
+        font-size: 36px; /* تقليل حجم الخط */
         text-align: center;
-        color: #ffffff;
-        /* font-weight: bold; */
-        margin-bottom: 10px;
+        color: #333333;
+        margin-bottom: 20px; /* زيادة المسافة السفلية */
     }
 
     .welcome-message {
-        font-size: 18px;
-        color: #ffffff;
+        font-size: 16px;
+        color: #666666;
         text-align: center;
     }
 
     .signup-form label {
-        margin-bottom: 5px;
-        font-size: 15px;
-        color: #fff1f1;
+        margin-bottom: 8px; /* زيادة المسافة بين الحقل والعنوان */
+        font-size: 16px; /* زيادة حجم الخط */
+        color: #333333;
     }
 
     .signup-form input {
-        padding: 8px; /* تقليل الحشو */
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        font-size: 14px;
+        padding: 12px; /* زيادة الحشو */
+        border: 2px solid #ccc; /* سمك الحدود */
+        border-radius: 8px; /* زيادة الانحناء */
+        font-size: 16px; /* زيادة حجم الخط داخل الحقول */
         width: 100%;
-        margin-bottom: 15px;
-        height: 35px; /* تقليل الارتفاع */
+        margin-bottom: 20px; /* زيادة المسافة بين الحقول */
+        height: 45px; /* زيادة الارتفاع */
     }
 
     .password-row {
@@ -101,12 +100,12 @@
 
     .signin {
         text-align: right;
-        margin-top: 10px;
+        margin-top: 15px;
         color: #555;
     }
 
     .signin a {
-        font-size: 14px;
+        font-size: 16px;
         color: #e74c3c;
         text-decoration: none;
     }
@@ -119,8 +118,8 @@
         background-color: #1d1d1d; /* لون الزر الأسود */
         color: white;
         border: none;
-        padding: 12px;
-        font-size: 16px;
+        padding: 14px;
+        font-size: 18px; /* زيادة حجم الخط في الزر */
         cursor: pointer;
         border-radius: 5px;
         transition: background-color 0.3s ease;
@@ -139,18 +138,16 @@
 </style>
 
 <div class="containe">
-    <div class="video-container">
-        <video autoplay muted loop>
-            <source src="../salon_f.mp4" type="video/mp4">
-        </video>
-        <div class="video-overlay"></div> <!-- فلتر الفيديو -->
+    <div class="image-container">
+        <img src="salon-landing.png" alt="Background Image"> <!-- استبدل بالمسار الصحيح للصورة -->
+        <div class="image-overlay"></div> <!-- فلتر الصورة -->
     </div>
     <div class="form-container">
         <form method="POST" action="{{ route('register') }}" class="signup-form">
             @csrf
 
             <h2>{{ __('Register') }}</h2>
-            <p class="welcome-message">Welcome to Beauty Connect! Please register here.</p>
+            <p class="welcome-message">Welcome to salonak ! Please register here.</p>
 
             <div class="row mb-3">
                 <label for="name">{{ __('Name') }}</label>

@@ -15,12 +15,24 @@ class BookingController extends Controller
 
     public function index()
     {
+        $user = Auth::user();
 
-        // جلب جميع الحجوزات
-        $bookings = Booking::with('subSalon', 'customer')->get(); // تأكد من إضافة العلاقات المناسبة
+        if ($user->isSuperAdmin()) {
+            $bookings = Booking::all();
+        } elseif ($user->isOwner()) {
+            $bookings = Booking::whereHas('subalon', function ($query) use ($user) {
+                $query->where('user_id', $user->id); // Assuming owner_id in sub_salons table
+            })->get();
+        } elseif ($user->isEmployee()) {
+            $bookings = Booking::where('user_id', $user->id)->get(); // Adjust as needed
+        } else {
+            return redirect()->route('login')->with('error', 'Access denied.');
+        }
 
         return view('dashboard.booking.index', compact('bookings'));
     }
+
+
     public function showServices($subsalonId) // تأكد من إضافة المعرف كوسيلة إدخال
     {
         if (!Auth::check()) {
@@ -48,44 +60,56 @@ class BookingController extends Controller
     }
 
 
- public function store(Request $request)
- {
-     $request->validate([
-    //     'services' => 'required|array',
-    // 'services.*' => 'exists:services,id',
-         'date' => 'required|date',
-         'time' => 'required|date_format:H:i',
-         'note' => 'nullable',
+    public function store(Request $request)
+    {
+        // التحقق من صحة البيانات المدخلة
+        $request->validate([
+            'date' => 'required|date',
+            'time' => 'required|date_format:H:i',
+            'note' => 'nullable',
         ]);
 
 
-     try {
-         $booking = new Booking();
-         $booking->sub_salons_id = $request->sub_salons_id;
-         $booking->user_id = auth()->id();  // Assuming the user is authenticated
-         $booking->date = $request->date;  // Store the selected date
-         $booking->time = $request->time;  // Store the selected time
-         $booking->note = $request->note;  // Store any special notes
-         $booking->save();  // Save the booking to the database
 
-         $bookingServices = [];
-         foreach ($request->services as $serviceId) {
-             $bookingServices[] = [
-                 'booking_id' => $booking->id,
-                 'service_id' => $serviceId,
+        try {
+            // إنشاء حجز جديد
+            $booking = new Booking();
+            $booking->sub_salons_id = $request->sub_salons_id;
+            $booking->user_id = auth()->id();  // بافتراض أن المستخدم مسجل الدخول
+            $booking->date = $request->date;   // تخزين التاريخ المختار
+            $booking->time = $request->time;   // تخزين الوقت المختار
+            $booking->note = $request->note;   // تخزين أي ملاحظات خاصة
+            $booking->save();  // حفظ الحجز في قاعدة البيانات
 
-             ];
-         }
-         BookingService::insert($bookingServices);
+            // تحويل `services` إلى مصفوفة
+            $serviceIds = explode(',', $request->services);  // تحويل السلسلة إلى مصفوفة
 
+            // إعداد بيانات الخدمات المتعلقة بالحجز
+            $bookingServices = [];
+            foreach ($serviceIds as $serviceId) {
+                $bookingServices[] = [
+                    'booking_id' => $booking->id,
+                    'service_id' => $serviceId,
+                    'created_at' => now(),  // إضافة وقت الإنشاء
+                    'updated_at' => now(),  // إضافة وقت التحديث
+                ];
+            }
 
-         return redirect()->route('booking.success')->with('message', 'Booking successful!');
-     } catch (\Exception $e) {
-         DB::rollBack();
-         Log::error("Error saving booking: " . $e->getMessage());
-         return redirect()->back()->withErrors(['error' => 'Failed to save booking. Please try again.']);
-     }
- }
+            // إدخال بيانات الخدمات المتعلقة بالحجز دفعة واحدة
+            BookingService::insert($bookingServices);
+
+         // After successfully completing the booking
+session()->flash('success', 'Booking completed successfully!');
+return redirect()->back();
+
+           } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error("Error saving booking: " . $e->getMessage());
+            session()->flash('error', 'An error occurred during booking. Please try again.');
+            return redirect()->back();
+                    }
+    }
+
 
 
 
@@ -112,17 +136,51 @@ class BookingController extends Controller
         return response()->json($availableTimes);
     }
 
-public function get()
-{
-    if (!Auth::check()) {
-        return redirect()->route('login')->with('error', 'يرجى تسجيل الدخول لعرض حجوزاتك.');
-    }
+    public function get(Request $request)
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'يرجى تسجيل الدخول لعرض حجوزاتك.');
+        }
 
-    $userBookings = Booking::where('user_id', Auth::id())->with('subSalon')->get();
+        $query = Booking::where('user_id', Auth::id())->with('subalon');
 
+        if ($request->has('order_by') && in_array($request->order_by, ['oldest', 'newest'])) {
+            if ($request->order_by == 'newest') {
+                $query->orderBy('date', 'desc')->orderBy('time', 'desc');
+            } else {
+                $query->orderBy('date', 'asc')->orderBy('time', 'asc');
+            }
+        }
+
+        if ($request->has('salon_name') && $request->salon_name != '') {
+            $query->whereHas('subalon.salon', function($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->salon_name . '%');
+            });
+        }
+
+        $userBookings = $query->get();
 
         return view('user_side.confirmation', compact('userBookings'));
     }
+
+    public function destroy($id)
+    {
+        $booking = Booking::findOrFail($id);
+
+        $user = auth()->user();
+
+        if (!$user->isSuperAdmin() && !$user->isOwner()) {
+            return redirect()->route('bookings.index')->with('error', 'You do not have permission to delete this booking.');
+        }
+
+        $booking->services()->delete();
+
+        $booking->delete();
+
+        return redirect()->route('bookings.index')->with('success', 'Booking successfully deleted.');
+    }
+
+
 
 
 }

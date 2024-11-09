@@ -2,84 +2,69 @@
 
 @section('content')
 <div class="container">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h3 class="title-1">Bookings</h3>
-        @if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()))
-            <a href="{{ route('bookings.create') }}">
-                <button type="button" class="btn btn-gradient-success btn-rounded btn-fw">
-                    <i class="fa-solid fa-plus" style="margin-right: 5px"></i> Add New Booking
-                </button>
-            </a>
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3><i class="fas fa-calendar-check me-2"></i> - All Bookings (Total: {{ $bookings->count() }})</h3>
+    </div>
+
+    <div class="mb-4">
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
         @endif
     </div>
 
-    <div class="row">
-        <div class="col-12 grid-margin">
-            <div class="card">
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead class="thead-light">
-                                <tr>
-                                    <th scope="col">ID</th>
-                                    <th scope="col">User Name</th>
-                                    <th scope="col">Email</th>
-                                    <th scope="col">Date</th>
-                                    <th scope="col">Time</th>
-                                    <th scope="col">Note</th>
-                                    <th scope="col">Creation Date</th>
-                                    @if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()))
-                                        <th scope="col">Actions</th>
-                                    @endif
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if ($bookings->isEmpty())
-                                    <tr>
-                                        <td colspan="{{ auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()) ? '8' : '7' }}" class="text-center">
-                                            No bookings available.
-                                        </td>
-                                    </tr>
-                                @else
-                                    @foreach($bookings as $booking)
-                                        <tr>
-                                            <th scope="row">{{ $booking->id }}</th>
-                                            <td>{{ $booking->first_name }} {{ $booking->name }}</td>
-                                            <td>{{ $booking->email }}</td>
-                                            <td>{{ $booking->date }}</td>
-                                            <td>{{ $booking->time }}</td>
-                                            <td>{{ $booking->note ?? 'N/A' }}</td>
-                                            <td>{{ $booking->created_at->format('Y-m-d') }}</td>
-                                            @if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()))
-                                                <td>
-                                                    <button type="button" class="btn btn-gradient-danger btn-rounded btn-icon" onclick="confirmDeletion(event, '{{ route('bookings.destroy', $booking->id) }}')">
-                                                        <i class="fa-solid fa-trash"></i>
-                                                    </button>
-                                                    <a href="{{ route('bookings.show', $booking->id) }}">
-                                                        <button type="button" class="btn btn-gradient-dark btn-rounded btn-icon">
-                                                            <i class="fa-solid fa-eye"></i>
-                                                        </button>
-                                                    </a>
-                                                    <a href="{{ route('bookings.edit', $booking->id) }}">
-                                                        <button type="button" class="btn btn-gradient-info btn-rounded btn-icon">
-                                                            <i class="fa-solid fa-pen-to-square"></i>
-                                                        </button>
-                                                    </a>
-                                                </td>
-                                            @endif
-                                        </tr>
-                                    @endforeach
-                                @endif
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>User Name</th>
+                    <th>Email</th>
+                    <th>Salon Address</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Note</th>
+                    <th>Created At</th>
+                    @if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()))
+                        <th>Actions</th>
+                    @endif
+                </tr>
+            </thead>
+            <tbody>
+                @if ($bookings->isEmpty())
+                    <tr>
+                        <td colspan="{{ auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()) ? '8' : '7' }}" class="text-center">
+                            No bookings available.
+                        </td>
+                    </tr>
+                @else
+                    @foreach($bookings as $booking)
+                        <tr>
+                            <td>{{ $booking->user ? $booking->user->name : 'Unknown User' }}</td>
+                            <td>{{ $booking->user ? $booking->user->email : 'Unknown email' }}</td>
+                            <td>{{ $booking->subalon ? $booking->subalon->address : 'Unknown Salon' }}</td>
+                            <td>{{ $booking->date }}</td>
+                            <td>{{ $booking->time }}</td>
+                            <td>{{ $booking->note ?? 'N/A' }}</td>
+                            <td>{{ $booking->created_at->format('Y-m-d') }}</td>
+                            @if (auth()->user()->isSuperAdmin() || auth()->user()->isOwner())
+                                <td>
+                                    <button type="button" class="btn btn-danger" onclick="confirmDeletion(event, '{{ route('bookings.destroy', $booking->id) }}')">
+                                        <i class="fa-solid fa-trash"></i> Delete
+                                    </button>
+                                </td>
+                            @endif
+                        </tr>
+                    @endforeach
+                @endif
+            </tbody>
+        </table>
     </div>
 </div>
 
-<!-- Custom Confirmation Modal -->
+<!-- Custom Confirmation Modal for Deletion -->
 <div id="confirmationModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); justify-content: center; align-items: center; z-index: 1000;">
     <div style="background: #fff; padding: 20px; border-radius: 5px; text-align: center;">
         <p>Are you sure you want to delete this booking?</p>
@@ -94,36 +79,45 @@
         var modal = document.getElementById('confirmationModal');
         var confirmButton = document.getElementById('confirmButton');
         var cancelButton = document.getElementById('cancelButton');
-
-        // Show the custom confirmation dialog
         modal.style.display = 'flex';
 
-        // Set up the confirm button to submit the form
+        // Confirm button click
         confirmButton.onclick = function() {
             var form = document.createElement('form');
             form.method = 'POST';
             form.action = url;
 
+            // Add CSRF Token
             var csrfToken = document.createElement('input');
             csrfToken.type = 'hidden';
             csrfToken.name = '_token';
             csrfToken.value = '{{ csrf_token() }}';
             form.appendChild(csrfToken);
 
+            // Add DELETE method
             var methodField = document.createElement('input');
             methodField.type = 'hidden';
             methodField.name = '_method';
             methodField.value = 'DELETE';
             form.appendChild(methodField);
 
+            // Submit the form
             document.body.appendChild(form);
             form.submit();
         };
 
-        // Set up the cancel button to hide the modal
+        // Cancel button click
         cancelButton.onclick = function() {
             modal.style.display = 'none';
         };
+
+        // Close modal if clicked outside
+        window.onclick = function(event) {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        };
     }
 </script>
+
 @endsection
