@@ -2,61 +2,66 @@
 
 @section('content')
 <div class="container">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="title-1">
-            <i class="fas fa-comments me-2"></i> Feedbacks
-        </h2>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3><i class="fas fa-comments me-2"></i> - All Feedbacks (Total: {{ $feeds->count() }})</h3>
     </div>
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered bg-white">
-                            <thead class="thead-light">
-                                <tr>
-                                    <th scope="col">ID</th>
-                                    <th scope="col">User Name</th>
-                                    <th scope="col">Sub Salon Name</th>
-                                    <th scope="col">Feedback</th>
-                                    <th scope="col">Rating</th>
-                                    <th scope="col">Date</th>
-                                    <th scope="col">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if($feeds->isEmpty())
-                                    <tr>
-                                        <td colspan="7" class="text-center">No feedbacks.</td>
-                                    </tr>
-                                @else
-                                    @foreach($feeds as $feed)
-                                        <tr>
-                                            <th scope="row">{{ $feed->id }}</th>
-                                            <td>{{ optional($feed->subsalon)->name ?? 'No Name Available' }}</td>
-                                            <td>{{ optional($feed->subsalon)->address ?? 'No Address Available' }}</td>
 
-                                            <td>{{ $feed->feedback }}</td>
-                                            <td>{{ $feed->rating }}</td>
-                                            {{-- <td>{{ $feed->created_at->format('Y-m-d') }}</td> --}}
-                                            <td>
-                                                <button type="button" class="btn btn-danger" onclick="confirmDeletion(event, '{{ route('feeds.destroy', $feed->id) }}')">
-                                                    <i class="fa-solid fa-trash"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                @endif
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+    <div class="mb-4">
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-        </div>
+        @endif
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>User Name</th>
+                    <th>Sub Salon Name</th>
+                    <th>Feedback</th>
+                    <th>Rating</th>
+                    <th>Date</th>
+                    @if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()))
+                        <th>Actions</th>
+                    @endif
+                </tr>
+            </thead>
+            <tbody>
+                @if ($feeds->isEmpty())
+                    <tr>
+                        <td colspan="{{ auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()) ? '7' : '6' }}" class="text-center">
+                            No feedbacks available.
+                        </td>
+                    </tr>
+                @else
+                    @foreach($feeds as $feed)
+                        <tr>
+                            <td>{{ $feed->id }}</td>
+                            <td>{{ optional($feed->user)->name ?? 'No Name Available' }}</td>
+                            <td>{{ optional($feed->subsalon)->address ?? 'No Address Available' }}</td>
+                            <td>{{ $feed->feedback }}</td>
+                            <td>{{ $feed->rating }}</td>
+                            <td>{{ $feed->created_at->format('Y-m-d') }}</td>
+                            @if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()))
+                                <td>
+                                    <button type="button" class="btn btn-danger" onclick="confirmDeletion(event, '{{ route('feeds.destroy', $feed->id) }}')">
+                                        <i class="fa-solid fa-trash"></i> Delete
+                                    </button>
+                                </td>
+                            @endif
+                        </tr>
+                    @endforeach
+                @endif
+            </tbody>
+        </table>
     </div>
 </div>
 
-<!-- Custom Confirmation Modal -->
+<!-- Custom Confirmation Modal for Deletion -->
 <div id="confirmationModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); justify-content: center; align-items: center; z-index: 1000;">
     <div style="background: #fff; padding: 20px; border-radius: 5px; text-align: center;">
         <p>Are you sure you want to delete this feedback?</p>

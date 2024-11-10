@@ -118,13 +118,12 @@
         color: white;
     }
 
-    /* Bookings Section */
     .booking-grid {
         display: grid;
         grid-template-columns: repeat(2, 1fr); /* عرض حجزين في كل صف */
         gap: 20px; /* المسافة بين العناصر */
         padding: 20px;
-        margin: 40px; /* زيادة المسافة بين الهيرو سكشن وبقية المحتوى */
+        margin: 40px;
     }
 
     .booking-card {

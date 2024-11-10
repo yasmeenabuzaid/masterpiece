@@ -23,17 +23,17 @@
                 <div class="col-10 col-md-8 d-none d-xl-block" data-aos="fade-down">
                     <nav class="site-navigation position-relative text-right text-lg-center" role="navigation">
                         <ul class="site-menu js-clone-nav mx-auto d-none d-lg-block">
-                            <li><a href="#hero-sec">Home</a></li>
+                            <li><a href="{{ route('all_subsalons') }}">Home</a></li>
                             <li class="has-children">
-                                <a href="haircut.html">Salons</a>
+                                <a  href="{{ route('more_subsalons') }}">Salons</a>
                                 <ul class="dropdown">
-                                    <li><a href="#">Women’s Salon</a></li>
-                                    <li><a href="#">Men’s Salon</a></li>
-                                    <li><a href="#">Mixed Salon</a></li>
+                                    <li><a href="{{ route('more_subsalons') }}">Women’s Salon</a></li>
+                                    <li><a href="{{ route('more_subsalons') }}">Men’s Salon</a></li>
+                                    <li><a href="{{ route('more_subsalons') }}">Mixed Salon</a></li>
                                 </ul>
                             </li>
-                            <li><a href="#about">About</a></li>
-                            <li><a href="booking.html">Contact</a></li>
+                            <li><a href="{{ route('all_subsalons') }}#about">About</a></li>
+                            <li><a href="{{ route('all_subsalons') }}#contactus">Contact</a></li>
                             <li><a href="{{ route('my_booking') }}">My Booking</a></li>
                         </ul>
                     </nav>

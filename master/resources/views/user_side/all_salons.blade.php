@@ -107,7 +107,7 @@
         padding: 10px 16px; /* تقليل حجم الزر */
         font-size: 14px; /* تقليل حجم النص في الزر */
         /* border-radius: 50px; */
-        background-color: rgb(134, 134, 134);
+        background-color: #498376;
         border-color: #484848;
         font-weight: 600;
     }
@@ -116,109 +116,111 @@
         background-color: #333333;
         border-color: #333333;
     }
+/* Booking Cards Section */
+.booking-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px; /* زيادة الحشو لجعل الكارد أكثر رحابة */
+    margin: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* تحسين الظلال */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch; /* محاذاة الكارد بالكامل */
+    height: 100%; /* اجعل الكارد يأخذ المساحة المتاحة بالكامل */
+    min-height: 400px; /* تعيين حد أدنى للارتفاع لضمان تناسق الكاردات */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* تأثيرات عند التمرير */
+}
 
-    /* Booking Cards Section */
-    .booking-card {
-        background-color: #fff;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        padding: 15px;
-        margin: 10px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start; /* محاذاة النص لليسار */
-    }
+.booking-card:hover {
+    transform: translateY(-5px); /* رفع الكارد قليلاً عند التمرير */
+    box-shadow: 0 8px 20px rgba(183, 183, 183, 0.2); /* تحسين الظل عند التمرير */
+}
 
-    .salon-image {
-        width: 100%;
-        height: 200px;
-        object-fit: cover;
-        border-radius: 8px;
-        margin-bottom: 15px;
-    }
+.salon-image {
+    width: 100%;
+    height: 220px; /* زيادة ارتفاع الصورة للحصول على تأثير أفضل */
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 20px; /* زيادة المسافة بين الصورة والمحتوى */
+}
 
-    .countdown {
-        font-weight: bold;
-        color: #d9534f;
-    }
+.card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1;
+    padding: 15px;
+}
 
-    .no-booking-message {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 50vh;
-        font-size: 20px;
-        color: #333;
-        text-align: center;
-    }
+.card-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333; /* تحسين اللون ليظهر أكثر وضوحًا */
+    margin-bottom: 10px; /* تحسين المسافة بين العنوان والوصف */
+    flex-grow: 0; /* منع العنوان من التمدد */
+}
 
-    .booking-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-        gap: 20px;
-    }
+.card-text {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 20px; /* زيادة المسافة بين الوصف والزّر */
+    flex-grow: 0; /* منع النص من التمدد */
+}
 
-    .card {
-        display: flex;
-        flex-direction: column;
-        position: relative;
-        border: 1px solid #e0e0e0;
-        border-radius: 8px;
-        overflow: hidden;
-        transition: box-shadow 0.3s ease;
-        background-color: #fff;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
+.card-footer {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+}
 
-    .card:hover {
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    }
+.card-footer a {
+    background-color: #498376;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 14px;
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
 
-    .card-body {
-        padding: 15px;
-    }
+.card-footer a:hover {
+    background-color: #333;
+}
 
-    .card-title {
-        font-size: 18px;
-        font-weight: bold;
-    }
+/* نوع الكارد */
+.type-card {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    padding: 8px 15px;
+    border-radius: 25px;
+    color: white;
+    font-weight: 600;
+    text-transform: capitalize;
+    background-color: #484848;
+    z-index: 2;
+}
 
-    .card-text {
-        font-size: 14px;
-        color: #555;
-    }
+/* Adjust Grid Layout */
+.booking-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
 
-    .type-card {
-        position: absolute;
-        top: 15px; /* تعديل الموضع ليكون أعلى الكارد */
-        left: 15px; /* تحديد الموضع من اليسار */
-        padding: 8px 15px;
-        border-radius: 25px;
-        color: white;
-        font-weight: 600;
-        text-transform: capitalize;
-        background-color: #484848;
-        z-index: 2;
-    }
-
-    /* Adjust Grid Layout */
-    .card .salon-image {
-        height: 180px;
-        width: 100%;
-        object-fit: cover;
-    }
-
-    /* Styling the button to match the filter button color */
-    .btn-primary {
-        background-color: #484848; /* نفس لون زر الفلتر */
-        border-color: #484848;
-    }
-
-    .btn-primary:hover {
-        background-color: #333333; /* نفس لون hover في زر الفلتر */
-        border-color: #333333;
-    }
+/* محاذاة العناصر داخل الكارد */
+.card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+.btn{
+    background-color: #498376;
+color: white;
+}
 
 </style>
 
@@ -258,7 +260,7 @@
                         <p class="card-text">{{ Str::limit($subsalon->description, 100) }}</p>
 
                         <!-- See More Button -->
-                        <a href="{{ route('single_salon', $subsalon) }}" class="btn btn-primary">See More</a>
+                        <a href="{{ route('single_salon', $subsalon) }}" class="btn ">See More</a>
                     </div>
                 </div>
             </div>
@@ -268,6 +270,7 @@
                 <p class="no-salons-message">No salons found. But don't worry, there are many other amazing salons waiting for you!</p>
             </div>
         @endforelse
+
     </div>
 </div>
 

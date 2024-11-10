@@ -15,11 +15,21 @@ class UserController extends Controller
      */
     public function index()
     {
-        $sub_salons =SubSalon::all();
+        $sub_salons = SubSalon::all();
         $salons = Salon::all();
-        $users = User::all();
-        return view('dashboard.user.index', compact('users', 'salons','sub_salons'));
+
+        if (auth()->user()->isSuperAdmin()) {
+            $users = User::all();
+        } else if (auth()->user()->isOwner()) {
+            $salonId = auth()->user()->salons_id;
+            $users = User::where('salons_id', $salonId)->where('usertype', 'employee')->get();
+        } else {
+            $users = collect();
+        }
+
+        return view('dashboard.user.index', compact('users', 'salons', 'sub_salons'));
     }
+
 
     public function showUsers()
     {
@@ -234,7 +244,66 @@ class UserController extends Controller
         return redirect()->route('users.index')->with('success', 'User updated successfully.');
     }
 
+    public function editProfile()
+    {
+        $user = auth()->user();
 
+        $salons = Salon::all();
+        $subsalons = SubSalon::all();
+
+        return view('dashboard.user.editProfile', compact('user', 'salons', 'subsalons'));
+    }
+    public function updateProfile(Request $request)
+    {
+        // التحقق من البيانات المدخلة
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . auth()->id(),
+            'password' => 'nullable|string|min:6',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        // استرجاع المستخدم الحالي
+        $user = auth()->user();
+
+        // تحديث بيانات المستخدم (اسم المستخدم والبريد الإلكتروني)
+        $user->name = $validatedData['name'];
+        $user->email = $validatedData['email'];
+
+        // تحديث كلمة المرور إذا كانت موجودة
+        if ($request->filled('password')) {
+            $user->password = bcrypt($validatedData['password']);
+        }
+
+        // تحديث الصورة إذا كانت موجودة
+        if ($request->hasFile('image')) {
+            // حذف الصورة القديمة إذا كانت موجودة
+            if ($user->image && file_exists(public_path($user->image))) {
+                @unlink(public_path($user->image));
+            }
+
+            // رفع الصورة الجديدة
+            $file = $request->file('image');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $path = public_path('uploads/user/');
+            $file->move($path, $filename);
+            $user->image = 'uploads/user/' . $filename;
+        }
+
+        // حفظ التحديثات
+        $user->save();
+
+        // إعادة التوجيه مع رسالة نجاح
+        return redirect()->route('users.profile')->with('success', 'Profile updated successfully.');
+    }
+
+
+public function showProfile()
+{
+    $user = auth()->user();
+
+    return view('dashboard.user.profile', compact('user'));
+}
 
 
 
@@ -245,13 +314,10 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
 
-        // تحقق إذا كان المستخدم هو سوبر أدمن
         if ($user->usertype === 'super_admin') {
-            // إذا كان سوبر أدمن، منع الحذف
             return redirect()->route('users.index')->with('error', 'Cannot delete the super admin user.');
         }
 
-        // إذا لم يكن سوبر أدمن، قم بحذف المستخدم
         if ($user->image) {
             @unlink(public_path($user->image));
         }

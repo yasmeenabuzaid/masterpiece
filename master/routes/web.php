@@ -128,6 +128,10 @@ Route::get('/user_side/booking', [BookingController::class, 'showBookingForm'])-
 
 Route::resource('feeds', FeedController::class);
 // Route::get('/bookings', [BookingController::class, 'get'])->name('user.bookings');
+Route::get('/profile', [UserController::class, 'showProfile'])->name('users.profile');
+Route::get('/profile/edit', [UserController::class, 'editProfile'])->name('users.editProfile');
+
+Route::put('/profile', [UserController::class, 'updateProfile'])->name('users.updateProfile');
 
 Route::middleware(['auth', 'admin'])->group(function () {
 
@@ -149,7 +153,7 @@ Route::resource('categories', CategorieController::class);
 Route::resource('bookings', BookingController::class);
 Route::resource('feedbacks', FeedController::class);
 Route::resource('castomors', CastomorController::class);
-Route::resource('profile', ProfileController::class);
+// Route::resource('profile', ProfileController::class);
 Route::resource('castomors',  CastomorController::class);
 Route::resource('working_hours', WorkingHourController::class);
 Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');
@@ -157,9 +161,9 @@ Route::get('employees', [UserController::class, 'employees'])->name('employees.i
 Route::get('superAdmins', [UserController::class, 'superAdmins'])->name('superAdmins.index');
 Route::get('owners', [UserController::class, 'owners'])->name('owners.index');
 Route::get('castomors', [UserController::class, 'castomors'])->name('castomors.index');
-Route::get('/profiles', [ProfileController::class, 'index'])->name('profiles.index');
-Route::get('/profiles/{user}/edit', [ProfileController::class, 'edit'])->name('profiles.edit');
-Route::put('/profiles/{user}', [ProfileController::class, 'update'])->name('profiles.update');
+// Route::get('/profiles', [ProfileController::class, 'index'])->name('profiles.index');
+// Route::get('/profiles/{user}/edit', [ProfileController::class, 'edit'])->name('profiles.edit');
+// Route::put('/profiles/{user}', [ProfileController::class, 'update'])->name('profiles.update');
 Route::get('/dashboard/home', [UserController::class, 'showUsers'])->name('dashboard.home');
 
 });

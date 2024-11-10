@@ -41,12 +41,12 @@ class User extends Authenticatable
 
        public function feeds()
        {
-           return $this->hasMany(Feed::class); 
+           return $this->hasMany(Feed::class);
        }
-public function salon()
-{
-    return $this->belongsTo(Salon::class, 'salons_id');
-}
+       public function salon()
+       {
+           return $this->belongsTo(Salon::class, 'salons_id');
+       }
 
 public function subSalon()
 {

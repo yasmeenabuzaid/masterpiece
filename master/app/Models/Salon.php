@@ -26,8 +26,9 @@ class Salon extends Model
 // في نموذج Salon
 public function users()
 {
-    return $this->hasMany(User::class, 'salons_id'); // ربط العلاقة بين الصالون والمستخدمين
+    return $this->hasMany(User::class, 'salons_id');
 }
+
 
 
 public function subSalons()

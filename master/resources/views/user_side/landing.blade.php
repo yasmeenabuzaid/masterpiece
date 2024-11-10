@@ -627,7 +627,7 @@ h2 {
 
             @if ($errors->has('email'))
                 <script>
-                    alert('تحقق من البريد الإلكتروني.');
+                    alert('che');
                 </script>
             @endif
 

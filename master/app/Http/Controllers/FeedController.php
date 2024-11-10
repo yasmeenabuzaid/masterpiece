@@ -40,17 +40,22 @@ class FeedController extends Controller
     public function create($subSalonId)
     {
         $subsalon = SubSalon::findOrFail($subSalonId);
-        $feeds = Feed::with('user')->where('sub_salons_id', $subsalon)->get(); // الحصول على التقييمات الخاصة بهذا الصالون
+        $feeds = Feed::with('user')->where('sub_salons_id', $subsalon)->get(); 
         return view('user_side.more_details', compact('subSalon', 'feeds'));
     }
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'feedback' => 'required|string|max:255',
-            'rating' => 'required|integer|between:1,5',
-            'sub_salons_id' => 'required|exists:sub_salons,id',
-        ]);
+ public function store(Request $request)
+{
+    $validated = $request->validate([
+        'feedback' => 'required|string|max:255',
+        'rating' => 'required|integer|between:1,5',
+        'sub_salons_id' => 'required|exists:sub_salons,id',
+    ]);
+
+    if (!$validated['rating']) {
+        return back()->withErrors(['rating' => 'Please provide a rating']);
+    }
+
 
         Feed::create([
             'feedback' => $request->feedback,
@@ -58,7 +63,7 @@ class FeedController extends Controller
             'users_id' => Auth::id(),
             'sub_salons_id' => $request->sub_salons_id,
         ]);
-   session()->flash('success', 'تم إضافة التعليق بنجاح!');
+   session()->flash('success', 'Your comment has been added successfully!');
 
    return back();
     }
@@ -85,13 +90,13 @@ class FeedController extends Controller
 
         $feed->update($request->all());
 
-        return redirect()->route('feeds.index')->with('success', 'تم تحديث التقييم بنجاح!');
+        return redirect()->route('feeds.index')->with('success', 'Feedback updated successfully.');
     }
 
     public function destroy(Feed $feed)
     {
         $feed->delete();
-        return redirect()->route('feeds.index')->with('success', 'تم حذف التقييم بنجاح!');
+        return redirect()->route('feeds.index')->with('success', 'User deleted successfully.');
     }
 }
 

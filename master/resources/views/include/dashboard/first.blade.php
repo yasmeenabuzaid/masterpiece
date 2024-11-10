@@ -20,6 +20,5 @@
     <link rel="shortcut icon" href="{{asset('assets/images/favicon.ico')}}" /> <!-- استخدم واحدة فقط -->
   </head>
   <body>
-    <!-- محتوى الصفحة هنا -->
   </body>
 </html>

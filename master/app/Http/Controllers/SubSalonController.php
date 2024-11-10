@@ -128,7 +128,7 @@ class SubSalonController extends Controller
 
         $filteredSubsalons = $subsalons->filter(function ($subsalon) {
             $averageRating = $subsalon->feeds->isEmpty() ? 0 : $subsalon->feeds->avg('rating');
-            return $averageRating >= 3;
+            return $averageRating >= 4;
         });
 
         return view('user_side.landing', [
