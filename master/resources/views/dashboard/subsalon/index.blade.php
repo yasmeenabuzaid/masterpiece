@@ -42,12 +42,13 @@
                     @foreach($subsalons as $subsalon)
                         <tr>
                             <td>
-                                @if($subsalon->salon->image)
+                                @if($subsalon->salon && $subsalon->salon->image)
                                     <img src="{{ asset($subsalon->salon->image) }}" alt="Image not found" class="me-2" style="border-radius: 3px; width: 100px;">
                                 @else
                                     <span>No Image</span>
                                 @endif
                             </td>
+
                             <td>{{ $subsalon->salon->name }}</td>
                             <td>{{ $subsalon->address }}</td>
                             <td>{{ $subsalon->usersCount() > 0 ? $subsalon->usersCount() : 'No associated employees'  }}</td> <!-- افترض وجود حقل employee_count -->

@@ -40,9 +40,9 @@
                                      class="img-fluid"
                                      style="width: 90px; height: 30px; border-radius: 50%; border: 2px solid #616161; object-fit: cover;">
                             @else
-                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFvhHHWt5ZltpPstG1g7kT1ezfr9S0uQ4axS8oWqXVtX2qk9mLaiRblJwLkvheKaTKPq8&usqp=CAU"
+                                <img src="https://i2.wp.com/chasesolar.org.uk/files/2022/02/blank-avatar.jpg"
                                      alt="Default Profile Image"
-                                     style="width: 50px; height: 50px; border-radius: 50%; border: 2px solid #616161; object-fit: cover;">
+                                     style="width: 40px; height: 40px; border-radius: 50%; border: 2px solid #616161; object-fit: cover;">
                             @endif
                         </div>
                         <div class="nav-profile-text">

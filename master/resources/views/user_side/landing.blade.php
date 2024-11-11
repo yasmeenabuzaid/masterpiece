@@ -591,8 +591,11 @@ h2 {
 
 
 
+<section id="contactus">
 
-<div class="site-section">
+
+
+<div class="site-section" >
     <div class="container">
       <div class="row">
         <div class="col-md-6 col-lg-4 text-start">
@@ -627,11 +630,11 @@ h2 {
 
             @if ($errors->has('email'))
                 <script>
-                    alert('che');
+                    alert('check your email');
                 </script>
             @endif
 
-            <form action="{{ route('contacts.store') }}" method="POST">
+            <form action="{{ route('contacts.store') }}" method="POST" >
                 @csrf
                 <div class="form-group">
                     <label for="name">Name</label>
@@ -654,6 +657,7 @@ h2 {
       </div>
     </div>
 </div>
+</section>
 <!-- Content page -->
 <script>
     document.querySelector('form').onsubmit = function() {

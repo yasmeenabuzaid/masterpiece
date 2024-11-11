@@ -15,20 +15,37 @@ class UserController extends Controller
      */
     public function index()
     {
-        $sub_salons = SubSalon::all();
         $salons = Salon::all();
+        $sub_salons = SubSalon::all();
 
+        // التحقق من نوع المستخدم
         if (auth()->user()->isSuperAdmin()) {
+            // إذا كان المستخدم Super Admin، إظهار جميع المستخدمين
             $users = User::all();
-        } else if (auth()->user()->isOwner()) {
+        } elseif (auth()->user()->isOwner()) {
+            // إذا كان المستخدم من نوع "Owner"، الحصول على الصالون الخاص به
             $salonId = auth()->user()->salons_id;
-            $users = User::where('salons_id', $salonId)->where('usertype', 'employee')->get();
+
+            // الحصول على sub_salons المرتبطة بالصالون الخاص بالـ Owner
+            $subSalonsForOwner = SubSalon::where('salon_id', $salonId)->get();
+
+            // إذا كانت هناك sub_salons للـ Owner، نعرض الموظفين المرتبطين بها
+            if ($subSalonsForOwner->isNotEmpty()) {
+                // استعلام لجلب الموظفين المرتبطين بـ sub_salons المرتبطة بالـ salon
+                $users = User::whereIn('sub_salons_id', $subSalonsForOwner->pluck('id'))
+                            ->where('usertype', 'employee') // نعرض فقط الموظفين
+                            ->get();
+            } else {
+                $users = collect(); // إذا لم توجد sub_salons، نرجع مجموعة فارغة
+            }
         } else {
+            // إذا كان المستخدم ليس Super Admin أو Owner، إرجاع مجموعة فارغة
             $users = collect();
         }
 
         return view('dashboard.user.index', compact('users', 'salons', 'sub_salons'));
     }
+
 
 
     public function showUsers()
@@ -108,64 +125,62 @@ class UserController extends Controller
 
    public function store(Request $request)
    {
-       // التحقق من القيم المرسلة
-       $validatedData = $request->validate([
-           'name' => 'required|string|max:255',
-           'email' => 'required|email|unique:users,email',
-           'password' => 'required|string|min:6',
-           'salons_id' => 'nullable|exists:salons,id',  // تحقق من الصالون
-           'sub_salons_id' => 'nullable|exists:sub_salons,id',  // تحقق من السب صالون
-           'usertype' => 'required|in:super_admin,owner,employee,user',
-           'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-       ]);
+       // طباعة البيانات المرسلة من النموذج
+    //    dd($request->all());
+    $validatedData = $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:users,email',
+        'password' => 'required|string|min:6',
+        'salons_id' => 'nullable|exists:salons,id',
+        'sub_salons_id' => 'nullable|exists:sub_salons,id',
+        'usertype' => 'required|in:super_admin,owner,employee,user',
+        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+    ]);
 
-       // حفظ البيانات داخل قاعدة البيانات
-       DB::transaction(function () use ($validatedData, $request) {
-           $user = new User();
-           $user->name = $validatedData['name'];
-           $user->email = $validatedData['email'];
-           $user->usertype = $validatedData['usertype'];
+    // استخدام المعاملات لضمان الحفظ بشكل آمن في حالة وجود مشاكل
+    DB::transaction(function () use ($validatedData, $request) {
+        $user = new User();
+        $user->name = $validatedData['name'];
+        $user->email = $validatedData['email'];
+        $user->usertype = $validatedData['usertype'];
 
-           // إذا كان المستخدم من نوع "owner"، خزّن الصالون
-           if ($validatedData['usertype'] === 'owner') {
-               $user->salons_id = $validatedData['salons_id'];
-           } else {
-               $user->salons_id = null;
-           }
+        // إذا كان المستخدم من نوع "owner"، خزّن الصالون
+        if ($validatedData['usertype'] === 'owner') {
+            $user->salons_id = $validatedData['salons_id'];  // حفظ الـ salon_id
+        } else {
+            $user->salons_id = null;  // تعيين null إذا لم يكن owner
+        }
 
-           // إذا كان المستخدم من نوع "employee"، خزّن السب صالون
-           if ($validatedData['usertype'] === 'employee') {
-               $user->sub_salons_id = $validatedData['sub_salons_id'];
-           } else {
-               $user->sub_salons_id = null;
-           }
+        // إذا كان المستخدم من نوع "employee"، خزّن السب صالون
+        if ($validatedData['usertype'] === 'employee') {
+            $user->sub_salons_id = $validatedData['sub_salons_id'];  // حفظ الـ sub_salons_id
+        } else {
+            $user->sub_salons_id = null;  // تعيين null إذا لم يكن employee
+        }
 
-           // تشفير كلمة المرور
-           $user->password = bcrypt($validatedData['password']);
+        // تشفير كلمة المرور
+        $user->password = bcrypt($validatedData['password']);
 
-           // إذا كان هناك صورة، قم بتحميلها
-           if ($request->hasFile('image')) {
-               $file = $request->file('image');
-               $filename = time() . '.' . $file->getClientOriginalExtension();
-               $path = public_path('uploads/user/');
+        // إذا كان هناك صورة، قم بتحميلها
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $path = public_path('uploads/user/');
 
-               if (!file_exists($path)) {
-                   mkdir($path, 0755, true);
-               }
+            if (!file_exists($path)) {
+                mkdir($path, 0755, true);
+            }
 
-               $file->move($path, $filename);
-               $user->image = 'uploads/user/' . $filename;
-           }
+            $file->move($path, $filename);
+            $user->image = 'uploads/user/' . $filename;
+        }
 
-           // حفظ المستخدم في قاعدة البيانات
-           $user->save();
-       });
+        // حفظ المستخدم في قاعدة البيانات
+        $user->save();
+    });
 
-       return redirect()->route('users.index')->with('success', 'User created successfully.');
-   }
-
-
-
+    return redirect()->route('users.index')->with('success', 'User created successfully.');
+}
 
 
 
@@ -193,7 +208,7 @@ class UserController extends Controller
             'password' => 'nullable|string|min:6',
             'usertype' => 'required|in:super_admin,owner,employee,user',
             'salons_id' => 'nullable|exists:salons,id',
-            'sub_salons_id' => 'nullable|exists:sub_salons,id',  // تأكد من وجود الحقل
+            'sub_salons_id' => 'nullable|exists:sub_salons,id',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
@@ -204,18 +219,19 @@ class UserController extends Controller
         $user->name = $validatedData['name'];
         $user->email = $validatedData['email'];
         $user->usertype = $validatedData['usertype'];
-        $user->salons_id = $validatedData['salons_id'] ?? null;
 
-        // إذا كان نوع المستخدم هو "employee"، تحديث sub_salons_id فقط
-        if ($validatedData['usertype'] === 'employee') {
-            // تأكد من أن الحقل موجود في الطلب
-            if ($request->has('sub_salons_id')) {
-                $user->sub_salons_id = $validatedData['sub_salons_id'];
-            } else {
-                $user->sub_salons_id = null; // إذا لم يكن موجودًا، تعيينه إلى null
-            }
+        // تحديث salons_id فقط إذا كان نوع المستخدم "owner"
+        if ($validatedData['usertype'] === 'owner') {
+            $user->salons_id = $validatedData['salons_id'] ?? null;
         } else {
-            $user->sub_salons_id = null; // إذا لم يكن المستخدم من نوع employee، تعيينه إلى null
+            $user->salons_id = null;  // إذا لم يكن Owner، تعيينه null
+        }
+
+        // تحديث sub_salons_id فقط إذا كان نوع المستخدم "employee"
+        if ($validatedData['usertype'] === 'employee') {
+            $user->sub_salons_id = $validatedData['sub_salons_id'] ?? null;
+        } else {
+            $user->sub_salons_id = null;  // تعيينه null إذا لم يكن Employee
         }
 
         // تحديث كلمة المرور إذا كانت موجودة في الطلب
@@ -230,6 +246,7 @@ class UserController extends Controller
                 @unlink(public_path($user->image));
             }
 
+            // رفع الصورة الجديدة
             $file = $request->file('image');
             $filename = time() . '.' . $file->getClientOriginalExtension();
             $path = public_path('uploads/user/');
@@ -243,6 +260,7 @@ class UserController extends Controller
         // إعادة التوجيه مع رسالة نجاح
         return redirect()->route('users.index')->with('success', 'User updated successfully.');
     }
+
 
     public function editProfile()
     {

@@ -34,7 +34,7 @@
                             </li>
                             <li><a href="{{ route('all_subsalons') }}#about">About</a></li>
                             <li><a href="{{ route('all_subsalons') }}#contactus">Contact</a></li>
-                            <li><a href="{{ route('my_booking') }}">My Booking</a></li>
+                            {{-- <li><a href="{{ route('my_booking') }}">My Booking</a></li> --}}
                         </ul>
                     </nav>
                 </div>
@@ -58,7 +58,7 @@
                                         @else
                                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-inline">
                                                 @csrf
-                                                <a href="{{ route('profile') }}" class="btn-nav mr-3">
+                                                <a href="{{ route('my_booking') }}" class="btn-nav mr-3">
                                                     <i class="fas fa-user" style="margin-right: 5px;"></i> Profile
                                                 </a>
                                             </form>

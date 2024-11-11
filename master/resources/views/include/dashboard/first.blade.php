@@ -4,9 +4,8 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- تحسين للـ responsiveness -->
-    <link rel="icon" type="image/png" href="{{ asset('smaill-image.png') }}">
-    <title>Salonak</title>
-
+    <link rel="icon" type="image/png" href="{{ asset('smaill-image.png') }} ">
+    <title>salonak</title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="{{asset('assets/vendors/mdi/css/materialdesignicons.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/vendors/css/vendor.bundle.base.css')}}">
@@ -17,7 +16,7 @@
     <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
     <!-- End layout styles -->
 
-    <link rel="shortcut icon" href="{{asset('assets/images/favicon.ico')}}" /> <!-- استخدم واحدة فقط -->
+    {{-- <link rel="shortcut icon" href="{{asset('assets/images/favicon.ico')}}" /> <!-- استخدم واحدة فقط --> --}}
   </head>
   <body>
   </body>

@@ -18,19 +18,26 @@ class BookingController extends Controller
         $user = Auth::user();
 
         if ($user->isSuperAdmin()) {
+            // إذا كان المستخدم SuperAdmin، جلب جميع الحجوزات
             $bookings = Booking::all();
         } elseif ($user->isOwner()) {
-            $bookings = Booking::whereHas('subalon', function ($query) use ($user) {
-                $query->where('user_id', $user->id); // Assuming owner_id in sub_salons table
+            // إذا كان المستخدم هو Owner، جلب الحجوزات المرتبطة بالـ SubSalon عبر الـ Salon
+            $bookings = Booking::whereHas('subalon.salon', function ($query) use ($user) {
+                // التأكد من أن الـ Salon مرتبط بالـ Owner عبر الـ user_id
+                $query->where('user_id', $user->id);
             })->get();
         } elseif ($user->isEmployee()) {
-            $bookings = Booking::where('user_id', $user->id)->get(); // Adjust as needed
+            // إذا كان المستخدم Employee، جلب الحجوزات الخاصة به
+            $bookings = Booking::where('user_id', $user->id)->get();
         } else {
+            // إذا لم يكن المستخدم مسجل دخوله
             return redirect()->route('login')->with('error', 'Access denied.');
         }
 
+        // إرجاع الحجوزات إلى العرض
         return view('dashboard.booking.index', compact('bookings'));
     }
+
 
 
     public function showServices($subsalonId) // تأكد من إضافة المعرف كوسيلة إدخال
@@ -43,7 +50,7 @@ class BookingController extends Controller
         $subsalon = SubSalon::withCount('users')->findOrFail($subsalonId);
 
         // احصل على جميع الخدمات الخاصة بالصالون الفرعي
-        $services = Service::where('sub_salon_id', $subsalon->id)->get();
+        $services = Service::where('sub_salons_id', $subsalon->id)->get();
         $bookings = Booking::all();
 
         // تحقق إذا كان الـ SubSalon موجودًا
@@ -160,7 +167,7 @@ return redirect()->back();
 
         $userBookings = $query->get();
 
-        return view('user_side.confirmation', compact('userBookings'));
+        return view('user_side.user_profile.my_booking', compact('userBookings'));
     }
 
     public function destroy($id)

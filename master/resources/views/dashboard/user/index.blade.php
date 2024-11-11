@@ -24,7 +24,8 @@
         <table class="table table-striped table-bordered">
             <thead>
                 <tr>
-                    <th>Assignee</th>
+                    <th>image</th>
+                    <th>name</th>
                     <th>User Type</th>
                     <th>Email</th>
                     <th>Date</th>
@@ -40,9 +41,15 @@
                     @foreach($users as $user)
                         <tr>
                             <td>
-                                <img src="{{ $user->image ? asset($user->image) : 'default-image-path.jpg' }}" class="me-2" alt="image" style="border-radius: 50%; width: 50px; height: 50px;">
-                                {{ $user->name }}
+                                <img
+                                    src="{{ $user->image ? asset($user->image) : asset('https://i2.wp.com/chasesolar.org.uk/files/2022/02/blank-avatar.jpg') }}"
+                                    class="me-2"
+                                    alt="image"
+                                    style="border-radius: 50%; width: 50px; height: 50px;">
+
                             </td>
+                            <td> {{ $user->name }}</td>
+
                             <td>
                                 @if($user->usertype === 'user')
                                     <label class="badge" style="background-color: red; color: white;">Customer</label>
