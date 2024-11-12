@@ -112,11 +112,13 @@ Route::get('/user', function () {
 Route::get('/user-booking', function () {
     return view('user_side/booking');
 })->name('user-booking');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 // Route::resource('/home', TestimonialController::class)->name('home_psge');
 Route::get('/select-services', [BookingController::class, 'showServices'])->name('services.index')->middleware('auth');
 Route::resource('/contacts', ContactController::class);
 
+Route::get('/categories/{salonId?}/{subSalonId?}', [CategorieController::class, 'show_CategoriesBySalon'])->name('all-category');
 Route::get('/services', [BookingController::class, 'showServices'])->name('services.index');
 Route::get('/booking/{subSalonId}', [BookingController::class, 'showBookingForm'])->name('booking.form');
 // Route::get('/available-times', [BookingController::class, 'availableTimes'])->name('available.times');
@@ -124,7 +126,6 @@ Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.st
 Route::get('/my-booking', [BookingController::class, 'get'])->name('my_booking')->middleware('auth') ;
 Route::get('/available-times/{subSalonId}', [BookingController::class, 'showAvailableTimes'])->name('available.times');
 Route::get('/user_side/booking', [BookingController::class, 'showBookingForm'])->name('user_side.booking');
-// use App\Http\Controllers\FeedController;
 
 Route::resource('feeds', FeedController::class);
 // Route::get('/bookings', [BookingController::class, 'get'])->name('user.bookings');

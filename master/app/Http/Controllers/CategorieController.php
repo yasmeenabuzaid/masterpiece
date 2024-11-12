@@ -30,6 +30,25 @@ class CategorieController extends Controller
         return view('dashboard.category.index', compact('categories'));
     }
 
+    public function show_CategoriesBySalon($salonId = null, $subSalonId = null)
+    {
+        if ($subSalonId) {
+            $subSalon = SubSalon::findOrFail($subSalonId); // جلب الصالون الفرعي باستخدام الـ id
+            $categories = $subSalon->categories; // جلب الفئات المرتبطة بالصالون الفرعي
+        }
+        elseif ($salonId) {
+            $salon = Salon::findOrFail($salonId);
+            $subSalons = $salon->subSalons;
+            $categories = Categorie::whereIn('sub_salons_id', $subSalons->pluck('id'))->get();
+        } else {
+            return redirect()->route('home')->with('error', 'Salon or SubSalon not found');
+        }
+
+        return view('user_side.all-categoies', compact('categories', 'salon', 'subSalon'));
+    }
+
+
+
 
 
 

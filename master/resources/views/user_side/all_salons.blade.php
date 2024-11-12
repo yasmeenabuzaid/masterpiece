@@ -2,51 +2,12 @@
 
 @section('content')
 
-<!-- Hero Section with Background Image and Overlay -->
-<div class="hero-section">
-    <!-- Overlay -->
-    <div class="overlay"></div>
-
-    <!-- Hero Content -->
-    <div class="hero-content">
-        <h1 class="text-white">The Salons</h1>
-        <h2>Find Your Perfect Salon</h2>
-    </div>
-
-    <!-- Booking Filter Form -->
-    <div class="filter-form">
-        <form method="GET" action="{{ route('more_subsalons') }}" class="d-flex justify-content-center gap-4 w-100">
-            <!-- Type Filter -->
-            <select name="type" class="form-control" style="width: 200px;border-radius: 5px">
-                <option value="">All Salons</option>
-                <option value="women" {{ request('type') == 'women' ? 'selected' : '' }}>Women</option>
-                <option value="men" {{ request('type') == 'men' ? 'selected' : '' }}>Men</option>
-                <option value="mixed" {{ request('type') == 'mixed' ? 'selected' : '' }}>Mixed</option>
-            </select>
-
-            <!-- Governorate Filter -->
-            <select name="governorate" class="form-control" style="width: 200px;border-radius: 5px">
-                <option value="">All Governorates</option>
-                @foreach (['Amman', 'Zarqa', 'Irbid', 'Ajloun', 'Jerash', 'Madaba', 'Mafraq', 'Karak', 'Tafilah', 'Ma\'an', 'Aqaba'] as $governorate)
-                    <option value="{{ $governorate }}" {{ request('governorate') == $governorate ? 'selected' : '' }}>{{ $governorate }}</option>
-                @endforeach
-            </select>
-
-            <!-- Salon Name Search -->
-            <input type="text" name="name" class="form-control" placeholder="Search by Salon Name" value="{{ request('name') }}" style="width: 200px; border-radius: 5px">
-
-            <!-- Filter Button -->
-            <button type="submit" class="btn btn-primary">Filter</button>
-        </form>
-    </div>
-</div>
-
 <!-- Hero Section Styles -->
 <style>
     /* Hero Section Styles */
     .hero-section {
         position: relative;
-        height: 500px;
+        height: 300px;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -82,196 +43,150 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: rgba(79, 79, 79, 0.671); /* فلتر داكن مع شفافية أقل */
+        background: rgba(79, 79, 79, 0.671); /* Dark overlay */
         z-index: 1;
     }
 
+    /* Filter Form Styles */
     .filter-form {
         display: flex;
-        justify-content: center;
+        justify-content: space-between;
+        gap: 15px;
         align-items: center;
-        gap: 10px; /* تقليل الفراغ بين الحقول */
-        position: relative;
-        z-index: 2;
-        margin-top: 10px; /* تقليل المسافة العلوية */
+        margin-top: 20px;
+        flex-wrap: wrap;
     }
 
-    .filter-form select, .filter-form input {
-        padding: 8px; /* تقليل الحشو داخل الحقول */
-        border: 1px solid #ddd;
+    .filter-form select,
+    .filter-form input {
+        padding: 10px;
+        border: 1px solid #ccc;
         border-radius: 5px;
-        font-size: 14px; /* تقليل حجم الخط داخل الحقول */
+        font-size: 14px;
+        width: 200px;
+        transition: all 0.3s ease;
+    }
+
+    .filter-form select:focus,
+    .filter-form input:focus {
+        border-color: #007bff;
+        outline: none;
     }
 
     .filter-form button {
-        padding: 10px 16px; /* تقليل حجم الزر */
-        font-size: 14px; /* تقليل حجم النص في الزر */
-        /* border-radius: 50px; */
-        background-color: #498376;
-        border-color: #484848;
-        font-weight: 600;
+        padding: 10px 20px;
+        border-radius: 5px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
     }
 
     .filter-form button:hover {
-        background-color: #333333;
-        border-color: #333333;
+        background-color: #0056b3;
     }
-/* Booking Cards Section */
-.booking-card {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 20px; /* زيادة الحشو لجعل الكارد أكثر رحابة */
-    margin: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* تحسين الظلال */
-    display: flex;
-    flex-direction: column;
-    align-items: stretch; /* محاذاة الكارد بالكامل */
-    height: 100%; /* اجعل الكارد يأخذ المساحة المتاحة بالكامل */
-    min-height: 400px; /* تعيين حد أدنى للارتفاع لضمان تناسق الكاردات */
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* تأثيرات عند التمرير */
-}
 
-.booking-card:hover {
-    transform: translateY(-5px); /* رفع الكارد قليلاً عند التمرير */
-    box-shadow: 0 8px 20px rgba(183, 183, 183, 0.2); /* تحسين الظل عند التمرير */
-}
+    .btn-group .btn {
+        margin: 5px;
+        border-radius: 5px;
+        padding: 10px 20px;
+        background-color: #f8f9fa;
+        border: 1px solid #ddd;
+        font-size: 14px;
+        color: #333;
+        transition: background-color 0.3s, color 0.3s;
+    }
 
-.salon-image {
-    width: 100%;
-    height: 220px; /* زيادة ارتفاع الصورة للحصول على تأثير أفضل */
-    object-fit: cover;
-    border-radius: 8px;
-    margin-bottom: 20px; /* زيادة المسافة بين الصورة والمحتوى */
-}
+    .btn-group .btn:hover,
+    .btn-group .btn.active {
+        background-color: #007bff;
+        color: #fff;
+    }
 
-.card-body {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    flex-grow: 1;
-    padding: 15px;
-}
+    .media img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+        border-radius: 8px;
+    }
 
-.card-title {
-    font-size: 18px;
-    font-weight: bold;
-    color: #333; /* تحسين اللون ليظهر أكثر وضوحًا */
-    margin-bottom: 10px; /* تحسين المسافة بين العنوان والوصف */
-    flex-grow: 0; /* منع العنوان من التمدد */
-}
-
-.card-text {
-    font-size: 14px;
-    color: #555;
-    margin-bottom: 20px; /* زيادة المسافة بين الوصف والزّر */
-    flex-grow: 0; /* منع النص من التمدد */
-}
-
-.card-footer {
-    display: flex;
-    justify-content: flex-start;
-    gap: 10px;
-}
-
-.card-footer a {
-    background-color: #498376;
-    padding: 10px 20px;
-    border-radius: 25px;
-    font-size: 14px;
-    color: white;
-    text-decoration: none;
-    font-weight: 600;
-    transition: background-color 0.3s ease;
-}
-
-.card-footer a:hover {
-    background-color: #333;
-}
-
-/* نوع الكارد */
-.type-card {
-    position: absolute;
-    top: 15px;
-    left: 15px;
-    padding: 8px 15px;
-    border-radius: 25px;
-    color: white;
-    font-weight: 600;
-    text-transform: capitalize;
-    background-color: #484848;
-    z-index: 2;
-}
-
-/* Adjust Grid Layout */
-.booking-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
-}
-
-/* محاذاة العناصر داخل الكارد */
-.card-body {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 100%;
-}
-.btn{
-    background-color: #498376;
-color: white;
-}
-
+    .media-body {
+        padding: 10px;
+    }
 </style>
 
-<!-- Salon Listings Section -->
-<div class="container mt-5">
+<section class="section bg-light">
+    <div class="container">
+        <div class="row justify-content-center element-animate">
+            <div class="col-md-8 text-center ">
+                <h2 class="text-uppercase heading border-bottom mb-4">Our News</h2>
+                <p class="mb-0 lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi unde impedit, necessitatibus, soluta sit quam minima expedita atque corrupti reiciendis.</p>
+            </div>
+        </div>
 
+        <!-- Filter Form Section -->
+        <div class="row justify-content-center mb-5">
+            <div class="col-md-8">
+                <div class="filter-form">
+                    <form method="GET" action="{{ route('more_subsalons') }}" class="d-flex justify-content-between w-100 gap-3">
+                        <!-- Type Filter -->
+                        <div class="btn-group" role="group" aria-label="Salon Type Filter">
+                            <button type="submit" name="type" value="" class="btn {{ request('type') == '' ? 'active' : '' }}">All Salons</button>
+                            <button type="submit" name="type" value="women" class="btn {{ request('type') == 'women' ? 'active' : '' }}">Women</button>
+                            <button type="submit" name="type" value="men" class="btn {{ request('type') == 'men' ? 'active' : '' }}">Men</button>
+                            <button type="submit" name="type" value="mixed" class="btn {{ request('type') == 'mixed' ? 'active' : '' }}">Mixed</button>
+                        </div>
 
-    <!-- Separator -->
-    <div class="salon-divider"></div>
+                        <!-- Governorate Filter -->
+                        <select name="governorate" class="btn">
+                            <option value="">All Governorates</option>
+                            @foreach (['Amman', 'Zarqa', 'Irbid', 'Ajloun', 'Jerash', 'Madaba', 'Mafraq', 'Karak', 'Tafilah', 'Ma\'an', 'Aqaba'] as $governorate)
+                                <option value="{{ $governorate }}" {{ request('governorate') == $governorate ? 'selected' : '' }}>{{ $governorate }}</option>
+                            @endforeach
+                        </select>
 
-    <!-- Display Salons -->
-    <div id="salon-results" class="row">
-        @forelse ($subsalons as $subsalon)
-            <div class="col-md-6 col-lg-3 text-center mb-5">
-                <!-- Card for Salon -->
-                <div class="booking-card">
-                    <!-- Salon Type Badge -->
-                    {{-- <div class="type-card">
-                        {{ ucfirst($subsalon->type) }}
-                    </div> --}}
+                        <!-- Salon Name Search -->
+                        <input type="text" name="name" class="btn " placeholder="Search by Salon Name" value="{{ request('name') }}">
 
-                    <!-- Salon Image -->
-                    <img src="{{ $subsalon->salon->image }}" alt="Salon Image" class="salon-image">
-
-                    <!-- Card Body -->
-                    <div class="card-body">
-                        <!-- Location & Type Info -->
-                        <p>
-                            <i class="fas fa-map-marker-alt"></i> {{ $subsalon->location }} |
-                            <i class="fas fa-user"></i> for {{ ucfirst($subsalon->type) }}
-                        </p>
-
-                        <!-- Salon Name -->
-                        <h5 class="card-title">{{ $subsalon->salon->name }}</h5>
-
-                        <!-- Salon Description -->
-                        <p class="card-text">{{ Str::limit($subsalon->description, 100) }}</p>
-
-                        <!-- See More Button -->
-                        <a href="{{ route('single_salon', $subsalon) }}" class="btn ">See More</a>
-                    </div>
+                        <!-- Filter Button -->
+                        <button type="submit" class="btn">Filter</button>
+                    </form>
                 </div>
             </div>
-        @empty
-            <div class="col-12">
-                <img src="https://unsplash-assets.imgix.net/empty-states/photos.png" alt="No salons found" class="no-salons-image">
-                <p class="no-salons-message">No salons found. But don't worry, there are many other amazing salons waiting for you!</p>
-            </div>
-        @endforelse
+        </div>
 
-    </div>
-</div>
+        <!-- Carousel for News -->
+        <div class="row element-animate">
+            @forelse ($subsalons->chunk(4) as $chunkedSubsalons) <!-- تقسيم الصالونات إلى مجموعات من 4 -->
+                <div class="row">
+                    @foreach ($chunkedSubsalons as $subsalon) <!-- عرض كل صالون في العمود -->
+                        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                            <div class="media d-block media-custom text-left">
+                                <img src="{{ $subsalon->salon->image }}" alt="Image Placeholder" class="img-fluid" style="width: 100%; height: 200px; object-fit: cover;">
+                                <div class="media-body">
+                                    <span class="meta-post">December 2, 2017</span>
+                                    <h3 class="mt-0 text-black"><a href="#" class="text-black">{{ $subsalon->salon->name }}</a></h3>
+                                    <p>{{ Str::limit($subsalon->description, 100) }}</p>
+                                    <p class="clearfix">
+                                        <a href="{{ route('single_salon', $subsalon) }}" class="btn btn-primary">See More</a>
+                                        <a href="#" class="float-right meta-chat"><span class="ion-chatbubble"></span> 8</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            @empty
+                <div class="col-12 text-center d-flex justify-content-center align-items-center" style="height: 300px; margin-top: 40px;">
+                    <div class="no-salons-content">
+                        <img src="https://unsplash-assets.imgix.net/empty-states/photos.png" alt="No salons found" class="no-salons-image" style="max-width: 50%; height: auto;">
+                        <p class="no-salons-message" style="font-size: 18px; color: #666;">No salons found. But don't worry, there are many other amazing salons waiting for you!</p>
+                    </div>
+                </div>
+            @endforelse
+        </div>
+
+    </section>
 
 @endsection

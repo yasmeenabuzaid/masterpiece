@@ -170,7 +170,7 @@ class SubSalonController extends Controller
         $subsalon = SubSalon::find($id);
 
         if (!$subsalon) {
-            return redirect()->back()->with('error', 'Salon not found');
+            return redirect()->route('home')->with('error', 'Salon not found');
         }
 
         $categories = $subsalon->categories;

@@ -1,6 +1,6 @@
 	/*
   	Flaticon icon font: Flaticon
-  	Creation date: 17/09/2018 12:40
+  	Creation date: 03/01/2018 11:00
   	*/
 
 @font-face {
@@ -24,7 +24,7 @@
 [class^="flaticon-"]:before, [class*=" flaticon-"]:before,
 [class^="flaticon-"]:after, [class*=" flaticon-"]:after {   
   font-family: Flaticon;
-  
+
   font-style: normal;
   font-weight: normal;
   font-variant: normal;
@@ -36,9 +36,9 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.flaticon-razor:before { content: "\f100"; }
-.flaticon-location-pin:before { content: "\f101"; }
-.flaticon-shave:before { content: "\f102"; }
-.flaticon-barber:before { content: "\f103"; }
-.flaticon-hair-dryer:before { content: "\f104"; }
-.flaticon-spray:before { content: "\f105"; }
+.flaticon-blueprint:before { content: "\f100"; }
+.flaticon-building-1:before { content: "\f101"; }
+.flaticon-crane:before { content: "\f102"; }
+.flaticon-helmet:before { content: "\f103"; }
+.flaticon-building:before { content: "\f104"; }
+.flaticon-engineer:before { content: "\f105"; }

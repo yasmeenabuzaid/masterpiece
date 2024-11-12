@@ -8,86 +8,80 @@
 
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 
-    <!-- Navbar Start -->
-    <header class="site-navbar py-1" role="banner">
-        <div class="container-fluid">
-            <div class="row align-items-center">
-                <div class="col-6 col-xl-2" data-aos="fade-down">
-                    <h1 class="mb-0">
-                        <a href="#" class="text-black h2 mb-0">
-                            <img src="{{ asset('logo2.png') }}" alt="Logo" style="height: 45px; width: 160px;">
-                        </a>
-                    </h1>
-                </div>
+</head>
+<body>
+    <header role="banner">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container">
+                <img src="{{ asset('logo2.png') }}" alt="Logo" style="height: 45px; width: 160px;">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample05" aria-controls="navbarsExample05" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-                <div class="col-10 col-md-8 d-none d-xl-block" data-aos="fade-down">
-                    <nav class="site-navigation position-relative text-right text-lg-center" role="navigation">
-                        <ul class="site-menu js-clone-nav mx-auto d-none d-lg-block">
-                            <li><a href="{{ route('all_subsalons') }}">Home</a></li>
-                            <li class="has-children">
-                                <a  href="{{ route('more_subsalons') }}">Salons</a>
-                                <ul class="dropdown">
-                                    <li><a href="{{ route('more_subsalons') }}">Women’s Salon</a></li>
-                                    <li><a href="{{ route('more_subsalons') }}">Men’s Salon</a></li>
-                                    <li><a href="{{ route('more_subsalons') }}">Mixed Salon</a></li>
-                                </ul>
+                <div class="collapse navbar-collapse position-relative" id="navbarsExample05">
+                    <ul class="navbar-nav mx-auto pl-lg-5 pl-0 d-flex align-items-center">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{{ route('all_subsalons') }}">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link"  href="{{ route('more_subsalons') }}">salons</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link " href="services.html" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Services</a>
+                        </li>
+                        {{-- <li class="nav-item">
+                            <a class="nav-link" href="news.html">News</a>
+                        </li> --}}
+                        <li class="nav-item">
+                            <a class="nav-link" href="about.html">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="contact.html">Contact</a>
+                        </li>
+
+                        <!-- Show login/register buttons if user is guest -->
+                        @guest
+                            <li class="nav-item cta-btn2 d-flex">
+                                <a href="{{ route('login') }}" class="btn btn-primary mr-2">Login</a>
+                                <a href="{{ route('register') }}" class="btn btn-primary">Register</a>
                             </li>
-                            <li><a href="{{ route('all_subsalons') }}#about">About</a></li>
-                            <li><a href="{{ route('all_subsalons') }}#contactus">Contact</a></li>
-                            {{-- <li><a href="{{ route('my_booking') }}">My Booking</a></li> --}}
-                        </ul>
-                    </nav>
-                </div>
+                        @else
+                            @if (auth()->user()->isSuperAdmin() || auth()->user()->isOwner() || auth()->user()->isEmployee())
+                                <!-- Display dashboard and logout button -->
+                                <li class="nav-item cta-btn2 d-flex">
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-inline">
+                                        @csrf
+                                        <a href="{{ route('dashbourd') }}" class="btn btn-primary mr-2">
+                                            <i class="fas fa-tachometer-alt" style="margin-right: 5px;"></i> Dashboard
+                                        </a>
 
-                <div class="col-6 col-xl-2 text-right" data-aos="fade-down">
-                    <div class="d-none d-xl-inline-block">
-                        <ul class="site-menu js-clone-nav ml-auto list-unstyled d-flex text-right mb-0" data-class="social">
-                            <li class="d-flex">
-                                @guest
-                                    <a href="{{ route('login') }}" class="btn-nav">Login</a>
-                                    <a href="{{ route('register') }}" class="btn-nav">Register</a>
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-sign-out-alt" style="margin-right: 5px;"></i> Logout
+                                        </button>
+                                    </form>
+                                </li>
                                 @else
-                                    <div class="btns">
-                                        @if (auth()->user()->isSuperAdmin() || auth()->user()->isOwner() || auth()->user()->isEmployee())
-                                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-inline">
-                                                @csrf
-                                                <a href="{{ route('dashbourd') }}" class="btn-nav mr-3">
-                                                    <i class="fas fa-tachometer-alt" style="margin-right: 5px;"></i> Dashboard
-                                                </a>
-                                            </form>
-                                        @else
-                                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-inline">
-                                                @csrf
-                                                <a href="{{ route('my_booking') }}" class="btn-nav mr-3">
-                                                    <i class="fas fa-user" style="margin-right: 5px;"></i> Profile
-                                                </a>
-                                            </form>
-                                        @endif
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-inline">
-                                            @csrf
-                                            <button type="submit" class="btn-nav">
-                                                <i class="fas fa-sign-out-alt" style="margin-right: 5px;"></i> Logout
-                                            </button>
-                                        </form>
-                                    </div>
-                                @endguest
-                            </li>
-                        </ul>
-                    </div>
+                                <li class="nav-item cta-btn2 d-flex">
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-inline">
+                                        @csrf
+                                        <a href="{{ route('my_booking') }}" class="btn btn-primary mr-2">
+                                            <i class="fas fa-user" style="margin-right: 5px;"></i> Profile
+                                        </a>
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-sign-out-alt" style="margin-right: 5px;"></i> Logout
+                                        </button>
+                                    </form>
+                                </li>
+                            @endif
 
-                    <div class="d-inline-block d-xl-none ml-md-0 mr-auto py-3" style="position: relative; top: 3px;">
-                        <a href="#" class="site-menu-toggle js-menu-toggle text-black">
-                            <span class="icon-menu h3"></span>
-                        </a>
-                    </div>
-
+                        @endguest
+                    </ul>
                 </div>
-
             </div>
-        </div>
+        </nav>
     </header>
-    <!-- Navbar End -->
 
+    <!-- Styling for buttons -->
     <style>
         .btn-nav {
             background-color: #1d1d1d;
@@ -106,8 +100,8 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            margin-right: 10px; /* Space between buttons */
-            box-sizing: border-box; /* Ensure padding is included in width/height */
+            margin-right: 10px;
+            box-sizing: border-box;
         }
 
         .btn-nav:hover {
@@ -119,19 +113,12 @@
             margin-right: 5px;
         }
 
-        /* Make sure the buttons are inline and aligned */
         .site-menu.js-clone-nav.d-flex {
             display: flex;
             justify-content: flex-start;
-            gap: 10px; /* Add space between buttons */
-            flex-wrap: wrap; /* Allow wrapping of buttons if screen is too narrow */
-            max-width: 100%; /* Prevent buttons from overflowing */
-        }
-
-        /* Add some padding for responsiveness */
-        .container-fluid {
-            padding-left: 15px;
-            padding-right: 15px;
+            gap: 10px;
+            flex-wrap: wrap;
+            max-width: 100%;
         }
     </style>
 </body>

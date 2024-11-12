@@ -1,88 +1,54 @@
-{{-- <form action="{{ route('change.language', ['locale' => 'en']) }}" method="POST">
-    @csrf
-    <select name="language" onchange="this.form.submit()">
-        <option value="en" {{ session('app_locale') === 'en' ? 'selected' : '' }}>English</option>
-        <option value="ar" {{ session('app_locale') === 'ar' ? 'selected' : '' }}>العربية</option>
-    </select>
-</form> --}}
 
-
-<footer class="site-footer">
+<footer class="site-footer bg-dark" role="contentinfo">
     <div class="container">
-        <div class="row">
-            <div class="col-lg-4">
-                <div class="mb-5">
-                    <h3 class="footer-heading mb-4">About Salonak</h3>
-                    <p>Salonak is a website that allows you to book appointments at various salons regardless of their geographical location. Enjoy competitive and affordable prices at times that suit you, with the opportunity to receive multiple discounts. You can also view experiences and reviews from others before making your booking.</p>
-                </div>
-            </div>
-            <div class="col-lg-4 mb-5 mb-lg-0">
-                <div class="row mb-5">
-                    <div class="col-md-12">
-                        <h3 class="footer-heading mb-4">Quick Menu</h3>
-                    </div>
-                    <div class="col-md-6 col-lg-6">
-                        <ul class="list-unstyled">
-                            <li><a href="#">Home</a></li>
-                            <li><a href="#">salons</a></li>
-                            <li><a href="#">Contact</a></li>
-                            {{-- <li><a href="#">Team</a></li> --}}
-                        </ul>
-                    </div>
-                    <div class="col-md-6 col-lg-6">
-                        {{-- <ul class="list-unstyled">
-                            <li><a href="#">About Us</a></li>
-                            <li><a href="#">Privacy Policy</a></li>
-                            <li><a href="#">Contact Us</a></li>
-                            <li><a href="#">Membership</a></li>
-                        </ul> --}}
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 mb-5 mb-lg-0">
-                <div class="mb-5">
-                    <h3 class="footer-heading mb-2">Subscribe Newsletter</h3>
-                    <p>We’re here to help! If you have any questions or feedback, please don’t hesitate to reach out. The "Your Salon" team is eager to assist you and answer any inquiries you may have.
-                    </p>
-                    {{-- <form action="#" method="post">
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control border-secondary text-white bg-transparent" placeholder="Enter Email" aria-label="Enter Email" aria-describedby="button-addon2">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary text-white" type="button" id="button-addon2">Send</button>
-                            </div>
-                        </div>
-                    </form> --}}
-                </div>
-            </div>
+      <div class="row">
+        <div class="col-md-3">
+          <p>
+          <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+          Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart text-danger" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank" >Colorlib</a>
+          <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+          </p>
         </div>
-        <div class="row pt-5 mt-5 text-center">
-            <div class="col-md-12">
-                <div class="mb-5">
-                    <a href="#" class="pl-0 pr-3"><span class="icon-facebook"></span></a>
-                    <a href="#" class="pl-3 pr-3"><span class="icon-twitter"></span></a>
-                    <a href="#" class="pl-3 pr-3"><span class="icon-instagram"></span></a>
-                    <a href="#" class="pl-3 pr-3"><span class="icon-linkedin"></span></a>
-                </div>
-                <p>
-                    Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-                </p>
-            </div>
+        <div class="col-md-3">
+          <ul class="list-unstyled footer-link">
+            <li><span class="mr-3 d-block">Address:</span><span class="text-white">34 Street Name, City Name Here, United States</span></li>
+            <li><span class="mr-3 d-block">Phone:</span><span class="text-white">+1 242 4942 290</span></li>
+            <li><span class="mr-3 d-block">Fax:</span><span class="text-white">+1 242 4942 290</span></li>
+            <li><span class="mr-3 d-block">E-mail:</span><span class="text-white">info@yourdomain.com</span></li>
+          </ul>
         </div>
+        <div class="col-md-3">
+          <h3 class="text-white">Quick Links</h3>
+          <ul class="list-unstyled footer-link">
+            <li><a href="#">About</a></li>
+            <li><a href="#">Services</a></li>
+            <li><a href="#">Works</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </div>
+        <div class="col-md-3">
+          <h3 class="text-white">Social</h3>
+          <ul class="list-unstyled footer-link d-flex footer-social">
+            <li><a href="#" class="p-2"><span class="fa fa-twitter"></span></a></li>
+            <li><a href="#" class="p-2"><span class="fa fa-facebook"></span></a></li>
+            <li><a href="#" class="p-2"><span class="fa fa-linkedin"></span></a></li>
+            <li><a href="#" class="p-2"><span class="fa fa-instagram"></span></a></li>
+          </ul>
+        </div>
+      </div>
     </div>
-</footer>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-<script src="{{ asset('js/jquery-3.3.1.min.js') }}"></script>
-<script src="{{ asset('js/jquery-migrate-3.0.1.min.js') }}"></script>
-<script src="{{ asset('js/jquery-ui.js') }}"></script>
-<script src="{{ asset('js/popper.min.js') }}"></script>
-<script src="{{ asset('js/bootstrap.min.js') }}"></script>
-<script src="{{ asset('js/owl.carousel.min.js') }}"></script>
-<script src="{{ asset('js/jquery.stellar.min.js') }}"></script>
-<script src="{{ asset('js/jquery.countdown.min.js') }}"></script>
-<script src="{{ asset('js/jquery.magnific-popup.min.js') }}"></script>
-<script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
-<script src="{{ asset('js/aos.js') }}"></script>
-<script src="{{ asset('js/main.js') }}"></script>
+  </footer>
+  <!-- END footer -->
 
+  <!-- loader -->
+  <div id="loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#f4b214"/></svg></div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <script src="{{ asset('js/jquery-3.2.1.min.js')}}"></script>
+  <script src="{{ asset('js/popper.min.js')}}"></script>
+  <script src="{{ asset('js/bootstrap.min.js')}}"></script>
+  <script src="{{ asset('js/owl.carousel.min.js')}}"></script>
+  <script src="{{ asset('js/jquery.waypoints.min.js')}}"></script>
+  <script src="{{ asset('js/main.js')}}"></script>
 </body>
 </html>
