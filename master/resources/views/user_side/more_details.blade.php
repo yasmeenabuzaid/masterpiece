@@ -76,7 +76,7 @@
                                 <h6 class="text-uppercase heading border-bottom text-left">{{ $category->name }}</h6>
                                 <p>{{ $subsalon->description }}</p>  <!-- عرض الوصف داخل الكارت -->
                                 {{-- <p><a href="#" class="btn btn-outline-primary btn-sm">Learn More</a></p> --}}
-                                <p><a href="{{ route('all-categories', $subsalon) }}" class="btn btn-outline-primary btn-sm">Learn More</a></p>
+                                <p><a class="btn btn-outline-primary btn-sm">Learn More</a></p>
                             </div>
                         </div>
                     </div>
@@ -85,8 +85,11 @@
             <!-- END row -->
             <div class="row justify-content-center element-animate">
                 <div class="col-md-4">
-                    <a href="{{ route('all-category', ['subSalonId' => $subsalon->id]) }}" class="btn btn-primary btn-block">View All Categories</a>
-                </div>
+                    <a href="{{ route('showCategoriesBySalon', ['salonId' => $subsalon->salon->id, 'subSalonId' => $subsalon->id]) }}" class="btn btn-primary btn-block">
+                        View All Categories
+                    </a>
+
+             </div>
             </div>
         </div>
     </section>
@@ -172,7 +175,6 @@
         </div>
     @endif
 
-    <!-- Modal (Feedback Form) -->
     <div class="modal fade" id="feedbackModal" tabindex="-1" aria-labelledby="feedbackModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">

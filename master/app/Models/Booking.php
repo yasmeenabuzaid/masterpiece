@@ -9,7 +9,7 @@ class Booking extends Model
 {
     use HasFactory;
 
-    public function subalon()
+    public function subSalon()
     {
         return $this->belongsTo(SubSalon::class, 'sub_salons_id');
     }

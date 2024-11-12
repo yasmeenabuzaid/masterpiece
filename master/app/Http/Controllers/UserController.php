@@ -6,7 +6,9 @@ use App\Models\User;
 use App\Models\Salon;
 use App\Models\SubSalon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -343,5 +345,54 @@ public function showProfile()
 
         return redirect()->route('users.index')->with('success', 'User deleted successfully.');
     }
+
+    public function updateProfileUser(Request $request)
+    {
+        $user = Auth::user(); // الحصول على المستخدم الحالي
+
+        // التحقق من البيانات المدخلة وتحديثها
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'password' => 'nullable|string|min:8|confirmed',  // فقط التحقق من كلمة المرور إذا كانت موجودة
+        ]);
+
+        // تحديث الاسم والبريد الإلكتروني
+        $user->name = $request->name;
+        $user->email = $request->email;
+
+        // إذا تم إدخال كلمة مرور جديدة
+        if ($request->filled('password')) {
+            // تشفير كلمة المرور الجديدة
+            $user->password = bcrypt($request->password);
+        }
+
+        // تحديث الصورة إذا كانت موجودة
+          // تحديث الصورة إذا كانت موجودة
+          if ($request->hasFile('image')) {
+            // حذف الصورة القديمة إذا كانت موجودة
+            if ($user->image && file_exists(public_path($user->image))) {
+                @unlink(public_path($user->image));
+            }
+
+            // رفع الصورة الجديدة
+            $file = $request->file('image');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $path = public_path('uploads/user/');
+            $file->move($path, $filename);
+            $user->image = 'uploads/user/' . $filename;
+        }
+
+        // حفظ التحديثات
+        $user->save();
+
+        // إعادة توجيه المستخدم مع رسالة نجاح
+        return redirect()->back()->with('success', 'Profile updated successfully!');
+    }
+
+
+
+
 
 }

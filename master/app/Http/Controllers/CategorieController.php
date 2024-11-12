@@ -145,20 +145,29 @@ class CategorieController extends Controller
 
     public function showCategoriesBySalon($salonId = null, $subSalonId = null)
     {
-        // إذا كان id الصالون موجود
-        if ($salonId) {
-            $salon = Salon::findOrFail($salonId);
-            $categories = Categorie::whereIn('sub_salons_id', $salon->subSalons->pluck('id'))->get();
-        }
+        $salon = null;
+        $subSalon = null;  // التأكد من تعريف المتغير
 
         // إذا كان id للصالون الفرعي موجود
-        elseif ($subSalonId) {
+        if ($subSalonId) {
             $subSalon = SubSalon::findOrFail($subSalonId);
-            $categories = Categorie::where('sub_salons_id', $subSalon->id)->get();
+            $categories = $subSalon->categories;  // جلب الفئات المرتبطة بالصالون الفرعي
+        }
+        // إذا كان id للصالون موجود
+        elseif ($salonId) {
+            $salon = Salon::findOrFail($salonId);
+            $subSalons = $salon->subSalons;
+            $categories = Categorie::whereIn('sub_salons_id', $subSalons->pluck('id'))->get();
+        } else {
+            return redirect()->route('home')->with('error', 'Salon or SubSalon not found');
         }
 
-        return view('your_view', compact('categories', 'salon', 'subSalon'));
+        // تمرير المتغيرات إلى الـ view
+        return view('user_side.categories', compact('categories', 'salon', 'subSalon'));
     }
+
+
+
 
     public function destroy($id)
     {

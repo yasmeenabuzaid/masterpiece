@@ -118,13 +118,13 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/select-services', [BookingController::class, 'showServices'])->name('services.index')->middleware('auth');
 Route::resource('/contacts', ContactController::class);
 
-Route::get('/categories/{salonId?}/{subSalonId?}', [CategorieController::class, 'show_CategoriesBySalon'])->name('all-category');
+// Route::get('/categories/{salonId?}/{subSalonId?}', [CategorieController::class, 'show_CategoriesBySalon'])->name('all-category');
 Route::get('/services', [BookingController::class, 'showServices'])->name('services.index');
 Route::get('/booking/{subSalonId}', [BookingController::class, 'showBookingForm'])->name('booking.form');
 // Route::get('/available-times', [BookingController::class, 'availableTimes'])->name('available.times');
 Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.store');
 Route::get('/my-booking', [BookingController::class, 'get'])->name('my_booking')->middleware('auth') ;
-Route::get('/available-times/{subSalonId}', [BookingController::class, 'showAvailableTimes'])->name('available.times');
+Route::get('/subsalon/{subSalonId}/available-times', [BookingController::class, 'showAvailableTimes']);
 Route::get('/user_side/booking', [BookingController::class, 'showBookingForm'])->name('user_side.booking');
 
 Route::resource('feeds', FeedController::class);
@@ -133,6 +133,9 @@ Route::get('/profile', [UserController::class, 'showProfile'])->name('users.prof
 Route::get('/profile/edit', [UserController::class, 'editProfile'])->name('users.editProfile');
 
 Route::put('/profile', [UserController::class, 'updateProfile'])->name('users.updateProfile');
+
+Route::get('/salon/{salonId}/subsalon/{subSalonId}/categories', [CategorieController::class, 'showCategoriesBySalon'])->name('showCategoriesBySalon');
+Route::put('/update-profile-user', [UserController::class, 'updateProfileUser'])->name('update_profile_user');
 
 Route::middleware(['auth', 'admin'])->group(function () {
 

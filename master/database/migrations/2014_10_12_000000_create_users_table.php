@@ -19,7 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('sub_salons_id')->nullable();
 
 
-            $table->enum('usertype', ['super_admin', 'owner', 'employee', 'user'])->default('super_admin');
+            $table->enum('usertype', ['super_admin', 'owner', 'employee', 'user'])->default('user');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
