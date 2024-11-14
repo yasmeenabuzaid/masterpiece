@@ -31,6 +31,8 @@ Route::get('/logout', function () {
 })->name('user_landing');
 Route::post('/logout', [Controller::class, 'logout'])->name('logout');
 // Route::post('/landing', [HomeController::class, 'logout'])->name('logout');
+Route::get('/about', action: [HomeController::class, 'show'])->name('about');
+Route::get('/home', action: [HomeController::class, 'index']);
 
 
 Route::get('/home', function () {
@@ -87,7 +89,7 @@ Route::middleware(['auth'])->group(function () {
 
 Route::resource('testimonials', TestimonialController::class);
 // Route::post('/testimonials', [TestimonialController::class, 'store'])->name('testimonials.store');
-Route::get('/category/{id}', [CategorieController::class, 'show'])->name('all-categories');
+Route::get('subsalons/{subSalonId}/categories-services', [SubSalonController::class, 'showCategoriesAndServices'])->name('subsalons.categories-services');
 Route::get('/service/{categorie}', [ServiceController::class, 'show'])->name('all-services');
 
 Route::get('home', [SubSalonController::class, 'showAllSubSalons'])->name('all_subsalons');
@@ -102,9 +104,12 @@ Route::get('/subsalons/{subsalonId}/categories', action: [CategorieController::c
 Route::get('/dash', function () {
     return view('dashboard\index');
 })->name('dashbourd');
-// Route::get('/login', function () {
-//     return view('auth.login');
-// })->name('login.index');
+Route::get('/subscribe', function () {
+    return view('user_side.subscribe');
+})->name('subscribe');
+Route::get('/more-service', function () {
+    return view('user_side.service');
+})->name('service');
 
 Route::get('/user', function () {
     return view('user_side/index');
@@ -112,7 +117,7 @@ Route::get('/user', function () {
 Route::get('/user-booking', function () {
     return view('user_side/booking');
 })->name('user-booking');
-Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/home', [SubSalonController::class, 'showAllSubSalons'])->name('home');
 
 // Route::resource('/home', TestimonialController::class)->name('home_psge');
 Route::get('/select-services', [BookingController::class, 'showServices'])->name('services.index')->middleware('auth');
@@ -136,6 +141,9 @@ Route::put('/profile', [UserController::class, 'updateProfile'])->name('users.up
 
 Route::get('/salon/{salonId}/subsalon/{subSalonId}/categories', [CategorieController::class, 'showCategoriesBySalon'])->name('showCategoriesBySalon');
 Route::put('/update-profile-user', [UserController::class, 'updateProfileUser'])->name('update_profile_user');
+// Route::get('/about', function () {
+//     return view('user_side.about');
+// })->name('about');
 
 Route::middleware(['auth', 'admin'])->group(function () {
 

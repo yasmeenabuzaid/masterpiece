@@ -17,7 +17,6 @@
         <table class="table table-striped table-bordered">
             <thead>
                 <tr>
-                    <th>Category Image</th>
                     <th>Name</th>
                     <th>Description</th>
                     <th>this category is in</th>
@@ -35,13 +34,7 @@
                 @else
                     @foreach($categories as $category)
                         <tr>
-                            <td>
-                                @if ($category->image)
-                                    <img src="{{ asset($category->image) }}" alt="Category Image" class="me-2" style="border-radius: 3px; width: 100px;">
-                                @else
-                                    <span>No image found</span>
-                                @endif
-                            </td>
+
                             <td>{{ $category->name }}</td>
                             <td>{{ $category->description }}</td>
                             <td>
@@ -53,8 +46,11 @@
                             </td>
 
 
-                           <td>Date: {{ $category->created_at->format('Y-m-d') }}<br>Time: {{ $category->created_at->format('H:i') }}</td>
-                            @if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()))
+                            <td>
+                                Date: {{ isset($category->created_at) ? $category->created_at->format('Y-m-d') : 'null' }}<br>
+                                Time: {{ isset($category->created_at) ? $category->created_at->format('H:i') : 'null' }}
+                            </td>
+                          @if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()))
                                 <td>
                                     <button type="button" class="btn btn-danger" onclick="confirmDeletion(event, '{{ route('categories.destroy', $category->id) }}')">
                                         <i class="fa-solid fa-trash"></i>

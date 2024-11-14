@@ -123,8 +123,10 @@
                 <i class="fa-solid fa-eye menu-icon"></i>
             </a>
         </li>
+    
         <li class="nav-item">
-            <a class="nav-link"  href="{{ route('logout') }}" >
+            <a class="nav-link" href="{{ route('logout') }}"
+               onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                 <span style="color: #fff;" class="menu-title">Logout</span>
                 <i class="fa-solid fa-sign-out-alt menu-icon"></i>
             </a>

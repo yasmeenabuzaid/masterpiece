@@ -24,16 +24,7 @@
                         <input type="text" class="form-control" id="description" name="description" placeholder="Description" required>
                     </div>
 
-                    <!-- Upload Image -->
-                    <div class="form-group">
-                        <label for="image">Upload Image or Logo for Your Salon</label>
-                        <input type="file" name="image" id="fileUpload"
-                            class="form-control @error('image') is-invalid @enderror" required>
-                        @error('image')
-                            <small class="text-danger">{{ $message }}</small>
-                        @enderror
-                        <p class="mt-2 text-muted">Preferably upload images with dimensions around 1920x1080.</p>
-                    </div>
+
 
                     <!-- For SuperAdmin: Show all SubSalons -->
                     @if (auth()->user()->isSuperAdmin())

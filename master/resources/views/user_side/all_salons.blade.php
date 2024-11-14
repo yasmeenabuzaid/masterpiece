@@ -2,52 +2,9 @@
 
 @section('content')
 
-<!-- Hero Section Styles -->
 <style>
-    /* Hero Section Styles */
-    .hero-section {
-        position: relative;
-        height: 300px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        overflow: hidden;
-        background-image: url('{{ asset('salon-landing.png') }}');
-        background-size: cover;
-        background-position: center;
-    }
 
-    .hero-content {
-        text-align: center;
-        color: #fff;
-        z-index: 2;
-        padding: 10px;
-    }
 
-    .hero-section h1 {
-        font-size: 58px;
-        font-weight: bold;
-        margin-bottom: 10px;
-    }
-
-    .hero-section h2 {
-        font-size: 24px;
-        font-weight: 500;
-    }
-
-    /* Overlay over Hero Section */
-    .overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(79, 79, 79, 0.671); /* Dark overlay */
-        z-index: 1;
-    }
-
-    /* Filter Form Styles */
     .filter-form {
         display: flex;
         justify-content: space-between;
@@ -87,6 +44,46 @@
         background-color: #0056b3;
     }
 
+    .media {
+        min-height: 550px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        border-radius: 8px;
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+
+    .media img {
+        width: 100%;
+        height: 190px;
+        object-fit: cover;
+        border-radius: 8px 8px 0 0;
+    }
+
+    .media-body {
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100%;
+    }
+
+    .media-body h6 {
+        margin: 10px 0;
+        font-size: 18px;
+    }
+
+    .media-body p {
+        flex-grow: 1;
+        margin: 10px 0;
+    }
+
+    .media-body .btn {
+        margin-top: 15px;
+    }
+
     .btn-group .btn {
         margin: 5px;
         border-radius: 5px;
@@ -104,33 +101,21 @@
         color: #fff;
     }
 
-    .media img {
-        width: 100%;
-        height: auto;
-        object-fit: cover;
-        border-radius: 8px;
-    }
-
-    .media-body {
-        padding: 10px;
-    }
 </style>
 
-<section class="section bg-light">
-    <div class="container">
+
+<div class="container">
         <div class="row justify-content-center element-animate">
-            <div class="col-md-8 text-center ">
-                <h2 class="text-uppercase heading border-bottom mb-4">Our News</h2>
-                <p class="mb-0 lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi unde impedit, necessitatibus, soluta sit quam minima expedita atque corrupti reiciendis.</p>
+            <div class="col-md-8 text-center" style="margin-top: 40px">
+                <h2 class="text-uppercase heading border-bottom mb-4">Our salons</h2>
+                <p class="mb-0 lead">Find your perfect salon easily! Use our filters by type, location, or name to quickly discover and book the ideal spot for you.</p>
             </div>
         </div>
 
-        <!-- Filter Form Section -->
         <div class="row justify-content-center mb-5">
             <div class="col-md-8">
                 <div class="filter-form">
                     <form method="GET" action="{{ route('more_subsalons') }}" class="d-flex justify-content-between w-100 gap-3">
-                        <!-- Type Filter -->
                         <div class="btn-group" role="group" aria-label="Salon Type Filter">
                             <button type="submit" name="type" value="" class="btn {{ request('type') == '' ? 'active' : '' }}">All Salons</button>
                             <button type="submit" name="type" value="women" class="btn {{ request('type') == 'women' ? 'active' : '' }}">Women</button>
@@ -138,7 +123,6 @@
                             <button type="submit" name="type" value="mixed" class="btn {{ request('type') == 'mixed' ? 'active' : '' }}">Mixed</button>
                         </div>
 
-                        <!-- Governorate Filter -->
                         <select name="governorate" class="btn">
                             <option value="">All Governorates</option>
                             @foreach (['Amman', 'Zarqa', 'Irbid', 'Ajloun', 'Jerash', 'Madaba', 'Mafraq', 'Karak', 'Tafilah', 'Ma\'an', 'Aqaba'] as $governorate)
@@ -146,31 +130,42 @@
                             @endforeach
                         </select>
 
-                        <!-- Salon Name Search -->
                         <input type="text" name="name" class="btn " placeholder="Search by Salon Name" value="{{ request('name') }}">
 
-                        <!-- Filter Button -->
                         <button type="submit" class="btn">Filter</button>
                     </form>
                 </div>
             </div>
         </div>
 
-        <!-- Carousel for News -->
         <div class="row element-animate">
-            @forelse ($subsalons->chunk(4) as $chunkedSubsalons) <!-- تقسيم الصالونات إلى مجموعات من 4 -->
+            @forelse ($subsalons->chunk(4) as $chunkedSubsalons)
                 <div class="row">
-                    @foreach ($chunkedSubsalons as $subsalon) <!-- عرض كل صالون في العمود -->
+                    @foreach ($chunkedSubsalons as $subsalon)
                         <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
                             <div class="media d-block media-custom text-left">
-                                <img src="{{ $subsalon->salon->image }}" alt="Image Placeholder" class="img-fluid" style="width: 100%; height: 200px; object-fit: cover;">
+                                <img src="{{ $subsalon->image }}" alt="Image Placeholder" class="img-fluid" style="width: 100%; height: 270px; object-fit: cover;">
                                 <div class="media-body">
-                                    <span class="meta-post">December 2, 2017</span>
-                                    <h3 class="mt-0 text-black"><a href="#" class="text-black">{{ $subsalon->salon->name }}</a></h3>
+                                    <div style="display: flex; align-items: center; justify-content:start;">
+                                        <a href="#" class="text-black" style="display: flex; align-items: center;">
+                                            <img src="{{ $subsalon->salon->image ?? 'image not found' }}" alt="Salon Logo" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover; margin-right: 15px;margin-button:30px">
+                                        </a>
+                                        <br>
+
+                                        <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between;">
+                                        <span>{{ $subsalon->salon->name ?? 'No Salon Available' }}</span>
+                                        <span><strong>Location:</strong> {{ $subsalon->location ?? 'Not Available' }}</span>
+                                    </div>
+                                </div>
+                                <br>
+                                <div style="margin-top: 15px">
+                                <span class="meta-post">{{ $subsalon->type}} salon</span>
+
                                     <p>{{ Str::limit($subsalon->description, 100) }}</p>
-                                    <p class="clearfix">
+                                </div>
+
+                                    <p class="clearfix" >
                                         <a href="{{ route('single_salon', $subsalon) }}" class="btn btn-primary">See More</a>
-                                        <a href="#" class="float-right meta-chat"><span class="ion-chatbubble"></span> 8</a>
                                     </p>
                                 </div>
                             </div>
@@ -185,6 +180,7 @@
                     </div>
                 </div>
             @endforelse
+        </div>
         </div>
 
     </section>

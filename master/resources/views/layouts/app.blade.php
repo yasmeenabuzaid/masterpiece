@@ -24,12 +24,12 @@
     <!-- Custom Styles -->
     <style>
         .btn-nav {
-            background-color: #1d1d1d;
+            background-color: #007bff;
             color: white;
-            padding: 10px 20px;
+            padding: 4px 4px;
             border-radius: 5px;
-            height: 45px;
-            width: 100px;
+            height: 40px;
+            width: 90px;
             border: none;
             font-size: 13px;
             font-weight: bold;
@@ -45,7 +45,7 @@
         }
 
         .btn-nav:hover {
-            background-color: #333333;
+            background-color: #1283fd;
             color: #fff;
         }
 
@@ -53,23 +53,7 @@
             margin-right: 5px;
         }
 
-        /* Navbar styles */
-        .navbar {
-            background-color: #ffffff;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
 
-        .navbar .row {
-            display: flex;
-            justify-content: space-between; /* Distribute logo and buttons */
-            align-items: center; /* Vertically center items */
-        }
-
-        /* Custom padding for responsive design */
-        .container-fluid {
-            padding-left: 15px;
-            padding-right: 15px;
-        }
     </style>
 
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
@@ -105,6 +89,6 @@
         </main>
     </div>
 
- 
+
 </body>
 </html>

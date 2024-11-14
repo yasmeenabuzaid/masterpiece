@@ -1,39 +1,69 @@
 @extends('layouts.app-user')
 
 @section('content')
-
 {{-- ---------------------------------------------hero section --------------------------------- --}}
 <section class="home-slider owl-carousel">
-    <div class="slider-item" style="background-image: url('new.png');">
+    <div class="slider-item" style="background-image: url('https://images.pexels.com/photos/331989/pexels-photo-331989.jpeg?auto=compress&cs=tinysrgb&w=600');">
         <div class="container">
             <div class="row slider-text align-items-center justify-content-center text-center">
                 <div class="col-md-7 col-sm-12 element-animate">
-                    <h1 class="mb-4">Fastest-Growing Construction Company</h1>
-                    <p class="mb-0"><a href="{{ route('more_subsalons') }}" target="_blank" class="btn btn-primary">Get Started</a></p>
+                    <h1 class="display-4 font-weight-bold">Salonak</h1>
+                    <h2 class="mb-4">Beauty services at your fingertips with just one click</h2>
+                    <p class="mb-0"><a href="{{ route('more_subsalons') }}"  class="btn btn-primary btn-lg">Get Started</a></p>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="slider-item" style="background-image: url('new.png');">
+    <div class="slider-item" style="background-image: url('https://images.pexels.com/photos/7603842/pexels-photo-7603842.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load');">
         <div class="container">
             <div class="row slider-text align-items-center justify-content-center text-center">
                 <div class="col-md-8 col-sm-12 element-animate">
-                    <h1 class="mb-4">We Are Leading The Way Construction Works</h1>
-                    <p class="mb-0"><a href="{{ route('more_subsalons') }}" target="_blank" class="btn btn-primary">Get Started</a></p>
+                    <h2 class="display-5 mb-4">All the salons in your area are in one place. Your appointment is closer than ever.</h2>
+                    <p class="mb-0"><a href="{{ route('more_subsalons') }}"  class="btn btn-primary btn-lg">Get Started</a></p>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
+<style>
+.home-slider .slider-item {
+    position: relative;
+}
+
+.home-slider .slider-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(54, 54, 54, 0.634);
+    z-index: 1;
+}
+
+.home-slider .slider-item .container {
+    position: relative;
+    z-index: 2;
+}
+</style>
+
 {{-- ---------------------------------------------about section --------------------------------- --}}
 <section class="section bg-light">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-md-6 pr-lg-5 mb-5 mb-md-0 element-animate">
-                <h2 class="text-uppercase heading border-bottom mb-4 text-left">About us <br>Salonak Website</h2>
-                <p>Salonak is a website that allows you to book appointments at various salons regardless of their geographical location. Enjoy competitive and affordable prices at times that suit you, with the opportunity to receive multiple discounts. You can also view experiences and reviews from others before making your booking.</p>
+                <h2 class="text-uppercase heading border-bottom mb-4 text-left">About Us <br>Salonak Website</h2>
+                <p>Salonak is your ultimate destination for beauty and salon services. Our platform brings together a wide range of salons in your area, making it easy to find and book the perfect appointment for you. With Salonak, you can:</p>
+                <ul>
+                    <li>Access a variety of salons and beauty services, all in one place.</li>
+                    <li>Book appointments at any time that suits you with just a few clicks.</li>
+                    <li>Enjoy competitive and transparent pricing along with special discounts.</li>
+                    <li>Read reviews and view experiences shared by other users before booking.</li>
+                    <li>Benefit from exclusive offers and promotions tailored to your needs.</li>
+                </ul>
+                <p>Whether you're looking for a quick beauty fix or planning for a special event, Salonak ensures a seamless, professional, and convenient experience. Let us help you look and feel your best—whenever and wherever you are.</p>
             </div>
             <div class="col-md-6 element-animate">
                 <img src="https://i.pinimg.com/564x/74/5e/bd/745ebded96981da5b75d3e7e346add7a.jpg" alt="About Us Image" class="img-fluid">
@@ -47,9 +77,9 @@
     <div class="container">
         <div class="row justify-content-center mb-5 element-animate">
             <div class="col-md-8 text-center">
-                <h2 class="text-uppercase heading border-bottom mb-4">Recent Projects</h2>
-                <p class="mb-3 lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi unde impedit, necessitatibus, soluta sit quam minima expedita atque corrupti reiciendis.</p>
-                <p><a href="works.html" class="btn btn-primary">See All Projects</a></p>
+                <h2 class="text-uppercase heading border-bottom mb-4">Top-Rated Salons</h2>
+                <p class="mb-3 lead">Discover our most popular salons, each with a customer rating of 4 stars or higher. These salons have been highly rated by our users for their exceptional service, professional staff, and outstanding customer satisfaction. Book an appointment today and experience the best in beauty and care.</p>
+                <p><a href="works.html" class="btn btn-primary">See All Salons</a></p>
             </div>
         </div>
 
@@ -57,11 +87,11 @@
             @foreach ($allSubsalons->slice(0,3) as $subsalon)
                 <div class="col-md-4 element-animate">
                     <a href="works-single.html" class="link-thumbnail">
-                        <h3>{{ $subsalon->salon->name }}</h3>
+                        <h3>{{ $subsalon->salon->name ?? 'No Salon Available' }}</h3>
                         <span class="icon">
                             <button class="btn btn-primary">See More</button>
                         </span>
-                        <img src="{{ $subsalon->salon->image }}" alt="Image" class="img-fluid" style="width: 450px; height: 400px;">
+                        <img src="{{ $subsalon->image }}" alt="Image" class="img-fluid" style="width: 450px; height: 400px;">
                     </a>
                 </div>
             @endforeach
@@ -69,28 +99,122 @@
     </div>
 </section>
 
-{{-- ---------------------------------------------Our News section --------------------------------- --}}
+{{-- --------------------------------------------- start count --------------------------------- --}}
+<section class="inner-page">
+    <div class="slider-item py-5" style="background-image: url('https://images.pexels.com/photos/7440052/pexels-photo-7440052.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');">
+        <div class="container">
+            <div class="row slider-text align-items-center justify-content-center text-center">
+                <div class="col-md-7 col-sm-12 element-animate">
+                    <h1 class="text-white">Our Stats</h1>
+                    <div class="row mt-5">
+                        <div class="col-md-4">
+                            <div class="counter">
+                                <h2 class="text-white">Salons</h2>
+                                <p id="salons-count" class="display-4 text-white">0</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="counter">
+                                <h2 class="text-white">Sub Salons</h2>
+                                <p id="subsalons-count" class="display-4 text-white">0</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="counter">
+                                <h2 class="text-white">Bookings</h2>
+                                <p id="appointments-count" class="display-4 text-white">0</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    function animateCounter(id, endValue) {
+        let startValue = 0; // start value
+        const duration = 2000; // time -> 2 seconds -> 200 milliseconds
+        const increment = endValue / (duration / 50); // Calculate increment per 50ms
+        const counterElement = document.getElementById(id);
+
+        const interval = setInterval(() => { //start animateCounter
+            startValue += increment;
+            if (startValue >= endValue) {
+                startValue = endValue;
+                clearInterval(interval); //endvalue
+            }
+            counterElement.textContent = Math.round(startValue);
+        }, 50); // update number in brower
+    }
+
+    // Start counting
+    animateCounter('salons-count', {{ $salonCount }});
+    animateCounter('subsalons-count', {{ $subsalonCount }});
+    animateCounter('appointments-count', {{ $bookingCount }});
+</script>
+
+<style>
+    .slider-item {
+        position: relative; 
+    }
+
+    .slider-item::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(87, 87, 87, 0.635);
+        z-index: 1;
+    }
+
+    .slider-item .container {
+        position: relative;
+        z-index: 2;
+    }
+</style>
+
+
+{{-- --------------------------------------------- end count --------------------------------- --}}
+{{-- --------------------------------------------- start Featured Salons--------------------------------- --}}
+
 <section class="section bg-light">
     <div class="container">
         <div class="row justify-content-center mb-5 element-animate">
             <div class="col-md-8 text-center mb-5">
-                <h2 class="text-uppercase heading border-bottom mb-4">Our News</h2>
-                <p class="mb-0 lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi unde impedit, necessitatibus, soluta sit quam minima expedita atque corrupti reiciendis.</p>
+                <h2 class="text-uppercase heading border-bottom mb-4">Featured Salons</h2>
+                <p class="mb-0 lead">Explore a selection of popular salons offering a variety of beauty services near you. Whether you’re looking for a quick touch-up or a full beauty treatment, find the right salon that fits your needs.</p>
             </div>
         </div>
+
         <div class="row element-animate">
             <div class="major-caousel js-carousel-1 owl-carousel">
                 @foreach ($allSubsalons->slice(0,6) as $subsalon)
                     <div>
                         <div class="media d-block media-custom text-left">
-                            <img src="{{ $subsalon->salon->image }}" alt="Image Placeholder" class="img-fluid" style="width: 400px; height: 400px; object-fit: cover;">
+                            <img src="{{ $subsalon->image}}" alt="Image Placeholder" class="img-fluid" style="width: 400px; height: 400px; object-fit: cover;">
                             <div class="media-body">
-                                <span class="meta-post">December 2, 2017</span>
-                                <h3 class="mt-0 text-black"><a href="#" class="text-black">{{ $subsalon->salon->name }}</a></h3>
+                                <div style="display: flex; align-items: center; justify-content:start;">
+                                    <a href="#" class="text-black" style="display: flex; align-items: center;">
+                                        <img src="{{ $subsalon->salon->image }}" alt="Salon Logo" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover; margin-right: 15px;">
+                                    </a>
+                                    <br>
+                                    <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between;">
+                                    <span>{{ $subsalon->salon->name ?? 'No Salon Available' }}</span>
+                                    <span><strong>Location:</strong> {{ $subsalon->location ?? 'Not Available' }}</span>
+                                </div>
+                            </div>
+                             <br>
+                            <span class="meta-post">{{ $subsalon->type}} salon</span>
+
                                 <p>{{ Str::limit($subsalon->description, 100) }}</p>
+
                                 <p class="clearfix">
                                     <a href="{{ route('single_salon', $subsalon) }}" class="btn btn-primary">See More</a>
-                                    <a href="#" class="float-right meta-chat"><span class="ion-chatbubble"></span> 8</a>
+                                    {{-- <a href="#" class="float-right meta-chat"><span class="ion-chatbubble"></span> 8</a> --}}
                                 </p>
                             </div>
                         </div>
@@ -98,8 +222,136 @@
                 @endforeach
             </div>
         </div>
+
+
     </div>
 </section>
+{{-- --------------------------------------------- end Featured Salons--------------------------------- --}}
+<section class="section bg-light">
+    <div class="container">
+        <div class="row justify-content-center  element-animate">
+            <div class="col-md-8 text-center">
+                <h2 class="text-uppercase heading border-bottom mb-4">Get A Quote</h2>
+            </div>
+        </div>
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h3 class="card-title">Basic Plan</h3>
+                        <p class="price">$29.99/month</p>
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-check-circle"></i> Basic salon listing</li>
+                            <li><i class="fas fa-check-circle"></i> Limited booking options</li>
+                            <li><i class="fas fa-check-circle"></i> Basic support</li>
+                        </ul>
+                        <a href="{{route('subscribe')}}" class="btn btn-outline-primary">Subscribe</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-lg border-primary">
+                    <div class="card-body">
+                        <h3 class="card-title">Standard Plan</h3>
+                        <p class="price">$49.99/month</p>
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-check-circle"></i> Priority salon listing</li>
+                            <li><i class="fas fa-check-circle"></i> Unlimited bookings</li>
+                            <li><i class="fas fa-check-circle"></i> Advanced support</li>
+                            <li><i class="fas fa-check-circle"></i> Performance analytics</li>
+                        </ul>
+                        <a href="{{route('subscribe')}}" class="btn btn-outline-primary">Subscribe</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h3 class="card-title">Premium Plan</h3>
+                        <p class="price">$79.99/month</p>
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-check-circle"></i> Featured salon listing</li>
+                            <li><i class="fas fa-check-circle"></i> Full access to all features</li>
+                            <li><i class="fas fa-check-circle"></i> Personalized marketing</li>
+                            <li><i class="fas fa-check-circle"></i> Priority customer support</li>
+                        </ul>
+                        <a href="{{route('subscribe')}}" class="btn btn-outline-primary">Subscribe</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+            </div>
+        </div>
+
+</section>
+<!-- Custom CSS for Pricing Cards -->
+<style>
+    .card {
+        border: none;
+        border-radius: 8px;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-body {
+        padding: 30px;
+        text-align: center;
+    }
+
+    .card-title {
+        font-size: 22px;
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+
+    .price {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        color: #007bff;
+    }
+
+    .card .list-unstyled {
+        margin-bottom: 20px;
+    }
+
+    .card .list-unstyled li {
+        margin-bottom: 12px;
+        font-size: 16px;
+    }
+
+    .card .btn {
+        margin-top: 20px;
+        padding: 10px 25px;
+        font-size: 16px;
+    }
+
+    .shadow-lg {
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .border-primary {
+        border: 2px solid #007bff;
+    }
+
+    .btn-outline-primary {
+        border: 2px solid #007bff;
+        color: #007bff;
+        background-color: transparent;
+    }
+
+    .btn-outline-primary:hover {
+        background-color: #007bff;
+        color: white;
+    }
+</style>
 
 {{-- ---------------------------------------------Contact Us section --------------------------------- --}}
 <section class="section bg-light">
@@ -110,7 +362,7 @@
                     <span class="d-block display-4 line-height-1 text-black">Contact us with</span>
                     <span class="d-block display-4 line-height-1"><p class="font-weight-bold">Salonak</p></span>
                 </h3>
-                <p>We’re here to help! If you have any questions or feedback, please don’t hesitate to reach out. The "Your Salon" team is eager to assist you and answer any inquiries you may have.</p>
+                <p>We’re here to support you! Whether you're a customer with questions or a salon owner interested in partnering with us, we’re excited to hear from you. The Salonak team is dedicated to helping you with any inquiries and exploring new opportunities to bring your business to a wider audience. Reach out today and let's grow together!</p>
             </div>
             <div class="col-md-6 col-lg-4">
                 <figure class="h-100 hover-bg-enlarge">
@@ -170,5 +422,6 @@
         };
     </script>
 @endif
+{{-- --------------------------------------------- end  Success/Error Alert Section --------------------------------- --}}
 
 @endsection

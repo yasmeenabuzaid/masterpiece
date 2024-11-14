@@ -21,10 +21,13 @@ class Service extends Model
         return $this->belongsTo(SubSalon::class, 'sub_salons_id');
     }
 
-    public function categorie()
-    {
-        return $this->belongsTo(Categorie::class, 'categories_id');
-    }
+// في نموذج Service
+public function categorie()
+{
+    return $this->belongsTo(Categorie::class, 'categories_id');
+}
+
+
     public function bookingServices()
     {
         return $this->hasMany(BookingService::class);

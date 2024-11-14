@@ -9,6 +9,14 @@
                 <h4 class="card-title">Create SubSalon</h4>
                 <form class="forms-sample" action="{{ route('subsalons.store') }}" method="POST" enctype="multipart/form-data" novalidate>
                     @csrf
+                    <div class="form-group">
+                        <label for="image">Upload Image for Your SubSalon</label>
+                        <input type="file" name="image" id="fileUpload"
+                            class="form-control @error('image') is-invalid @enderror" required>
+                        @error('image')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
 
                     <div class="form-group">
                         <label for="description">Description</label>
@@ -38,7 +46,6 @@
                     </div>
 
                     @if (auth()->user()->isSuperAdmin())
-                        <!-- فقط للـ Super Admin: إظهار حقل الصالون -->
                         <label for="salon_id">Salon</label>
                         <select class="form-control" name="salon_id" id="salon_id" required>
                             @foreach ($salons as $salon)
@@ -51,7 +58,6 @@
                             <div class="alert alert-danger mt-2">{{ $message }}</div>
                         @enderror
                     @elseif (auth()->user()->isOwner())
-                        <!-- فقط للـ Owner: إخفاء حقل الصالون واستخدام الصالون المرتبط بالمستخدم -->
                         <input type="hidden" name="salon_id" value="{{ auth()->user()->salons_id }}">
                     @endif
 
@@ -63,7 +69,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="images">Choose Featured Works of the Salon</label>
+                        <label for="images">Choose Featured images of this SubSalon</label>
                         <input type="file" name="images[]" id="images" class="form-control" multiple />
                         <small class="form-text text-muted">Please upload images in JPEG, PNG, or GPJ formats .</small>
                     </div>

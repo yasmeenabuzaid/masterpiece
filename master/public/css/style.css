@@ -685,6 +685,11 @@ header {
     border: 1px solid #ccc;
     color: #333;
 }
+.slider-item {
+    background-size: cover; 
+    background-position: center;
+}
+
 @-webkit-keyframes loader-rotate {
   100% {
     -webkit-transform: rotate(360deg);

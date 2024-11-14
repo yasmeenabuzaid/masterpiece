@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('description');
-            $table->string('image')->nullable();
             $table->foreignId('sub_salons_id')->constrained('sub_salons')->onDelete('cascade');
             $table->timestamps();
         });

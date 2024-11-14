@@ -1,9 +1,6 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use App\Models\Salon;
-use App\Models\Feed; // تأكد من استيراد هذا النموذج
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 
@@ -27,6 +24,7 @@ class SalonController extends Controller
         return view('dashboard.salon.index', compact('salons', 'activeSalonsCount', 'trashedSalonsCount'));
     }
 
+ // -------------------------------------------------------------------
 
     public function create()
     {
@@ -36,6 +34,7 @@ class SalonController extends Controller
 
         abort(403, 'You do not have permission to access this page.');
     }
+// -------------------------------------------------------------------
 
     public function store(Request $request)
     {
@@ -61,9 +60,11 @@ class SalonController extends Controller
 
         return redirect()->route('salons.index')->with('success', 'Salon created successfully.');
     }
+
+// -------------------------------------------------------------------
+
     public function show(Salon $salon)
     {
-        // Check authorization if needed
         if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner() && $salon->owner_id === auth()->user()->id)) {
             return view('dashboard.salon.index', compact('salon'));
         }
@@ -78,6 +79,8 @@ class SalonController extends Controller
 
         abort(403, 'You do not have permission to access this page.');
     }
+
+  // -------------------------------------------------------------------
 
     public function update(Request $request, Salon $salon)
     {
@@ -107,6 +110,8 @@ class SalonController extends Controller
         return redirect()->route('salons.index')->with('success', 'Salon updated successfully.');
     }
 
+ // -------------------------------------------------------------------
+
     public function destroy($id)
     {
         $salon = Salon::find($id);
@@ -117,6 +122,9 @@ class SalonController extends Controller
 
         return redirect()->route('salons.index')->with('error', 'Salon not found.');
     }
+
+// -------------------------------------------------------------------
+
     public function restore($id)
     {
         $salon = Salon::withTrashed()->find($id);
@@ -127,6 +135,8 @@ class SalonController extends Controller
 
         return redirect()->route('salons.index')->with('error', 'Salon not found.');
     }
+// -------------------------------------------------------------------
+
     public function forceDelete($id)
     {
         $salon = Salon::with('subSalons.feeds')->onlyTrashed()->find($id);
@@ -135,17 +145,15 @@ class SalonController extends Controller
             return redirect()->route('salons.trashed')->with('error', 'Salon not found.'); // لا يزال لا ينجح
         }
 
-        // احذف جميع السجلات المرتبطة في جدول feeds من كل الصب صالونات
         foreach ($salon->subSalons as $subSalon) {
             $subSalon->feeds()->delete();
         }
 
-        // ثم حذف الصالون نفسه
         $salon->forceDelete();
 
         return redirect()->route('salons.index')->with('success', 'Salon deleted successfully.');
     }
-
+    // -------------------------------------------------------------------
     public function trashed(Request $request)
     {
         $user = auth()->user();
@@ -162,7 +170,7 @@ class SalonController extends Controller
     }
 
 
-
+// -------------------------------------------------------------------
 
 
 }

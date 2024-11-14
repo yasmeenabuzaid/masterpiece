@@ -23,14 +23,7 @@
                         <input type="text" class="form-control" id="description" name="description" placeholder="Description" value="{{ old('description', $categorie->description) }}" required>
                     </div>
 
-                    <div class="form-group">
-                        <label for="image">Upload New Image or Logo for Your Salon (optional)</label>
-                        <input type="file" name="image" id="fileUpload" class="form-control @error('image') is-invalid @enderror">
-                        @error('image')
-                            <small class="text-danger">{{ $message }}</small>
-                        @enderror
-                        <p class="mt-2 text-muted">Preferably upload images with dimensions around 1920x1080.</p>
-                    </div>
+             
 
                     @if (auth()->user()->isSuperAdmin())
                         <div class="form-group">

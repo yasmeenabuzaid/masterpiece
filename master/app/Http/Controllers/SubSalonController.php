@@ -3,12 +3,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Categorie;
 use App\Models\SubSalon;
+use App\Models\Service;
 use App\Models\Salon;
 use App\Models\User;
 use App\Models\Feed;
 use App\Models\Image;
+use App\Models\Booking;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\File;
 
 class SubSalonController extends Controller
 {
@@ -43,6 +46,7 @@ class SubSalonController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'location' => 'required|string|max:255',
             'address' => 'required|string|max:255',
             'description' => 'required|string|max:255',
@@ -63,28 +67,23 @@ class SubSalonController extends Controller
         Log::info('Working Days:', $validatedData['working_days']);
         $validatedData['working_days'] = json_encode($validatedData['working_days']);
 
-        // Convert start time to 24-hour format
         $opening_start_hour = $request->opening_hours_start_ampm === 'PM' && $request->opening_hours_start_hour != 12
             ? $request->opening_hours_start_hour + 12
             : ($request->opening_hours_start_ampm === 'AM' && $request->opening_hours_start_hour == 12 ? 0 : $request->opening_hours_start_hour);
 
         $validatedData['opening_hours_start'] = sprintf('%02d:%02d:00', $opening_start_hour, $request->opening_hours_start_minute);
 
-        // Convert end time to 24-hour format
         $opening_end_hour = $request->opening_hours_end_ampm === 'PM' && $request->opening_hours_end_hour != 12
             ? $request->opening_hours_end_hour + 12
             : ($request->opening_hours_end_ampm === 'AM' && $request->opening_hours_end_hour == 12 ? 0 : $request->opening_hours_end_hour);
 
         $validatedData['opening_hours_end'] = sprintf('%02d:%02d:00', $opening_end_hour, $request->opening_hours_end_minute);
 
-        // Create the SubSalon
         $subsalon = SubSalon::create($validatedData);
 
-        // Handle multiple images upload
         if ($request->hasFile('images')) {
             $images = [];
             foreach ($request->file('images') as $file) {
-                // التأكد من أن الملف هو صورة
                 if ($file->isValid()) {
                     $filename = uniqid() . '_' . $file->getClientOriginalName();
                     $path = public_path('uploads/subsalons/');
@@ -92,17 +91,24 @@ class SubSalonController extends Controller
 
                     $images[] = [
                         'image' => 'uploads/subsalons/' . $filename,
-                        'sub_salons_id' => $subsalon->id, // ربط الصورة بالصالون الفرعي
+                        'sub_salons_id' => $subsalon->id,
                     ];
                 } else {
-                    // تسجيل رسالة خطأ أو التعامل مع الحالة عند عدم صلاحية الملف
                     Log::error('Invalid image file: ' . $file->getClientOriginalName());
                 }
             }
 
-            // إدخال الصور في قاعدة البيانات
             Image::insert($images);
         }
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $path = public_path('uploads/salon/');
+            $file->move($path, $filename);
+            $subsalon->image = 'uploads/subsalon/' . $filename;
+        }
+
+        $subsalon->save();
 
 
         return redirect()->route('subsalons.index')->with('success', 'Sub salon created successfully.');
@@ -123,7 +129,13 @@ class SubSalonController extends Controller
     }
 
     public function showAllSubSalons()
-    {
+    { $userCount = User::count();
+
+        $salonCount = Salon::count();
+        $subsalonCount = SubSalon::count();
+        $allSubsalons = SubSalon::all();
+
+        $bookingCount = Booking::count();
         $subsalons = SubSalon::with('feeds')->get();
 
         $filteredSubsalons = $subsalons->filter(function ($subsalon) {
@@ -133,7 +145,12 @@ class SubSalonController extends Controller
 
         return view('user_side.landing', [
             'filteredSubsalons' => $filteredSubsalons,
-            'allSubsalons' => $subsalons,
+            'allSubsalons' => $allSubsalons,
+            'userCount' => $userCount,
+            'bookingCount' => $bookingCount,
+            'salonCount' => $salonCount,
+            'subsalonCount' => $subsalonCount,
+
         ]);
     }
 
@@ -174,16 +191,15 @@ class SubSalonController extends Controller
         }
 
         $categories = $subsalon->categories;
-        $subsalon = SubSalon::with('categories')->find($id);
-        $users = User::all();
-        $feeds = Feed::all();
+
+        $feeds = Feed::where('sub_salons_id', $subsalon->id)->get();
+
         $images = Image::where('sub_salons_id', $subsalon->id)->get();
 
         return view('user_side.more_details', [
             'subsalon' => $subsalon,
             'images' => $images,
             'feeds' => $feeds,
-            'users' => $users,
             'categories' => $categories
         ]);
     }
@@ -213,18 +229,35 @@ class SubSalonController extends Controller
         return view('dashboard.subsalon.edit', compact('subsalon', 'Images', 'salons', 'workingDays'));
     }
 
+    public function showCategoriesAndServices($id)
+    {
+        $subsalon = SubSalon::find($id);
 
+        if (!$subsalon) {
+            return redirect()->route('home')->with('error', 'Salon not found');
+        }
+
+        $categories = $subsalon->categories()->with('services')->get();
+
+
+        return view('user_side.categories', [
+            'subsalon' => $subsalon,
+            'categories' => $categories
+        ]);
+    }
+
+
+
+//   ---------------------------------------------------- update-----------------------------------
 
     public function update(Request $request, $id)
     {
-        // Log the incoming request data
         Log::info('Update Request Data:', $request->all());
 
-        // Find the SubSalon or fail
         $subsalon = SubSalon::findOrFail($id);
 
-        // Validate the incoming request
         $validatedData = $request->validate([
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'location' => 'required|string|max:255',
             'address' => 'required|string|max:255',
             'description' => 'required|string|max:255',
@@ -283,12 +316,25 @@ class SubSalonController extends Controller
 
             Image::insert($images);
         }
+        if ($request->hasFile('image')) {
+            if ($subsalon->image && File::exists(public_path($subsalon->image))) {
+                File::delete(public_path($subsalon->image));
+            }
 
+            $file = $request->file('image');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $path = public_path('uploads/subsalons/');
+            $file->move($path, $filename);
+
+            $subsalon->image = 'uploads/subsalons/' . $filename;
+        }
+
+
+        $subsalon->save();
         return redirect()->route('subsalons.index')->with('success', 'SubSalon updated successfully!');
     }
 
-    /**
-     */
+//   ----------------------------------------------------delete------------------------------------
     public function destroy(SubSalon $subsalon)
     {
         $subsalon->delete();

@@ -27,16 +27,16 @@
                             <a class="nav-link"  href="{{ route('more_subsalons') }}">salons</a>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link " href="services.html" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Services</a>
+                            <a class="nav-link "  href="{{ route('service') }}" >Services</a>
                         </li>
                         {{-- <li class="nav-item">
                             <a class="nav-link" href="news.html">News</a>
                         </li> --}}
                         <li class="nav-item">
-                            <a class="nav-link" href="about.html">About</a>
+                            <a class="nav-link" href="{{ route('about') }}">About</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="contact.html">Contact</a>
+                            <a class="nav-link" href="{{ route('subscribe') }}">subscribe</a>
                         </li>
 
                         <!-- Show login/register buttons if user is guest -->
@@ -81,45 +81,6 @@
         </nav>
     </header>
 
-    <!-- Styling for buttons -->
-    <style>
-        .btn-nav {
-            background-color: #1d1d1d;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            height: 45px;
-            width: 100px;
-            border: none;
-            font-size: 13px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            text-decoration: none;
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            margin-right: 10px;
-            box-sizing: border-box;
-        }
 
-        .btn-nav:hover {
-            background-color: #333333;
-            color: #fff;
-        }
-
-        .btn-nav i {
-            margin-right: 5px;
-        }
-
-        .site-menu.js-clone-nav.d-flex {
-            display: flex;
-            justify-content: flex-start;
-            gap: 10px;
-            flex-wrap: wrap;
-            max-width: 100%;
-        }
-    </style>
 </body>
 </html>

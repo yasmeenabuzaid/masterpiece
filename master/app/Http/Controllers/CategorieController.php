@@ -6,8 +6,8 @@ use App\Models\Categorie;
 use App\Models\BookingService;
 use App\Models\SubSalon;
 use App\Models\Booking;
-use App\Models\Service; // تأكد من استيراد نموذج الخدمة
-use App\Models\Salon; // تأكد من استيراد نموذج الخدمة
+use App\Models\Service;
+use App\Models\Salon;
 use Illuminate\Http\Request;
 
 class CategorieController extends Controller
@@ -33,8 +33,8 @@ class CategorieController extends Controller
     public function show_CategoriesBySalon($salonId = null, $subSalonId = null)
     {
         if ($subSalonId) {
-            $subSalon = SubSalon::findOrFail($subSalonId); // جلب الصالون الفرعي باستخدام الـ id
-            $categories = $subSalon->categories; // جلب الفئات المرتبطة بالصالون الفرعي
+            $subSalon = SubSalon::findOrFail($subSalonId);
+            $categories = $subSalon->categories;
         }
         elseif ($salonId) {
             $salon = Salon::findOrFail($salonId);
@@ -47,11 +47,6 @@ class CategorieController extends Controller
         return view('user_side.all-categoies', compact('categories', 'salon', 'subSalon'));
     }
 
-
-
-
-
-
     public function create()
     {
         $subsalons = SubSalon::all();
@@ -63,35 +58,29 @@ class CategorieController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'sub_salons_id' => 'required|exists:sub_salons,id',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        // إنشاء كائن جديد لفئة
         $categorie = new Categorie($validatedData);
 
-        // تخزين الصورة إذا تم رفعها
         if ($request->hasFile('image')) {
             $file = $request->file('image');
             $filename = time() . '.' . $file->getClientOriginalExtension();
-            $path = public_path('uploads/salon/');
+            $path = public_path('uploads/categories/');
 
-            // تأكد من وجود المجلد
             if (!file_exists($path)) {
                 mkdir($path, 0755, true);
             }
 
-            // نقل الصورة إلى المجلد
             $file->move($path, $filename);
-            $categorie->image = 'uploads/salon/' . $filename; // تعيين مسار الصورة
+            $categorie->image = 'uploads/categories/' . $filename;
         }
 
-        // حفظ الفئة
         $categorie->save();
 
         return redirect()->route('categories.index')->with('success', 'Category created successfully.');
     }
-
 
     public function show($id)
     {
@@ -99,9 +88,9 @@ class CategorieController extends Controller
         $categories = Categorie::all();
         $bookings = Booking::all();
         $bookingServices = BookingService::all();
-        $services = Service::all(); // استرجاع جميع الخدمات
+        $services = Service::all();
 
-        return view('user_side.categories', compact('categories', 'subsalon', 'bookings', 'bookingServices', 'services')); // تأكد من تمرير المتغيرات
+        return view('user_side.categories', compact('categories', 'subsalon', 'bookings', 'bookingServices', 'services'));
     }
 
     public function edit($id)
@@ -117,57 +106,30 @@ class CategorieController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'sub_salons_id' => 'required|exists:sub_salons,id',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // إضافة تحقق للصورة
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $categorie = Categorie::findOrFail($id);
 
-        // تحديث خصائص الفئة
         $categorie->update($validatedData);
 
-        // تخزين الصورة إذا تم رفعها
         if ($request->hasFile('image')) {
             $file = $request->file('image');
             $filename = time() . '.' . $file->getClientOriginalExtension();
-            $path = public_path('uploads/salon/');
+            $path = public_path('uploads/categories/');
 
             if (!file_exists($path)) {
                 mkdir($path, 0755, true);
             }
 
             $file->move($path, $filename);
-            $categorie->image = 'uploads/salon/' . $filename; // تعيين مسار الصورة
-            $categorie->save(); // حفظ التحديثات
+            $categorie->image = 'uploads/categories/' . $filename;
         }
+
+        $categorie->save();
 
         return redirect()->route('categories.index')->with('success', 'Category updated successfully.');
     }
-
-    public function showCategoriesBySalon($salonId = null, $subSalonId = null)
-    {
-        $salon = null;
-        $subSalon = null;  // التأكد من تعريف المتغير
-
-        // إذا كان id للصالون الفرعي موجود
-        if ($subSalonId) {
-            $subSalon = SubSalon::findOrFail($subSalonId);
-            $categories = $subSalon->categories;  // جلب الفئات المرتبطة بالصالون الفرعي
-        }
-        // إذا كان id للصالون موجود
-        elseif ($salonId) {
-            $salon = Salon::findOrFail($salonId);
-            $subSalons = $salon->subSalons;
-            $categories = Categorie::whereIn('sub_salons_id', $subSalons->pluck('id'))->get();
-        } else {
-            return redirect()->route('home')->with('error', 'Salon or SubSalon not found');
-        }
-
-        // تمرير المتغيرات إلى الـ view
-        return view('user_side.categories', compact('categories', 'salon', 'subSalon'));
-    }
-
-
-
 
     public function destroy($id)
     {

@@ -343,11 +343,98 @@
         <div class="row justify-content-center align-items-center" style="display: flex; flex-direction: column; align-items: center;margin-top:50px">
             <!-- Title -->
             <div class="col-md-8 text-center">
-                <h2 class="text-uppercase heading border-bottom mb-4">Services</h2>
-                <p class="mb-0 lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi unde impedit, necessitatibus, soluta sit quam minima expedita atque corrupti reiciendis.</p>
+                <h2 class="text-uppercase heading border-bottom mb-4 ">Services</h2>
+                <p class="mb-0 lead">You can easily browse through our diverse range of services. Choose the service that suits your needs, then select a convenient time to complete your booking. The process is quick and easy, with flexible options that allow you to choose times that fit your schedule</p>
 
             </div>
+ <!-- Steps Section -->
+                <div class="steps mt-5">
+                    <div class="step-item">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h5>Choose a Service</h5>
+                        </div>
+                    </div>
+                    <!-- Arrow between steps -->
+                    <div class="arrow">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h5>Book Your Appointment</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
+            <!-- Custom CSS for Step Design -->
+            <style>
+                .steps {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 40px;
+                    text-align: left;
+                }
+
+                .step-item {
+                    width: 90px;
+                    text-align: center;
+                }
+
+                .step-number {
+                    background-color: #007bff;
+                    color: white;
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    margin: 0 auto 10px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    font-size: 18px;
+                }
+
+                .step-content h5 {
+                    font-size: 16px;
+                    font-weight: bold;
+                    margin-bottom: 0px;
+                }
+
+                .step-content p {
+                    font-size: 14px;
+                    color: #555;
+                }
+
+                .arrow {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+
+                .arrow i {
+                    font-size: 24px;
+                    color: #007bff;
+                }
+
+                .step-item:hover .step-number {
+                    background-color: #0056b3;
+                }
+
+                /* Styling for the arrows between steps */
+                .arrow i {
+                    margin: 0 20px;
+                }
+
+                /* Add a little space between text and the number */
+                .step-item + .step-item {
+                    margin-left: 10px;
+                }
+            </style>
+
+            <!-- Add Font Awesome for Arrow Icons -->
+            <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 
 
 <section class="section bg-light py-5">
@@ -376,7 +463,7 @@
                     <ul>
                         @foreach($categorie->services as $service)
                         <li class="service-item" id="service-{{ $service->id }}">
-                            <img src="{{ asset($service->image ?: 'default_service_image.jpg') }}" alt="Service Image">
+                            {{-- <img src="{{ asset($service->image ?: 'default_service_image.jpg') }}" alt="Service Image"> --}}
                             <div class="service-details">
                                 <strong>{{ $service->name }}</strong> - ${{ $service->price }}<br>
                                 <span>{{ $service->description }}</span><br>

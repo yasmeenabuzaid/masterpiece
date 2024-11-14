@@ -16,10 +16,13 @@ class Categorie extends Model
         'user_id',
     ];
 
-    public function services()
-    {
-        return $this->hasMany(Service::class, 'categories_id');
-    }
+   // في نموذج Categorie
+   public function services()
+   {
+       return $this->hasMany(Service::class, 'categories_id');
+   }
+
+
     public function cat_det()
     {
         return $this->hasMany(Category_Details::class, 'cat_det_id');
@@ -27,7 +30,7 @@ class Categorie extends Model
 
 public function subSalon()
 {
-    return $this->belongsTo(SubSalon::class, 'sub_salons_id'); 
+    return $this->belongsTo(SubSalon::class, 'sub_salons_id');
 }
 
 

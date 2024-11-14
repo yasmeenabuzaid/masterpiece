@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 // -------------------------------------------------------
 class Salon extends Model
 {
-
+    use HasFactory;
         use SoftDeletes;
 
         protected $fillable = ['name', 'description', 'image'];
@@ -31,7 +31,7 @@ public function users()
 
 
 
-public function subSalons()
+public function subsalon()
 {
     return $this->hasMany(SubSalon::class, 'salon_id');
 }

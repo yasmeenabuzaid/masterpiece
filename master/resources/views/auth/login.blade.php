@@ -8,7 +8,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Form</title>
     <style>
-        /* إعدادات أساسية للنمط العام */
         * {
             margin: 0;
             padding: 0;
@@ -18,9 +17,9 @@
 
         body {
             background-color: #f4f4f4;
-            margin: 0; /* إزالة الهامش من الجسم */
-            padding: 0; /* إزالة الحشو من الجسم */
-            overflow: hidden; /* منع التمرير */
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
         }
 
         .containe {
@@ -29,12 +28,12 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            margin: 0; /* تأكد من عدم وجود هامش */
+            margin: 0;
         }
 
         .image-container {
             position: absolute;
-            top: -30px; /* رفع الصورة للأعلى بمقدار 30 بكسل */
+            top: -30px;
             left: 0;
             width: 100%;
             height: 100%;
@@ -44,7 +43,7 @@
         .image-container img {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* تغطي الصورة المساحة بالكامل */
+            object-fit: cover;
         }
 
         .image-overlay {
@@ -53,20 +52,19 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: rgba(27, 27, 27, 0.773); /* فلتر أسود خفيف */
+            background-color: rgba(27, 27, 27, 0.773);
         }
 
-        /* تنسيق النموذج */
         .form-container {
             z-index: 1;
-            padding: 30px; /* تقليص الحشوة */
-            background-color: #ffffff; /* تغيير لون الخلفية إلى الأبيض */
+            padding: 30px;
+            background-color: #ffffff;
             border-radius: 10px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            border: 2px solid #000; /* تغيير الحدود إلى خط مستقيم */
-            width: 600px; /* تصغير عرض النموذج */
+            border: 2px solid #000;
+            width: 600px;
             position: relative;
-            top: -30px; /* رفع الفورم قليلاً */
+            top: -30px;
         }
 
         .signup-form {
@@ -75,15 +73,14 @@
         }
 
         .signup-form h2 {
-        font-size: 36px; /* تقليل حجم الخط */
-        text-align: center;
-        color: #333333;
-        margin-bottom: 20px; /* زيادة المسافة السفلية */
-    }
-
+            font-size: 36px;
+            text-align: center;
+            color: #333333;
+            margin-bottom: 20px;
+        }
 
         .welcome-message {
-            font-size: 14px; /* تصغير حجم الرسالة الترحيبية */
+            font-size: 14px;
             color: #666666;
             margin: 15px 0;
             text-align: center;
@@ -91,13 +88,13 @@
 
         .signup-form label {
             margin-bottom: 5px;
-            font-size: 14px; /* تصغير حجم الخط */
+            font-size: 14px;
             color: #333333;
         }
 
         .signup-form input {
-            margin-bottom: 12px; /* تقليص المسافة بين الحقول */
-            padding: 10px; /* تقليص الحشوة داخل الحقول */
+            margin-bottom: 12px;
+            padding: 10px;
             border: 1px solid #e74c3c;
             border-radius: 5px;
             font-size: 14px;
@@ -105,19 +102,18 @@
             transition: border 0.3s ease;
         }
 
-        /* تغيير لون الحقول عند التفاعل */
         .signup-form input:focus {
-            border: 1px solid #3498db; /* تغيير اللون عند الفوكس */
+            border: 1px solid #3498db;
             outline: none;
-            background-color: #f0f8ff; /* تغيير لون الخلفية عند التفاعل */
+            background-color: #f0f8ff;
         }
 
         .btn-login {
-            background-color: #1d1d1d;
+            background-color: #007bff;
             color: white;
             border: none;
-            padding: 10px; /* تقليص الحشوة داخل الزر */
-            font-size: 14px; /* تصغير حجم الخط داخل الزر */
+            padding: 10px;
+            font-size: 14px;
             cursor: pointer;
             border-radius: 5px;
             transition: background-color 0.3s ease;
@@ -125,7 +121,7 @@
         }
 
         .btn-login:hover {
-            background-color: #333333;
+            background-color: #2a91ff;
         }
 
         .signin {
@@ -135,7 +131,7 @@
         }
 
         .signin a {
-            font-size: 12px; /* تصغير حجم رابط "نسيت كلمة المرور" */
+            font-size: 12px;
             font-weight: bold;
             color: #e74c3c;
             text-decoration: none;
@@ -150,11 +146,11 @@
         .form-check {
             display: flex;
             align-items: center;
-            margin-bottom: 10px; /* تقليص المسافة بين الزر والحقول الأخرى */
+            margin-bottom: 10px;
         }
 
         .form-check-input {
-            margin-right: 10px; /* زيادة المسافة بين الزر والتسمية */
+            margin-right: 10px;
             width: 16px;
             height: 16px;
         }
@@ -174,8 +170,8 @@
         @endif
 
         <div class="image-container">
-            <img src="salon-landing.png" alt="Background Image"> <!-- استبدل بالمسار الصحيح للصورة -->
-            <div class="image-overlay"></div> <!-- فلتر الصورة -->
+            <img src="https://images.pexels.com/photos/331989/pexels-photo-331989.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Background Image">
+            <div class="image-overlay"></div>
         </div>
 
         <div class="form-container">
@@ -183,8 +179,9 @@
                 @csrf
 
                 <h2>{{ __('Login') }}</h2>
-                <p class="welcome-message">Welcome to salonak ! Please login here.</p>
+                <p class="welcome-message">Welcome to salonak! Please login here.</p>
 
+                <!-- ---------------------------- Section Start: Email Field ---------------------------- -->
                 <div class="row mb-3">
                     <label for="email" class="col-form-label">{{ __('Email Address') }}</label>
                     <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus placeholder="Enter your email">
@@ -194,7 +191,9 @@
                         </span>
                     @enderror
                 </div>
+                <!-- ---------------------------- Section End: Email Field ---------------------------- -->
 
+                <!-- ---------------------------- Section Start: Password Field ---------------------------- -->
                 <div class="row mb-3">
                     <label for="password" class="col-form-label">{{ __('Password') }}</label>
                     <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password" placeholder="Enter your password">
@@ -204,20 +203,23 @@
                         </span>
                     @enderror
                 </div>
+                <!-- ---------------------------- Section End: Password Field ---------------------------- -->
 
+                <!-- -------------------------- Section Start: Submit Button ---------------------------- -->
                 <div class="row mb-0">
                     <div style="margin-left: auto;">
                         <button type="submit" class="btn-login">{{ __('Login') }}</button>
                     </div>
                 </div>
+                <!-- -------------------------- Section End: Submit Button ---------------------------- -->
 
-                <div class="signin">
+                {{-- <div class="signin">
                     @if (Route::has('password.request'))
                         <a class="btn btn-link" href="{{ route('password.request') }}">
                             {{ __('Forgot Your Password?') }}
                         </a>
                     @endif
-                </div>
+                </div> --}}
             </form>
         </div>
     </div>
