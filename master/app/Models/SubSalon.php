@@ -48,7 +48,7 @@ class SubSalon extends Model
         return $this->hasMany(Service::class, 'services_id');
     }
 
-// في نموذج SubSalon
+
 public function users()
 {
     return $this->hasMany(User::class, 'sub_salons_id');
@@ -79,24 +79,22 @@ public function users()
         return json_decode($value, true);
     }
 
-    // إضافة دوال لتحويل ساعات العمل
+
     public function getOpeningHoursStartAttribute($value)
     {
-        return $value; // يمكن تنسيق القيمة حسب الحاجة
+        return $value;
     }
 
     public function getOpeningHoursEndAttribute($value)
     {
-        return $value; // يمكن تنسيق القيمة حسب الحاجة
+        return $value;
     }
 
-    // دالة لتصفية الصالونات النشطة
     public function scopeActive($query)
     {
         return $query->where('status', 1);
     }
 
-    // دالة لتحديد ما إذا كان الصالون مفتوحًا
     public function isOpen()
     {
         return $this->status == 1;
@@ -108,7 +106,7 @@ public function users()
 // }
 public function feeds()
 {
-    return $this->hasMany(Feed::class, 'sub_salons_id'); // تأكد من أن 'sub_salons_id' هو اسم العمود في جدول feeds
+    return $this->hasMany(Feed::class, 'sub_salons_id');
 }
 public function averageRating()
 {

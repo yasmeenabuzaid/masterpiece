@@ -22,8 +22,6 @@ class Salon extends Model
 
 
 
- // في نموذج Salon
-// في نموذج Salon
 public function users()
 {
     return $this->hasMany(User::class, 'salons_id');

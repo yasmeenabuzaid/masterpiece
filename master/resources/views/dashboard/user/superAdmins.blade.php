@@ -31,8 +31,11 @@
                         <tr>
                             <td>
                                 @if($user->image)
-                                    <img src="{{ asset($user->image) }}" alt="Image not found" class="me-2" style="border-radius: 3px; width: 100px;">
-                                @else
+                                <img
+                                src="{{ $user->image ? asset($user->image) : asset('https://i2.wp.com/chasesolar.org.uk/files/2022/02/blank-avatar.jpg') }}"
+                                class="me-2"
+                                alt="image"
+                                style="border-radius: 50%; width: 50px; height: 50px;">                                @else
                                     <span>No Image</span>
                                 @endif
                             </td>

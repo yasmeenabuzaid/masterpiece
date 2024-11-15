@@ -73,7 +73,7 @@ class BookingController extends Controller
             // إنشاء حجز جديد
             $booking = new Booking();
             $booking->sub_salons_id = $request->sub_salons_id ?? null; // تأكد من تعيين sub_salons_id إذا كان متاحًا
-            $booking->user_id = auth()->id(); // تعيين معرف المستخدم الحالي
+            $booking->user_id = auth()->id();
             $booking->date = $request->date;  // تعيين التاريخ
             $booking->time = $request->time;  // تعيين الوقت
             $booking->note = $request->note;  // تعيين الملاحظة
@@ -103,13 +103,10 @@ class BookingController extends Controller
             session()->flash('success', 'Booking completed successfully!');
             return redirect()->back();
         } catch (\Exception $e) {
-            // إلغاء المعاملة في حالة حدوث خطأ
             DB::rollBack();
 
-            // تسجيل الخطأ في السجلات
             Log::error("Error saving booking: " . $e->getMessage());
 
-            // إظهار رسالة خطأ للمستخدم
             session()->flash('error', 'An error occurred during booking. Please try again.');
             return redirect()->back();
         }
