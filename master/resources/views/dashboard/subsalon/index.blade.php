@@ -4,22 +4,36 @@
 <div class="container">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h3><i class="fas fa-cut me-2"></i> Sub Salons (Total: {{ $subsalons->count() }})</h3>
+
+
+
         <a href="{{ route('subsalons.create') }}">
             <button type="button" class="btn btn-success"><i class="fa-solid fa-plus" style="margin-right: 5px"></i> Add New Sub Salon</button>
         </a>
     </div>
+
     @if(session('error'))
-    <div class="alert alert-danger">
-        {{ session('error') }}
-    </div>
-@endif
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
 
-@if(session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
-@endif
-
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+    <form action="{{ route('subsalons.index') }}" method="GET"  class="d-flex align-items-center form-search">
+        <select name="governorate" class="form-select me-2">
+            <option value="">Select Governorate</option>
+            @foreach (['Amman', 'Zarqa', 'Irbid', 'Ajloun', 'Jerash', 'Madaba', 'Mafraq', 'Karak', 'Tafilah', 'Ma\'an', 'Aqaba'] as $governorate)
+                <option value="{{ $governorate }}" {{ request('governorate') == $governorate ? 'selected' : '' }}>{{ $governorate }}</option>
+            @endforeach
+        </select>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+    <br>
+    <br>
     <div class="table-responsive">
         <table class="table table-striped table-bordered">
             <thead>
@@ -51,11 +65,10 @@
 
                             <td>{{ $subsalon->salon->name ?? 'No Salon Available' }}</td>
                             <td>{{ $subsalon->address }}</td>
-                            <td>{{ $subsalon->usersCount() > 0 ? $subsalon->usersCount() : 'No associated employees'  }}</td> <!-- افترض وجود حقل employee_count -->
+                            <td>{{ $subsalon->usersCount() > 0 ? $subsalon->usersCount() : 'No associated employees' }}</td>
                             <td>{{ $subsalon->phone }}</td>
                             <td>Date: {{ $subsalon->created_at->format('Y-m-d') }}<br>Time: {{ $subsalon->created_at->format('H:i') }}</td>
                             <td>
-
                                 <button type="button" class="btn btn-danger" onclick="confirmDeletion(event, '{{ route('subsalons.destroy', $subsalon->id) }}')">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>

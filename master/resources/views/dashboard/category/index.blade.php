@@ -4,22 +4,28 @@
 <div class="container">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h3><i class="fas fa-tags me-2"></i> Categories (Total: {{ $categories->count() }})</h3>
+
+
         @if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()))
-            <a href="{{ route('categories.create') }}">
-                <button type="button" class="btn btn-success">
-                    <i class="fa-solid fa-plus" style="margin-right: 5px"></i> Add New Category
-                </button>
-            </a>
+        <a href="{{ route('categories.create') }}">
+            <button type="button" class="btn btn-success">
+                <i class="fa-solid fa-plus" style="margin-right: 5px"></i> Add New Category
+            </button>
+        </a>
         @endif
     </div>
-
+    <form action="{{ route('categories.index') }}" method="GET" class="d-flex align-items-center form-search">
+        <input type="text" name="search" class="form-control me-2" placeholder="Search by name" value="{{ request('search') }}">
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+<br>
     <div class="table-responsive">
         <table class="table table-striped table-bordered">
             <thead>
                 <tr>
                     <th>Name</th>
                     <th>Description</th>
-                    <th>this category is in</th>
+                    <th>Category belongs to</th>
                     <th>Date Created</th>
                     @if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()))
                         <th>Actions</th>
@@ -34,7 +40,6 @@
                 @else
                     @foreach($categories as $category)
                         <tr>
-
                             <td>{{ $category->name }}</td>
                             <td>{{ $category->description }}</td>
                             <td>
@@ -44,13 +49,11 @@
                                     No Salon Found
                                 @endif
                             </td>
-
-
                             <td>
                                 Date: {{ isset($category->created_at) ? $category->created_at->format('Y-m-d') : 'null' }}<br>
                                 Time: {{ isset($category->created_at) ? $category->created_at->format('H:i') : 'null' }}
                             </td>
-                          @if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()))
+                            @if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()))
                                 <td>
                                     <button type="button" class="btn btn-danger" onclick="confirmDeletion(event, '{{ route('categories.destroy', $category->id) }}')">
                                         <i class="fa-solid fa-trash"></i>

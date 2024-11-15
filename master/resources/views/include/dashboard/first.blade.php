@@ -15,6 +15,9 @@
     <!-- Layout styles -->
     <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
     <!-- End layout styles -->
+<!-- تضمين مكتبة Chart.js عبر CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     {{-- <link rel="shortcut icon" href="{{asset('assets/images/favicon.ico')}}" /> <!-- استخدم واحدة فقط --> --}}
   </head>

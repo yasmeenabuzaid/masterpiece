@@ -79,28 +79,64 @@
             <div class="col-md-8 text-center">
                 <h2 class="text-uppercase heading border-bottom mb-4">Top-Rated Salons</h2>
                 <p class="mb-3 lead">Discover our most popular salons, each with a customer rating of 4 stars or higher. These salons have been highly rated by our users for their exceptional service, professional staff, and outstanding customer satisfaction. Book an appointment today and experience the best in beauty and care.</p>
-                <p><a href="works.html" class="btn btn-primary">See All Salons</a></p>
+                <p><a href="{{ route('more_subsalons') }}" class="btn btn-primary">See All Salons</a></p>
             </div>
         </div>
 
-        <div class="row no-gutters">
-            @foreach ($allSubsalons->slice(0,3) as $subsalon)
-                <div class="col-md-4 element-animate">
-                    <a href="works-single.html" class="link-thumbnail">
-                        <h3>{{ $subsalon->salon->name ?? 'No Salon Available' }}</h3>
-                        <span class="icon">
-                            <button class="btn btn-primary">See More</button>
-                        </span>
-                        <img src="{{ $subsalon->image }}" alt="Image" class="img-fluid" style="width: 450px; height: 400px;">
-                    </a>
-                </div>
-            @endforeach
+        <div class="row element-animate">
+            <div class="major-caousel js-carousel-1 owl-carousel">
+                @foreach ($filteredSubsalons as $subsalon)
+
+                    <div>
+                        <div class="media d-block media-custom text-left">
+                            <img src="{{ $subsalon->image}}" alt="Image Placeholder" class="img-fluid" style="width: 400px; height: 400px; object-fit: cover;">
+                            <div class="media-body">
+                                <div style="display: flex; align-items: center; justify-content:start;">
+                                    <a href="#" class="text-black" style="display: flex; align-items: center;">
+                                        <img src="{{ $subsalon->salon->image }}" alt="Salon Logo" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover; margin-right: 15px;">
+                                    </a>
+                                    <br>
+                                    <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between;">
+                                    <span>{{ $subsalon->salon->name ?? 'No Salon Available' }}</span>
+                                    <span><strong>Location:</strong> {{ $subsalon->location ?? 'Not Available' }}</span>
+                                </div>
+                            </div>
+                             <br>
+                            <span class="meta-post">{{ $subsalon->type}} salon</span>
+
+                                <p>{{ Str::limit($subsalon->description, 100) }}</p>
+                                @php
+                                $averageRating = $subsalon->averageRating();
+                            @endphp
+
+                            <div class="rating mb-4">
+                                <span class="fs-18 cl11">
+                                    @if ($averageRating)
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            <i class="bi {{ $i <= round($averageRating) ? 'bi-star-fill' : 'bi-star' }}" style="color: #f9ba48;"></i>
+                                        @endfor
+                                    @else
+                                        <p>No ratings yet</p>
+                                    @endif
+                                </span>
+                            </div>
+                                <p class="clearfix">
+                                    <a href="{{ route('single_salon', $subsalon) }}" class="btn btn-primary">See More</a>
+                                    {{-- <a href="#" class="float-right meta-chat"><span class="ion-chatbubble"></span> 8</a> --}}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
         </div>
+
+
     </div>
 </section>
 
 {{-- --------------------------------------------- start count --------------------------------- --}}
-<section class="inner-page">
+<section class="inner-page" id="stats-section">
     <div class="slider-item py-5" style="background-image: url('https://images.pexels.com/photos/7440052/pexels-photo-7440052.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');">
         <div class="container">
             <div class="row slider-text align-items-center justify-content-center text-center">
@@ -134,30 +170,43 @@
 
 <script>
     function animateCounter(id, endValue) {
-        let startValue = 0; // start value
-        const duration = 2000; // time -> 2 seconds -> 200 milliseconds
-        const increment = endValue / (duration / 50); // Calculate increment per 50ms
+        let startValue = 0;
+        const duration = 2000; // 2 seconds
+        const increment = endValue / (duration / 50); // Calculate increment
         const counterElement = document.getElementById(id);
 
-        const interval = setInterval(() => { //start animateCounter
+        const interval = setInterval(() => {
             startValue += increment;
             if (startValue >= endValue) {
                 startValue = endValue;
-                clearInterval(interval); //endvalue
+                clearInterval(interval);
             }
             counterElement.textContent = Math.round(startValue);
-        }, 50); // update number in brower
+        }, 50);
     }
 
-    // Start counting
-    animateCounter('salons-count', {{ $salonCount }});
-    animateCounter('subsalons-count', {{ $subsalonCount }});
-    animateCounter('appointments-count', {{ $bookingCount }});
+    // Intersection Observer for triggering counter animation when section is in view
+    const statsSection = document.getElementById('stats-section');
+
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                // Start counting when section is in view
+                animateCounter('salons-count', {{ $salonCount }});
+                animateCounter('subsalons-count', {{ $subsalonCount }});
+                animateCounter('appointments-count', {{ $bookingCount }});
+            }
+        });
+    }, {
+        threshold: 0.5 // Trigger when 50% of section is in view
+    });
+
+    observer.observe(statsSection);
 </script>
 
 <style>
     .slider-item {
-        position: relative; 
+        position: relative;
     }
 
     .slider-item::before {

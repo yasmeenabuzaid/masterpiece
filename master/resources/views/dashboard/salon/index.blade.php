@@ -5,29 +5,36 @@
 
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h3><i class="fas fa-cut me-2"></i> - All Salons (Total: {{ $salons->count() }})</h3>
+
+
             <div>
                 <a href="{{ route('salons.create') }}" class="btn btn-success">Add New Salon</a>
             </div>
         </div>
 
-        <div class="mb-4">
-            <a href="{{ route('salons.index', ['status' => 'active']) }}" class="btn btn-primary">
-                <i class="fas fa-check-circle me-1"></i> Active Salons
-            </a>
-            <a href="{{ route('salons.index', ['status' => 'trashed']) }}" class="btn btn-warning">
-                <i class="fas fa-archive me-1"></i> Deleted Salons
-            </a>
-        </div>
 
         <div class="mb-4">
             @if (session('success'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    {{ session('success') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
             @endif
         </div>
 
+        <form action="{{ route('salons.index') }}" method="GET" class="d-flex align-items-center form-search">
+            <input type="text" name="search" class="form-control me-2" placeholder="Search by name" value="{{ request('search') }}">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+        <br>
+        <div class="mb-4">
+            <a href="{{ route('salons.index', ['status' => 'active']) }}" class="btn btn-primary">
+                <i class="fas fa-check-circle me-1"></i> Active Salons ({{ $activeSalonsCount }})
+            </a>
+            <a href="{{ route('salons.index', ['status' => 'trashed']) }}" class="btn btn-warning">
+                <i class="fas fa-archive me-1"></i> Deleted Salons ({{ $trashedSalonsCount }})
+            </a>
+        </div>
         <div class="table-responsive">
             <table class="table table-striped table-bordered">
                 <thead>

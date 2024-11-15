@@ -39,8 +39,7 @@
                                 <span>No Image</span>
                             @endif
                         </td>
-                      {{ $user->name }}
-                    </td>
+                    <td> {{ $user->name }}</td>
                     <td>
                         @if($user->usertype === 'owner')
                             <label class="badge" style="background-color: orange; color: white;">Owner</label>

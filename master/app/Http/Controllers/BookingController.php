@@ -15,20 +15,22 @@ class BookingController extends Controller
     {
         $user = Auth::user();
 
+        // استرجاع الحجوزات وفقًا لنوع المستخدم
         if ($user->isSuperAdmin()) {
-            $bookings = Booking::all();
+            $bookings = Booking::with('services')->get();  // تحميل الخدمات المرتبطة بكل حجز
         } elseif ($user->isOwner()) {
             $bookings = Booking::whereHas('subSalon.salon', function ($query) use ($user) {
                 $query->where('user_id', $user->id);
-            })->get();
+            })->with('services')->get();  // تحميل الخدمات المرتبطة
         } elseif ($user->isEmployee()) {
-            $bookings = Booking::where('user_id', $user->id)->get();
+            $bookings = Booking::where('user_id', $user->id)->with('services')->get();  // تحميل الخدمات المرتبطة
         } else {
             return redirect()->route('login')->with('error', 'Access denied.');
         }
 
         return view('dashboard.booking.index', compact('bookings'));
     }
+
 
     public function showAvailableTimes(Request $request, $subSalonId)
     {

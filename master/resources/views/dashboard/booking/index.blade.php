@@ -20,12 +20,15 @@
         <table class="table table-striped table-bordered">
             <thead>
                 <tr>
-                    <th>User Name</th>
-                    <th>Email</th>
+                    @if (!auth()->user()->isEmployee())
+                        <th>User Name</th>
+                        <th>Email</th>
+                    @endif
                     <th>Salon Address</th>
                     <th>Date</th>
                     <th>Time</th>
                     <th>Note</th>
+                    <th>Services</th> <!-- العمود الجديد لعرض الخدمات -->
                     <th>Created At</th>
                     @if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()))
                         <th>Actions</th>
@@ -35,19 +38,27 @@
             <tbody>
                 @if ($bookings->isEmpty())
                     <tr>
-                        <td colspan="{{ auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()) ? '8' : '7' }}" class="text-center">
+                        <td colspan="{{ auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()) ? '9' : '8' }}" class="text-center">
                             No bookings available.
                         </td>
                     </tr>
                 @else
                     @foreach($bookings as $booking)
                         <tr>
-                            <td>{{ $booking->user ? $booking->user->name : 'Unknown User' }}</td>
-                            <td>{{ $booking->user ? $booking->user->email : 'Unknown email' }}</td>
+                            @if (!auth()->user()->isEmployee())
                             <td>{{ $booking->subalon ? $booking->subalon->address : 'Unknown Salon' }}</td>
+                                <td>{{ $booking->user ? $booking->user->name : 'Unknown User' }}</td>
+                                <td>{{ $booking->user ? $booking->user->email : 'Unknown email' }}</td>
+                            @endif
+                            <td>{{ $booking->user ? $booking->user->name : 'Unknown User' }}</td>
                             <td>{{ $booking->date }}</td>
                             <td>{{ $booking->time }}</td>
                             <td>{{ $booking->note ?? 'N/A' }}</td>
+                            <td>
+                                @foreach($booking->services as $service)
+                                    <span class="badge bg-info">{{ $service->name }}</span>
+                                @endforeach
+                            </td>
                             <td>{{ $booking->created_at->format('Y-m-d') }}</td>
                             @if (auth()->user()->isSuperAdmin() || auth()->user()->isOwner())
                                 <td>

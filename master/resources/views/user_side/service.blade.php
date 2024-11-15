@@ -4,7 +4,7 @@
 
 <!-- Section for Salon Owner -->
 <section class="inner-page">
-  <div class="slider-item py-5" style="background-image: url('img/slider-2.jpg');">
+  <div class="slider-item py-5" style="background-image: url('https://images.pexels.com/photos/331989/pexels-photo-331989.jpeg?auto=compress&cs=tinysrgb&w=600');">
     <div class="container">
       <div class="row slider-text align-items-center justify-content-center text-center">
         <div class="col-md-7 col-sm-12 element-animate">

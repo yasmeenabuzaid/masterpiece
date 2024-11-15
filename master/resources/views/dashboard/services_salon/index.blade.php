@@ -1,20 +1,28 @@
 @extends('layouts.dashboard_master')
 
 @section('content')
+
+{{-- ------------------------------------------------------------------- start title and button create --------------------------------- --}}
 <div class="container">
-    <!-- عنوان الصفحة -->
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h3><i class="fas fa-concierge-bell me-2"></i> Services (Total: {{ $services->count() }})</h3>
+
+
         @if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()))
-            <a href="{{ route('services.create') }}">
-                <button type="button" class="btn btn-gradient-success btn-fw">
-                    <i class="fa-solid fa-plus me-2"></i> Add New Service
-                </button>
-            </a>
+        <a href="{{ route('services.create') }}">
+            <button type="button" class="btn btn-gradient-success btn-fw">
+                <i class="fa-solid fa-plus me-2"></i> Add New Service
+            </button>
+        </a>
         @endif
     </div>
+    <form action="{{ route('services.index') }}" method="GET" class="d-flex align-items-center form-search">
+        <input type="text" name="search" class="form-control me-2" placeholder="Search by name" value="{{ request('search') }}">
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
 
-    <!-- رسالة النجاح عند إضافة خدمة جديدة -->
+{{-- ------------------------------------------------------------------- end title and button create --------------------------------- --}}
+{{-- ------------------------------------------------------------------- start success message--------------------------------- --}}
     <div class="mb-4">
         @if (session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -23,8 +31,9 @@
             </div>
         @endif
     </div>
+{{-- ------------------------------------------------------------------- end success message--------------------------------- --}}
 
-    <!-- جدول الخدمات -->
+{{-- ------------------------------------------------------------------- start table--------------------------------- --}}
     <div class="table-responsive">
         <table class="table table-striped table-bordered">
             <thead>
@@ -56,17 +65,14 @@
                             <td>{{ $service->created_at->format('Y-m-d') }}</td>
                             @if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()))
                                 <td>
-                                    <!-- حذف الخدمة -->
                                     <button type="button" class="btn btn-danger" onclick="confirmDeletion(event, '{{ route('services.destroy', $service->id) }}')">
                                         <i class="fa-solid fa-trash"></i> Delete
                                     </button>
-                                    <!-- عرض الخدمة -->
                                     <a href="{{ route('services.show', $service->id) }}">
                                         <button type="button" class="btn btn-dark">
                                             <i class="fa-solid fa-eye"></i> View
                                         </button>
                                     </a>
-                                    <!-- تعديل الخدمة -->
                                     <a href="{{ route('services.edit', $service->id) }}">
                                         <button type="button" class="btn btn-info">
                                             <i class="fa-solid fa-pen-to-square"></i> Edit
@@ -81,8 +87,10 @@
         </table>
     </div>
 </div>
+{{-- ------------------------------------------------------------------- end table--------------------------------- --}}
 
-<!-- Custom Confirmation Modal for Deletion -->
+{{-- ------------------------------------------------------------------- start modal--------------------------------- --}}
+
 <div id="confirmationModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); justify-content: center; align-items: center; z-index: 1000;">
     <div style="background: #fff; padding: 20px; border-radius: 5px; text-align: center;">
         <p>Are you sure you want to delete this service?</p>
@@ -129,5 +137,6 @@
         };
     }
 </script>
+{{-- ------------------------------------------------------------------- end modal--------------------------------- --}}
 
 @endsection

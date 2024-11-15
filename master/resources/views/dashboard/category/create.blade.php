@@ -24,14 +24,12 @@
                         <input type="text" class="form-control" id="description" name="description" placeholder="Description" required>
                     </div>
 
-
-
                     <!-- For SuperAdmin: Show all SubSalons -->
                     @if (auth()->user()->isSuperAdmin())
                         <div class="form-group">
                             <label for="sub_salons_id">Select SubSalon Address</label>
                             <select class="form-control form-control-sm" name="sub_salons_id" id="sub_salons_id" required>
-                                @foreach ($subsalons as $subsalon)
+                                @foreach ($subSalon as $subsalon)
                                     <option value="{{ $subsalon->id }}">{{ $subsalon->address }}</option>
                                 @endforeach
                             </select>
@@ -43,7 +41,7 @@
                         <div class="form-group">
                             <label for="sub_salons_id">Select SubSalon Address</label>
                             <select class="form-control form-control-sm" name="sub_salons_id" id="sub_salons_id" required>
-                                @foreach (auth()->user()->salon->subSalons as $subsalon)
+                                @foreach ($subSalon as $subsalon)
                                     <option value="{{ $subsalon->id }}">{{ $subsalon->address }}</option>
                                 @endforeach
                             </select>

@@ -18,11 +18,11 @@ class FeedController extends Controller
             $users=User::all();
             $feeds = Feed::with(['user', 'subsalon'])->get();
         } elseif ($user->isOwner()) {
-            $user->load('salon.subSalons');
+            $user->load('salon.subsalon');
 
-            if ($user->salon && $user->salon->subSalons->isNotEmpty()) {
+            if ($user->salon && $user->salon->subsalon->isNotEmpty()) {
                 $feeds = Feed::with(['user', 'subsalon'])
-                    ->whereIn('sub_salons_id', $user->salon->subSalons->pluck('id'))
+                    ->whereIn('sub_salons_id', $user->salon->subsalon->pluck('id'))
                     ->get();
             } else {
                 $feeds = collect();
@@ -40,7 +40,7 @@ class FeedController extends Controller
     public function create($subSalonId)
     {
         $subsalon = SubSalon::findOrFail($subSalonId);
-        $feeds = Feed::with('user')->where('sub_salons_id', $subsalon)->get(); 
+        $feeds = Feed::with('user')->where('sub_salons_id', $subsalon)->get();
         return view('user_side.more_details', compact('subSalon', 'feeds'));
     }
 

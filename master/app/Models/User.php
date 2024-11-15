@@ -14,14 +14,6 @@ class User extends Authenticatable
     protected $fillable = [
         'name', 'email', 'password', 'usertype', 'salons_id', 'sub_salons_id', 'image'
     ];
-    public function profile(): BelongsTo
-    {
-        return $this->belongsTo(Profile::class, 'profile_id');
-    }
-    // public function salon()
-    // {
-    //     return $this->belongsTo(Salon::class); //1salon
-    // }
 
     public function feedback(){
         return $this->hasMany(Feed::class,'feedback_id');
@@ -48,10 +40,11 @@ class User extends Authenticatable
            return $this->belongsTo(Salon::class, 'salons_id');
        }
 
-public function subSalon()
-{
-    return $this->belongsTo(SubSalon::class, 'sub_salons_id');
-}
+       public function subSalon()
+       {
+           return $this->belongsTo(SubSalon::class, 'sub_salons_id');
+       }
+
 
 
     // public function bookings()
@@ -103,3 +96,4 @@ public function isEmployee()
 }
 
 }
+

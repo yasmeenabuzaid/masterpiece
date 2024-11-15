@@ -30,6 +30,7 @@ public function users()
 
 
 public function subsalon()
+
 {
     return $this->hasMany(SubSalon::class, 'salon_id');
 }

@@ -6,7 +6,8 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h3><i class="fas fa-user-tie me-2"></i> Employees</h3>
         <a href="{{ route('users.create') }}">
-            <button type="button" class="btn btn-gradient-success btn-rounded btn-fw"><i class="fa-solid fa-plus" style="margin-right: 5px"></i>
+            <button type="button" class="btn btn-gradient-success btn-rounded btn-fw">
+                <i class="fa-solid fa-plus" style="margin-right: 5px"></i>
                 <i class="zmdi zmdi-plus"></i> Add New Employee
             </button>
         </a>
@@ -16,9 +17,10 @@
         <table class="table table-striped table-bordered">
             <thead>
                 <tr>
-                    <th>Assignee</th>
+                    <th>Image</th>
+                    <th>Name</th>
                     <th>User Type</th>
-                    <th>work in</th>
+                    <th>Work In</th>
                     <th>Email</th>
                     <th>Date</th>
                     <th>Actions</th>
@@ -29,27 +31,25 @@
                 <tr>
                     <td>
                         @if($user->image)
-                        <img
-                        src="{{ $user->image ? asset($user->image) : asset('https://i2.wp.com/chasesolar.org.uk/files/2022/02/blank-avatar.jpg') }}"
-                        class="me-2"
-                        alt="image"
-                        style="border-radius: 50%; width: 50px; height: 50px;">                                @else
-                            <span>No Image</span>
+                        <img src="{{ $user->image ? asset($user->image) : asset('https://i2.wp.com/chasesolar.org.uk/files/2022/02/blank-avatar.jpg') }}"
+                            class="me-2" alt="image" style="border-radius: 50%; width: 50px; height: 50px;">
+                        @else
+                        <span>No Image</span>
                         @endif
                     </td>
+                    <td>{{ $user->name }}</td>
                     <td>
                         @if($user->usertype === 'employee')
                             <label class="badge" style="background-color: blue; color: white;">Employee</label>
                         @endif
                     </td>
-                    <td>
-                        {{ optional($user->salon)->name }}.{{ optional($user->subsalon)->address }}
-                    </td>
+                    <td>{{ optional($user->salon)->name }}.{{ optional($user->subsalon)->address }}</td>
                     <td>{{ $user->email }}</td>
                     <td>{{ $user->created_at->format('Y-m-d') }}</td>
                     <td>
                         <!-- Delete Button -->
-                        <button type="button" class="btn btn-gradient-danger btn-rounded btn-icon" onclick="confirmDeletion(event, '{{ route('users.destroy', $user->id) }}')">
+                        <button type="button" class="btn btn-gradient-danger btn-rounded btn-icon"
+                                onclick="confirmDeletion(event, '{{ route('users.destroy', $user->id) }}')">
                             <i class="fa-solid fa-trash"></i>
                         </button>
 
@@ -69,9 +69,9 @@
                     </td>
                 </tr>
                 @empty
-                    <tr>
-                        <td colspan="5" class="text-center">No users found.</td>
-                    </tr>
+                <tr>
+                    <td colspan="7" class="text-center">No users found.</td>
+                </tr>
                 @endforelse
             </tbody>
         </table>

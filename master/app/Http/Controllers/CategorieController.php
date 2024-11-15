@@ -16,19 +16,29 @@ class CategorieController extends Controller
     {
         $user = auth()->user();
         $categories = collect();
+
+        $search = request('search');
+
         if ($user->isSuperAdmin()) {
-            $categories = Categorie::all();
+            $categories = Categorie::when($search, function ($query) use ($search) {
+                return $query->where('name', 'like', '%' . $search . '%');
+            })->get();
         } elseif ($user->isOwner()) {
-            $subSalons = $user->salon->subSalons;
-            if ($subSalons->isNotEmpty()) {
-                $categories = Categorie::whereIn('sub_salons_id', $subSalons->pluck('id'))
-                                       ->with('subSalon.salon')
-                                       ->get();
+            $subSalon = $user->salon->subSalon;
+
+            if ($subSalon->isNotEmpty()) {
+                $categories = Categorie::whereIn('sub_salons_id', $subSalon->pluck('id'))
+                    ->when($search, function ($query) use ($search) {
+                        return $query->where('name', 'like', '%' . $search . '%');
+                    })
+                    ->with('subSalon.salon')
+                    ->get();
             }
         }
 
         return view('dashboard.category.index', compact('categories'));
     }
+
 
     public function show_CategoriesBySalon($salonId = null, $subSalonId = null)
     {
@@ -49,9 +59,36 @@ class CategorieController extends Controller
 
     public function create()
     {
-        $subsalons = SubSalon::all();
-        return view('dashboard.category.create', compact('subsalons'));
+        // الحصول على المستخدم الحالي
+        $user = auth()->user();
+
+        // تحضير المتغيرات
+        $categories = collect();  // لتخزين الفئات
+        $subSalon = collect();   // لتخزين الصالونات الفرعية
+
+        // إذا كان المستخدم SuperAdmin
+        if ($user->isSuperAdmin()) {
+            // الحصول على جميع الـ SubSalons
+            $subSalon = SubSalon::all();
+        } elseif ($user->isOwner()) {
+            // إذا كان المستخدم Owner
+            $salon = $user->salon; // الحصول على الصالون المرتبط بالمستخدم
+
+            // تأكد من أن الصالون يحتوي على صالونات فرعية
+            if ($salon && $salon->subsalon->isNotEmpty()) {
+                $subSalon = $salon->subsalon; // الحصول على جميع الصالونات الفرعية المرتبطة بالصالون
+                // الحصول على الفئات المرتبطة بالصـالونات الفرعية
+                $categories = Categorie::whereIn('sub_salons_id', $subSalon->pluck('id'))->get();
+            } else {
+                // إذا لم يوجد صالونات فرعية
+                $subSalon = collect();  // إعادة تعيينها إلى مجموعة فارغة
+            }
+        }
+
+        // إعادة البيانات إلى العرض
+        return view('dashboard.category.create', compact('categories', 'subSalon'));
     }
+
 
     public function store(Request $request)
     {
@@ -59,23 +96,9 @@ class CategorieController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'required|string',
             'sub_salons_id' => 'required|exists:sub_salons,id',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $categorie = new Categorie($validatedData);
-
-        if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $filename = time() . '.' . $file->getClientOriginalExtension();
-            $path = public_path('uploads/categories/');
-
-            if (!file_exists($path)) {
-                mkdir($path, 0755, true);
-            }
-
-            $file->move($path, $filename);
-            $categorie->image = 'uploads/categories/' . $filename;
-        }
 
         $categorie->save();
 
@@ -94,42 +117,56 @@ class CategorieController extends Controller
     }
 
     public function edit($id)
-    {
-        $subsalons = SubSalon::all();
-        $categorie = Categorie::findOrFail($id);
-        return view('dashboard.category.edit', compact('categorie', 'subsalons'));
-    }
+{
+    // الحصول على المستخدم الحالي
+    $user = auth()->user();
 
-    public function update(Request $request, $id)
-    {
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'sub_salons_id' => 'required|exists:sub_salons,id',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ]);
+    // الحصول على الفئة (Category) التي نريد تعديلها
+    $category = Categorie::findOrFail($id);
 
-        $categorie = Categorie::findOrFail($id);
+    // تحضير المتغيرات الأساسية
+    $subSalon = collect();  // متغير لحفظ الصالونات الفرعية
 
-        $categorie->update($validatedData);
+    // إذا كان المستخدم SuperAdmin
+    if ($user->isSuperAdmin()) {
+        // الحصول على جميع الـ SubSalons
+        $subSalon = SubSalon::all();
+    } elseif ($user->isOwner()) {
+        // إذا كان المستخدم Owner، نعرض فقط الـ SubSalons المرتبطة بالصالون
+        $salon = $user->salon;
 
-        if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $filename = time() . '.' . $file->getClientOriginalExtension();
-            $path = public_path('uploads/categories/');
-
-            if (!file_exists($path)) {
-                mkdir($path, 0755, true);
-            }
-
-            $file->move($path, $filename);
-            $categorie->image = 'uploads/categories/' . $filename;
+        // تأكد من أن الصالون يحتوي على SubSalons
+        if ($salon && $salon->subSalon) {
+            $subSalon = $salon->subSalon; // الحصول على الـ SubSalons الخاصة بالصالون
+        } else {
+            // إذا لم يكن هناك SubSalons
+            $subSalon = collect(); // قم بتعيينها إلى مجموعة فارغة
         }
-
-        $categorie->save();
-
-        return redirect()->route('categories.index')->with('success', 'Category updated successfully.');
     }
+
+    // إعادة البيانات إلى العرض
+    return view('dashboard.category.edit', compact('category', 'subSalon'));
+}
+
+public function update(Request $request, $id)
+{
+    // التحقق من البيانات المدخلة
+    $validatedData = $request->validate([
+        'name' => 'required|string|max:255',
+        'description' => 'required|string',
+        'sub_salons_id' => 'required|exists:sub_salons,id',
+    ]);
+
+    // العثور على الفئة (Category) التي نريد تعديلها
+    $category = Categorie::findOrFail($id);
+
+    // تحديث البيانات
+    $category->update($validatedData);
+
+    // إعادة التوجيه مع رسالة نجاح
+    return redirect()->route('categories.index')->with('success', 'Category updated successfully.');
+}
+
 
     public function destroy($id)
     {

@@ -20,29 +20,33 @@ class UserController extends Controller
         $salons = Salon::all();
         $sub_salons = SubSalon::all();
 
-        // التحقق من نوع المستخدم
         if (auth()->user()->isSuperAdmin()) {
-            // إذا كان المستخدم Super Admin، إظهار جميع المستخدمين
             $users = User::all();
         } elseif (auth()->user()->isOwner()) {
-            // إذا كان المستخدم من نوع "Owner"، الحصول على الصالون الخاص به
             $salonId = auth()->user()->salons_id;
 
-            // الحصول على sub_salons المرتبطة بالصالون الخاص بالـ Owner
             $subSalonsForOwner = SubSalon::where('salon_id', $salonId)->get();
 
-            // إذا كانت هناك sub_salons للـ Owner، نعرض الموظفين المرتبطين بها
             if ($subSalonsForOwner->isNotEmpty()) {
-                // استعلام لجلب الموظفين المرتبطين بـ sub_salons المرتبطة بالـ salon
-                $users = User::whereIn('sub_salons_id', $subSalonsForOwner->pluck('id'))
-                            ->where('usertype', 'employee') // نعرض فقط الموظفين
-                            ->get();
+                $usersQuery = User::whereIn('sub_salons_id', $subSalonsForOwner->pluck('id'))
+                                  ->where('usertype', 'employee'); // نعرض فقط الموظفين
+
+                $users = $usersQuery->get();
+
+                if ($users->isEmpty()) {
+                    $users = collect();
+                }
             } else {
-                $users = collect(); // إذا لم توجد sub_salons، نرجع مجموعة فارغة
+                $users = collect();
             }
         } else {
-            // إذا كان المستخدم ليس Super Admin أو Owner، إرجاع مجموعة فارغة
             $users = collect();
+        }
+
+        if ($search = request('search')) {
+            $users = $users->filter(function ($user) use ($search) {
+                return strpos(strtolower($user->name), strtolower($search)) !== false;
+            });
         }
 
         return view('dashboard.user.index', compact('users', 'salons', 'sub_salons'));

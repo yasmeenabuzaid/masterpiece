@@ -39,7 +39,7 @@
                                     <span>No Image</span>
                                 @endif
                             </td>
-                            <td>{{ $user->name }}</td>
+                        <td> {{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
                             <td>
                                 @if($user->usertype === 'super_admin')

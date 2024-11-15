@@ -12,11 +12,25 @@ class ServiceController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        $categories = Categorie::all();
-        $services = Service::all();
-        return view('dashboard.services_salon.index', ['services' => $services, 'categories' => $categories]);
-    }
+{
+    // الحصول على جميع الفئات لتكون موجودة في الـ view
+    $categories = Categorie::all();
+
+    // الحصول على قيمة البحث من الـ request
+    $search = request('search');
+
+    // استعلام للحصول على الخدمات مع تطبيق فلتر البحث إذا كان موجودًا
+    $services = Service::when($search, function ($query) use ($search) {
+        return $query->where('name', 'like', '%' . $search . '%');
+    })->get();
+
+    // تمرير البيانات إلى الـ view
+    return view('dashboard.services_salon.index', [
+        'services' => $services,
+        'categories' => $categories
+    ]);
+}
+
 
     /**
      * Show the form for creating a new resource.
@@ -24,21 +38,21 @@ class ServiceController extends Controller
     public function create()
     {
         $user = auth()->user();
-        $categories = collect(); // مجموعة فارغة لافتراض عدم وجود فئات
+        $categories = collect();
 
         if ($user->isSuperAdmin()) {
-            // إذا كان المستخدم SuperAdmin، نعرض جميع الفئات
             $categories = Categorie::all();
         } elseif ($user->isOwner()) {
-            // إذا كان المستخدم Owner، نعرض الفئات المرتبطة بالـ SubSalon الخاص به
-            $subSalons = $user->salon->subSalons; // احصل على الصالونات الفرعية المرتبطة بالصالون الخاص بالمستخدم
+            $subSalons = $user->salon ? $user->salon->subsalon : collect();
             if ($subSalons->isNotEmpty()) {
-                $categories = Categorie::whereIn('sub_salons_id', $subSalons->pluck('id'))->get(); // جلب الفئات المرتبطة بالـ SubSalons
+                $categories = Categorie::whereIn('sub_salons_id', $subSalons->pluck('id'))->get();
             }
         }
 
         return view('dashboard.services_salon.create', compact('categories'));
     }
+
+
 
 
     /**

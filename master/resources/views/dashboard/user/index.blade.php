@@ -4,28 +4,37 @@
 <div class="container">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h3><i class="fas fa-users me-2"></i> All Users (Total: {{ $users->count() }})</h3>
+
+
+
         <a href="{{ route('users.create') }}">
             <button type="button" class="btn btn-success"><i class="fa-solid fa-plus" style="margin-right: 5px"></i> Add New User</button>
         </a>
     </div>
+
     @if(session('error'))
-    <div class="alert alert-danger">
-        {{ session('error') }}
-    </div>
-@endif
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
 
-@if(session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
-@endif
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+    <form action="{{ route('users.index') }}" method="GET" class="d-flex align-items-center form-search">
+        <input type="text" name="search" class="form-control me-2" placeholder="Search by name" value="{{ request('search') }}">
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
 
+    <br>
     <div class="table-responsive">
         <table class="table table-striped table-bordered">
             <thead>
                 <tr>
-                    <th>image</th>
-                    <th>name</th>
+                    <th>Image</th>
+                    <th>Name</th>
                     <th>User Type</th>
                     <th>Email</th>
                     <th>Date</th>
@@ -35,24 +44,19 @@
             <tbody>
                 @if($users->isEmpty())
                     <tr>
-                        <td colspan="5" class="text-center">No users found</td>
+                        <td colspan="6" class="text-center">No users found</td>
                     </tr>
                 @else
                     @foreach($users as $user)
                         <tr>
                             <td>
-                                <td>
-                                    @if($user->image)
-                                    <img
-                                    src="{{ $user->image ? asset($user->image) : asset('https://i2.wp.com/chasesolar.org.uk/files/2022/02/blank-avatar.jpg') }}"
-                                    class="me-2"
-                                    alt="image"
-                                    style="border-radius: 50%; width: 50px; height: 50px;">                                @else
-                                        <span>No Image</span>
-                                    @endif
-                                </td>
-                            <td> {{ $user->name }}</td>
-
+                                @if($user->image)
+                                    <img src="{{ asset($user->image) }}" class="me-2" alt="image" style="border-radius: 50%; width: 50px; height: 50px;">
+                                @else
+                                    <span>No Image</span>
+                                @endif
+                            </td>
+                            <td>{{ $user->name }}</td>
                             <td>
                                 @if($user->usertype === 'user')
                                     <label class="badge" style="background-color: red; color: white;">Customer</label>
@@ -70,11 +74,6 @@
                                 <button type="button" class="btn btn-danger" onclick="confirmDeletion(event, '{{ route('users.destroy', $user->id) }}')">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
-                                {{-- <a href="{{ route('users.view', $user->id) }}">
-                                    <button type="button" class="btn btn-dark">
-                                        <i class="fa-solid fa-eye"></i>
-                                    </button>
-                                </a> --}}
                                 <a href="{{ route('users.edit', $user->id) }}">
                                     <button type="button" class="btn btn-info">
                                         <i class="fa-solid fa-pen-to-square"></i>

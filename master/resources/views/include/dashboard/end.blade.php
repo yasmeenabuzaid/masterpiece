@@ -28,7 +28,14 @@
     <!-- Custom js for this page -->
     <script src="{{asset("assets/js/dashboard.js")}}"></script>
     <script src="{{asset("assets/js/todolist.js")}}"></script>
-    
+    <script src="{{asset("https://cdn.jsdelivr.net/npm/chart.js")}}"></script>
+    <script src="{{asset("https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js")}}"></script>
+<!-- تضمين مكتبة Chart.js عبر CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</body>
+
     <!-- End custom js for this page -->
   </body>
 </html>

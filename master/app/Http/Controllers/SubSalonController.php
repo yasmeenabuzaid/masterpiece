@@ -16,26 +16,34 @@ use Illuminate\Support\Facades\File;
 class SubSalonController extends Controller
 {
     public function index()
-    {
-        $user = auth()->user();
-        if ($user->isSuperAdmin()) {
-            $salons = Salon::all();
-            $subsalons = SubSalon::all();
-            return view('dashboard/subsalon/index', ['subsalons' => $subsalons, 'salons' => $salons]);
-        }
-        elseif ($user->isOwner()) {
-            $salon = Salon::find($user->salons_id);
+{
+    $user = auth()->user();
 
-            if (!$salon) {
-                abort(404, 'Salon not found');
-            }
+    $query = SubSalon::query();
 
-            $subsalons = $salon->subSalons;
-            return view('dashboard/subsalon/index', ['subsalons' => $subsalons]);
-        } else {
-            abort(403, 'Unauthorized access.');
+    if ($user->isSuperAdmin()) {
+        $salons = Salon::all();
+        $subsalons = $query->get();
+    } elseif ($user->isOwner()) {
+        $salon = Salon::find($user->salons_id);
+        if (!$salon) {
+            abort(404, 'Salon not found');
         }
+
+        $subsalons = $salon->subsalon;
+    } else {
+        abort(403, 'Unauthorized access.');
     }
+
+    if ($search = request('governorate')) {
+        $subsalons = $subsalons->filter(function($subsalon) use ($search) {
+            return stripos($subsalon->address, $search) !== false;
+        });
+    }
+
+    return view('dashboard.subsalon.index', compact('subsalons', 'salons'));
+}
+
 
         public function create()
     {
@@ -222,9 +230,9 @@ class SubSalonController extends Controller
     public function edit($id)
     {
         $subsalon = SubSalon::findOrFail($id);
-        $Images = Image::where('sub_salons_id', $subsalon->id)->get(); // Adjust foreign key if necessary
-        $salons = Salon::all(); // Assuming you are getting all salons
-        $workingDays = $subsalon->working_days; // No need to decode if it's already an array
+        $Images = Image::where('sub_salons_id', $subsalon->id)->get(); 
+        $salons = Salon::all();
+        $workingDays = $subsalon->working_days;
 
         return view('dashboard.subsalon.edit', compact('subsalon', 'Images', 'salons', 'workingDays'));
     }

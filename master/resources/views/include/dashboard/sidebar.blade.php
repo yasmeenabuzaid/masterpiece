@@ -61,6 +61,8 @@
             </a>
         </li>
         @endif
+        @if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()))
+
         <li class="nav-item">
             <a class="nav-link" href="{{ route('categories.index') }}">
                 <span style="color: #fff;" class="menu-title">Categories</span>
@@ -74,13 +76,14 @@
                 <i class="fa-solid fa-th-list menu-icon"></i>
             </a>
         </li>
-
+@endif
         <li class="nav-item">
             <a class="nav-link" href="{{ route('bookings.index') }}">
                 <span style="color: #fff;" class="menu-title">Booking</span>
                 <i class="fa-solid fa-calendar-check menu-icon"></i>
             </a>
         </li>
+        @if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()))
 
         <li class="nav-item">
             <a class="nav-link" href="{{ route('feedbacks.index') }}">
@@ -88,7 +91,7 @@
                 <i class="fa-solid fa-comment-dots menu-icon"></i>
             </a>
         </li>
-
+@endif
         @if (auth()->check() && auth()->user()->isSuperAdmin())
         <li class="nav-item">
             <a class="nav-link" href="{{ route('contacts.index') }}">
@@ -123,7 +126,7 @@
                 <i class="fa-solid fa-eye menu-icon"></i>
             </a>
         </li>
-    
+
         <li class="nav-item">
             <a class="nav-link" href="{{ route('logout') }}"
                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

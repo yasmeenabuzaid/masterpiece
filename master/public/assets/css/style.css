@@ -14453,3 +14453,14 @@ dl {
   flex-grow: 1; }
 
 /*# sourceMappingURL=style.css.map */
+.form-search {
+    border: 1px solid #888;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.form-search input,
+.form-search button {
+    border: 1px solid #888;
+    border-radius: 5px;
+}

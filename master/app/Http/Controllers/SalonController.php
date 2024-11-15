@@ -10,19 +10,28 @@ class SalonController extends Controller
     {
         $status = $request->get('status', 'all');
 
+        $search = $request->get('search');
+
+        $salonsQuery = Salon::query();
+
         if ($status === 'active') {
-            $salons = Salon::whereNull('deleted_at')->get();
+            $salonsQuery->whereNull('deleted_at');
         } elseif ($status === 'trashed') {
-            $salons = Salon::onlyTrashed()->get();
-        } else {
-            $salons = Salon::all();
+            $salonsQuery->onlyTrashed();
         }
+
+        if ($search) {
+            $salonsQuery->where('name', 'like', '%' . $search . '%');
+        }
+
+        $salons = $salonsQuery->get();
 
         $activeSalonsCount = Salon::whereNull('deleted_at')->count();
         $trashedSalonsCount = Salon::onlyTrashed()->count();
 
         return view('dashboard.salon.index', compact('salons', 'activeSalonsCount', 'trashedSalonsCount'));
     }
+
 
  // -------------------------------------------------------------------
 

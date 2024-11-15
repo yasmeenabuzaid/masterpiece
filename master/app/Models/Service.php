@@ -21,7 +21,6 @@ class Service extends Model
         return $this->belongsTo(SubSalon::class, 'sub_salons_id');
     }
 
-// في نموذج Service
 public function categorie()
 {
     return $this->belongsTo(Categorie::class, 'categories_id');
