@@ -24,20 +24,20 @@
                             <a class="nav-link active" href="{{ route('all_subsalons') }}">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link"  href="{{ route('more_subsalons') }}">salons</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link "  href="{{ route('service') }}" >Services</a>
-                        </li>
-                        {{-- <li class="nav-item">
-                            <a class="nav-link" href="news.html">News</a>
-                        </li> --}}
-                        <li class="nav-item">
                             <a class="nav-link" href="{{ route('about') }}">About</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('subscribe') }}">subscribe</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link"  href="{{ route('more_subsalons') }}">salons</a>
+                        </li>
+                        {{-- <li class="nav-item dropdown">
+                            <a class="nav-link "  href="{{ route('service') }}" >Services</a>
+                        </li> --}}
+                        {{-- <li class="nav-item">
+                            <a class="nav-link" href="news.html">News</a>
+                        </li> --}}
 
                         <!-- Show login/register buttons if user is guest -->
                         @guest

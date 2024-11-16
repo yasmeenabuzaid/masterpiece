@@ -13,10 +13,9 @@
         </div>
     </div>
 </section>
-<!-- END slider -->
 <style>
     .home-slider .slider-item {
-    position: relative; 
+    position: relative;
 }
 
 .home-slider .slider-item::before {
@@ -70,14 +69,7 @@
                                 <textarea name="message" id="message" class="form-control form-control-lg" cols="30" rows="8"></textarea>
                             </div>
                         </div>
-                        {{-- <div class="row">
-                            <div class="col-md-12 form-group">
-                                <label for="message2">More info about project</label>
-                                <textarea name="message2" id="message2" class="form-control form-control-lg" cols="30" rows="8"></textarea>
-                            </div>
-                        </div> --}}
 
-                        <!-- Subscription Plan Selection -->
                         <div class="row">
                             <div class="col-md-12 form-group">
                                 <label for="plan">Choose Your Subscription Plan</label>
@@ -89,7 +81,6 @@
                             </div>
                         </div>
 
-                        <!-- Payment Method Selection -->
                         <div class="row">
                             <div class="col-md-12 form-group">
                                 <label for="payment_method">Choose Payment Method</label>
@@ -114,7 +105,6 @@
                 <div class="col-md-4">
                     <h2 class="text-uppercase heading mb-5 text-left">Choose Your Subscription Plan</h2>
 
-                    <!-- Subscription Plan: Basic -->
                     <div class="media d-block media-testimonial mb-5 text-left">
                         <img src="img/plan_basic.jpg" alt="Basic Plan" class="img-fluid mb-3">
                         <h3 class="text-primary">Basic Plan</h3>
@@ -129,7 +119,6 @@
                         <hr>
                     </div>
 
-                    <!-- Subscription Plan: Standard -->
                     <div class="media d-block media-testimonial mb-5 text-left">
                         <img src="img/plan_standard.jpg" alt="Standard Plan" class="img-fluid mb-3">
                         <h3 class="text-primary">Standard Plan</h3>
@@ -145,7 +134,6 @@
                         <hr>
                     </div>
 
-                    <!-- Subscription Plan: Premium -->
                     <div class="media d-block media-testimonial mb-5 text-left">
                         <img src="img/plan_premium.jpg" alt="Premium Plan" class="img-fluid mb-3">
                         <h3 class="text-primary">Premium Plan</h3>

@@ -147,8 +147,8 @@
                 <div class="major-caousel js-carousel-1 owl-carousel">
                     @foreach ($feeds as $feed)
                         <div class="col-md-12">
-                            <div class="card mb-4 p-4 shadow-sm border-light">
-                                <div class="media d-flex align-items-center">
+                            <div class="card mb-4 p-4 shadow-sm border-light"style="height: 300px;">
+                                <div class="media d-flex align-items-center" >
                                     <!-- User Image -->
                                     <img src="{{ $feed->user->image ? asset($feed->user->image) : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjhNf9omxKz2fKDDGINL73mREg3C9H29w8NObPfh7Is55R63Tjp7GFsZvOeq-qXYDltDg&usqp=CAU' }}"
                                         alt="User Image" class="img-fluid rounded-circle"

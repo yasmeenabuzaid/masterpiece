@@ -38,20 +38,34 @@ class BookingController extends Controller
         $openingStart = \Carbon\Carbon::createFromFormat('H:i:s', $subSalon->opening_hours_start);
         $openingEnd = \Carbon\Carbon::createFromFormat('H:i:s', $subSalon->opening_hours_end);
 
-        $date = $request->get('date');
+        $date = $request->get('date');  // this date us selected from user
+
+        $employeesCount = $subSalon->usersCount();
+
         $bookedTimes = Booking::where('date', $date)
             ->pluck('time')->toArray();
 
+        $timeCounts = Booking::where('date', $date)
+            ->groupBy('time')
+            ->selectRaw('time, count(*) as bookings_count')
+            ->pluck('bookings_count', 'time')->toArray();
+
         $availableTimes = [];
+
+        // التحقق من كل وقت متاح
         for ($time = $openingStart->copy(); $time->lte($openingEnd); $time->addMinutes(15)) {
             $timeString = $time->format('H:i');
-            if (!in_array($timeString, $bookedTimes)) {
+
+            // التحقق إذا كان الوقت محجوز وعدد الحجوزات لا يتجاوز عدد الموظفين
+            $currentBookings = isset($timeCounts[$timeString]) ? $timeCounts[$timeString] : 0;
+            if (!in_array($timeString, $bookedTimes) && $currentBookings < $employeesCount) {
                 $availableTimes[] = $timeString;
             }
         }
 
         return response()->json($availableTimes);
     }
+
 
 
 

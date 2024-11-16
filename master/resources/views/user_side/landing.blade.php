@@ -7,15 +7,15 @@
         <div class="container">
             <div class="row slider-text align-items-center justify-content-center text-center">
                 <div class="col-md-7 col-sm-12 element-animate">
-                    <h1 class="display-4 font-weight-bold">Salonak</h1>
+                    <h1 class="display-4 font-weight-bold mb-4">Salonak</h1>
                     <h2 class="mb-4">Beauty services at your fingertips with just one click</h2>
-                    <p class="mb-0"><a href="{{ route('more_subsalons') }}"  class="btn btn-primary btn-lg">Get Started</a></p>
+                    <p class="mb-0"><a href="{{ route('more_subsalons') }}"  class="btn btn-primary btn-lg">Find Your Perfect Salon</a></p>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="slider-item" style="background-image: url('https://images.pexels.com/photos/7603842/pexels-photo-7603842.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load');">
+    {{-- <div class="slider-item" style="background-image: url('https://images.pexels.com/photos/7603842/pexels-photo-7603842.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load');">
         <div class="container">
             <div class="row slider-text align-items-center justify-content-center text-center">
                 <div class="col-md-8 col-sm-12 element-animate">
@@ -24,7 +24,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 </section>
 
 <style>
@@ -39,7 +39,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(54, 54, 54, 0.634);
+    background-color: rgba(44, 44, 44, 0.721);
     z-index: 1;
 }
 
@@ -122,7 +122,6 @@
                             </div>
                                 <p class="clearfix">
                                     <a href="{{ route('single_salon', $subsalon) }}" class="btn btn-primary">See More</a>
-                                    {{-- <a href="#" class="float-right meta-chat"><span class="ion-chatbubble"></span> 8</a> --}}
                                 </p>
                             </div>
                         </div>
@@ -185,20 +184,18 @@
         }, 50);
     }
 
-    // Intersection Observer for triggering counter animation when section is in view
     const statsSection = document.getElementById('stats-section');
 
     const observer = new IntersectionObserver(entries => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                // Start counting when section is in view
                 animateCounter('salons-count', {{ $salonCount }});
                 animateCounter('subsalons-count', {{ $subsalonCount }});
                 animateCounter('appointments-count', {{ $bookingCount }});
             }
         });
     }, {
-        threshold: 0.5 // Trigger when 50% of section is in view
+        threshold: 0.5
     });
 
     observer.observe(statsSection);
