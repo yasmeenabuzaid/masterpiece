@@ -1,4 +1,4 @@
-@if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()))
+{{-- @if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()))
 @extends('layouts.dashboard_master')
 
 @section('content')
@@ -7,7 +7,7 @@
     <form action="{{ route('bookings.store') }}" method="POST">
         @csrf
 
-   
+
         <div class="form-group">
             <label for="description">Description</label>
             <textarea class="form-control" id="description" name="description" placeholder="Enter booking description"></textarea>
@@ -46,4 +46,4 @@
     </form>
 </div>
 @endsection
-@endif
+@endif --}}

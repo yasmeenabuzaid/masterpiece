@@ -11,20 +11,26 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 class BookingController extends Controller
 {
+    // ---------------------------------------------------------- view in dashbourd --------------------------------------------------
     public function index()
     {
+
         $user = Auth::user();
 
-        // استرجاع الحجوزات وفقًا لنوع المستخدم
         if ($user->isSuperAdmin()) {
-            $bookings = Booking::with('services')->get();  // تحميل الخدمات المرتبطة بكل حجز
-        } elseif ($user->isOwner()) {
+            $bookings = Booking::with('services')->get(); // scope operator (::)
+        }
+        elseif ($user->isOwner()) {
             $bookings = Booking::whereHas('subSalon.salon', function ($query) use ($user) {
+                 // wherehas to get data from relationship ( booking in salon and sub salons)
                 $query->where('user_id', $user->id);
-            })->with('services')->get();  // تحميل الخدمات المرتبطة
-        } elseif ($user->isEmployee()) {
-            $bookings = Booking::where('user_id', $user->id)->with('services')->get();  // تحميل الخدمات المرتبطة
-        } else {
+            })->with('services')->get();
+        }
+        elseif ($user->isEmployee()) {
+            // Refund employee bookings with associated services
+            $bookings = Booking::where('user_id', $user->id)->with('services')->get();
+        }
+        else {
             return redirect()->route('login')->with('error', 'Access denied.');
         }
 
@@ -43,20 +49,18 @@ class BookingController extends Controller
         $employeesCount = $subSalon->usersCount();
 
         $bookedTimes = Booking::where('date', $date)
-            ->pluck('time')->toArray();
+            ->pluck('time')->toArray();  // time to arry
 
         $timeCounts = Booking::where('date', $date)
             ->groupBy('time')
             ->selectRaw('time, count(*) as bookings_count')
-            ->pluck('bookings_count', 'time')->toArray();
+            ->pluck('bookings_count', 'time')->toArray(); // count of booking whth his time
 
         $availableTimes = [];
 
-        // التحقق من كل وقت متاح
         for ($time = $openingStart->copy(); $time->lte($openingEnd); $time->addMinutes(15)) {
             $timeString = $time->format('H:i');
 
-            // التحقق إذا كان الوقت محجوز وعدد الحجوزات لا يتجاوز عدد الموظفين
             $currentBookings = isset($timeCounts[$timeString]) ? $timeCounts[$timeString] : 0;
             if (!in_array($timeString, $bookedTimes) && $currentBookings < $employeesCount) {
                 $availableTimes[] = $timeString;
@@ -71,57 +75,52 @@ class BookingController extends Controller
 
     public function store(Request $request)
     {
-        // عرض محتوى الـ request في حالة التصحيح
+
         // dd($request);
 
-        // التحقق من صحة البيانات المدخلة
         $request->validate([
             'date' => 'required|date',
             'time' => 'required|date_format:H:i',
             'note' => 'nullable|string',
-            'services' => 'required|string', // التحقق من أن حقل الخدمات ليس فارغًا
+            'services' => 'required|string',
         ]);
 
-        // محاولة تنفيذ الحجز ضمن معاملة
         try {
             DB::beginTransaction();
+            //booking is done -> store
+            //booking is  not done ->catch-> roll back changes and not save
 
-            // إنشاء حجز جديد
             $booking = new Booking();
-            $booking->sub_salons_id = $request->sub_salons_id ?? null; // تأكد من تعيين sub_salons_id إذا كان متاحًا
+            $booking->sub_salons_id = $request->sub_salons_id ?? null;
             $booking->user_id = auth()->id();
-            $booking->date = $request->date;  // تعيين التاريخ
-            $booking->time = $request->time;  // تعيين الوقت
-            $booking->note = $request->note;  // تعيين الملاحظة
-            $booking->save();  // حفظ الحجز
+            $booking->date = $request->date;
+            $booking->time = $request->time;
+            $booking->note = $request->note;
+            $booking->save();
 
-            // تقسيم قيم الخدمات إلى مصفوفة
-            $serviceIds = explode(',', $request->services);  // تحويل السلسلة إلى مصفوفة
+            $serviceIds = explode(',', $request->services); // to tern string to array  -> 1,2 -> [1,2]
 
-            // تحضير بيانات الخدمات
             $bookingServices = [];
             foreach ($serviceIds as $serviceId) {
                 $bookingServices[] = [
-                    'booking_id' => $booking->id,  // ربط الخدمة بالحجز
-                    'service_id' => $serviceId,    // معرف الخدمة
-                    'created_at' => now(),         // وقت الإنشاء
-                    'updated_at' => now(),         // وقت التحديث
+                    'booking_id' => $booking->id,
+                    'service_id' => $serviceId,
+                    'created_at' => now(),
+                    'updated_at' => now(),
                 ];
             }
 
-            // إدخال البيانات في جدول `BookingService`
             BookingService::insert($bookingServices);
 
-            // تأكيد المعاملة
-            DB::commit();
+            DB::commit(); // to save changes to database
 
-            // إظهار رسالة نجاح
             session()->flash('success', 'Booking completed successfully!');
             return redirect()->back();
-        } catch (\Exception $e) {
-            DB::rollBack();
 
-            Log::error("Error saving booking: " . $e->getMessage());
+        } catch (\Exception $e) {
+            DB::rollBack(); //  to roll back changes
+
+            Log::error("Error saving booking: " . $e->getMessage()); //to log error message in laravel
 
             session()->flash('error', 'An error occurred during booking. Please try again.');
             return redirect()->back();
@@ -133,18 +132,12 @@ class BookingController extends Controller
     public function get(Request $request)
     {
         if (!Auth::check()) {
-            return redirect()->route('login')->with('error', 'يرجى تسجيل الدخول لعرض حجوزاتك.');
+            return redirect()->route('login')->with('error', 'please login first');
         }
 
         $query = Booking::where('user_id', Auth::id())->with('subSalon');
 
-        if ($request->has('order_by') && in_array($request->order_by, ['oldest', 'newest'])) {
-            if ($request->order_by == 'newest') {
-                $query->orderBy('date', 'desc')->orderBy('time', 'desc');
-            } else {
-                $query->orderBy('date', 'asc')->orderBy('time', 'asc');
-            }
-        }
+
 
         if ($request->has('salon_name') && $request->salon_name != '') {
             $query->whereHas('subSalon.salon', function($q) use ($request) {
@@ -153,7 +146,7 @@ class BookingController extends Controller
         }
 
         $userBookings = Booking::where('user_id', auth()->id())
-        ->where('time', '>', now())  // الحجز الذي لم ينتهِ بعد
+        ->where('time', '>', now())
         ->get();
 
         return view('user_side.user_profile.my_booking', compact('userBookings'));

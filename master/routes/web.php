@@ -128,7 +128,7 @@ Route::get('/services', [BookingController::class, 'showServices'])->name('servi
 Route::get('/booking/{subSalonId}', [BookingController::class, 'showBookingForm'])->name('booking.form');
 // Route::get('/available-times', [BookingController::class, 'availableTimes'])->name('available.times');
 Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.store');
-Route::get('/my-booking', [BookingController::class, 'get'])->name('my_booking')->middleware('auth') ;
+Route::get('/my-booking', [BookingController::class, 'get'])->name('my_booking');
 Route::get('/subsalon/{subSalonId}/available-times', [BookingController::class, 'showAvailableTimes']);
 Route::get('/user_side/booking', [BookingController::class, 'showBookingForm'])->name('user_side.booking');
 

@@ -2,11 +2,10 @@
 
 @section('content')
     <section class="inner-page">
-        <div class="slider-item py-5"
-            style="background-image: url('img/slider-2.jpg'); background-size: cover; background-position: center;">
+        <div class="slider-item py-5" style="background-image: url('https://images.pexels.com/photos/331989/pexels-photo-331989.jpeg?auto=compress&cs=tinysrgb&w=600');">
             <div class="overlay"></div>
             <div class="container">
-                <div class="row slider-text align-items-center justify-content-center text-center">
+                <div class="row slider-text align-items-center justify-content-center text-start">
                     <div class="col-md-7 col-sm-12">
                         <h1 class="text-white">Welcome to Your Profile</h1>
                         <h2 class="text-white">Manage your personal details and bookings with ease</h2>
@@ -21,50 +20,78 @@
         <div class="container">
             <div class="row">
                 <!-- User Profile -->
-                <div class="col-md-12">
-                    <h3 class="text-center mb-4">User Profile</h3>
-                    <div class="profile-section">
-                        <div class="user-info text-center">
-                            <div class="profile-image mb-3">
-                                <img src="{{ auth()->user()->image ? asset(auth()->user()->image) : 'https://i2.wp.com/chasesolar.org.uk/files/2022/02/blank-avatar.jpg' }}"
-                                     alt="Profile Image"
-                                     class="img-fluid"
-                                     style="margin-top:40px; width: 150px; height: 150px; border-radius: 50%; border: 2px solid #616161; object-fit: cover;">
-                            </div>
-                            <div class="user-details">
-                                <div class="form-group">
-                                    <label for="name">Full Name</label>
-                                    <p>{{ auth()->user()->name }}</p>
-                                </div>
-                                <div class="form-group">
-                                    <label for="email">Email</label>
-                                    <p>{{ auth()->user()->email }}</p>
-                                </div>
-                                <div class="form-group">
-                                    <label for="usertype">User Type</label>
-                                    <p>{{ auth()->user()->usertype }}</p>
-                                </div>
-                                <div class="form-group mt-4">
-                                    <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal"
-                                            data-bs-target="#editProfileModal">Edit Profile</button>
-                                </div>
-                            </div>
+                <div class="col-md-12 d-flex justify-content-between">
+                    <div class="user-details text-start">
+                        <!-- Full Name -->
+                        <div class="form-group mb-3">
+                            <label for="name" class="font-weight-bold">Your Full Name</label>
+                            <p class="text-muted">{{ auth()->user()->name }}</p>
                         </div>
+                        <hr>
+
+                        <!-- Email -->
+                        <div class="form-group mb-3">
+                            <label for="email" class="font-weight-bold">Email Address</label>
+                            <p class="text-muted">{{ auth()->user()->email }}</p>
+                        </div>
+                        <hr>
+
+                        <!-- User Type -->
+                        <div class="form-group mb-3">
+                            <label for="usertype" class="font-weight-bold">Account Type</label>
+                            <p class="text-muted">{{ auth()->user()->usertype }}</p>
+                        </div>
+
+                        <!-- Edit Profile Button -->
+                        <div class="form-group mt-4">
+                            <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#editProfileModal">Edit Your Profile</button>
+                        </div>
+                    </div>
+
+                    <!-- Profile Image (Centered) -->
+                    <div class="profile-image text-center mb-3">
+                        <img src="{{ auth()->user()->image ? asset(auth()->user()->image) : 'https://i2.wp.com/chasesolar.org.uk/files/2022/02/blank-avatar.jpg' }}"
+                             alt="Profile Image"
+                             class="img-fluid"
+                             style="width: 150px; height: 150px; object-fit: cover;">
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+
     <!-- Bookings Section (Bottom) -->
     <div class="container py-5">
         <div class="row">
             <div class="col-md-12">
-                <h3 class="text-center mb-4">Your Available Bookings</h3>
+                <h3 class="text-start mb-4">Your Available Bookings</h3>
+
+                <!-- Filter Form -->
                 <form method="GET" action="{{ route('my_booking') }}">
-                    <!-- Optional: Add filters here -->
+                    <div class="row mb-4">
+                        <!-- Salon Name Filter -->
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" name="salon_name" placeholder="Search by Salon Name" value="{{ request('salon_name') }}">
+                        </div>
+
+                        <!-- Order By Filter -->
+                        <div class="col-md-4">
+                            <select class="form-control" name="order_by">
+                                <option value="">Order By</option>
+                                <option value="newest" {{ request('order_by') == 'newest' ? 'selected' : '' }}>Newest</option>
+                                <option value="oldest" {{ request('order_by') == 'oldest' ? 'selected' : '' }}>Oldest</option>
+                            </select>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="col-md-4">
+                            <button type="submit" class="btn btn-primary w-100">Filter</button>
+                        </div>
+                    </div>
                 </form>
 
+                <!-- Display No Bookings Message if Empty -->
                 @if ($userBookings->isEmpty())
                     <div class="no-booking-message text-center mt-5">
                         <img src="https://unsplash-assets.imgix.net/empty-states/photos.png?auto=format&fit=crop&q=60"
@@ -72,11 +99,11 @@
                         <p>No available bookings at the moment.</p>
                     </div>
                 @else
+                    <!-- Display Bookings -->
                     <div class="booking-grid row mt-4">
                         @foreach ($userBookings as $booking)
                             @php
                                 $bookingTime = \Carbon\Carbon::parse($booking->time);
-                                $currentTime = \Carbon\Carbon::now();
                                 $isExpired = $bookingTime->isPast();
                             @endphp
 
@@ -134,7 +161,7 @@
 
                         <!-- Profile Image (Optional) -->
                         <div class="mb-3">
-                            <label for="profile_image" class="form-label">Profile Image</label>
+                            <label for="profile_image" class="form-label">Upload a New Profile Image</label>
                             <input type="file" class="form-control" id="profile_image" name="image">
                         </div>
 
@@ -167,18 +194,28 @@
         border: 1px solid #e1e1e1;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         border-radius: 10px;
-        padding: 20px;
+        padding: 0px;
+        margin-top: 40px;
     }
 
-    .user-info {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
+    .profile-image {
+        order: 2; /* Make sure the image is placed on the right side */
+        margin-bottom: 10px; /* Reduce the space below the image */
     }
 
-    .user-info .form-group p {
-        color: #555;
+    .user-details {
+        order: 1; /* The details will be on the left */
+        text-align: left;
+        margin-top: 0; /* Remove any top margin to reduce space above the details */
+    }
+
+    .user-details .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .user-details hr {
+        border-top: 1px solid #f0f0f0;
+        margin: 1rem 0;
     }
 
     .booking-card {
@@ -186,7 +223,7 @@
         border: 1px solid #ddd;
         border-radius: 10px;
         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-        padding: 20px;
+        padding: 10px;
         transition: transform 0.3s ease-in-out;
     }
 
@@ -216,6 +253,14 @@
 
         .booking-grid {
             flex-direction: column;
+        }
+
+        .profile-image {
+            margin-bottom: 10px; /* Ensure smaller gap between the image and the details on mobile */
+        }
+
+        .user-details {
+            margin-top: 0; /* Reduce space between image and details on mobile */
         }
     }
 </style>

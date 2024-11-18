@@ -16,33 +16,36 @@ use Illuminate\Support\Facades\File;
 class SubSalonController extends Controller
 {
     public function index()
-{
-    $user = auth()->user();
+    {
+        $user = auth()->user();
 
-    $query = SubSalon::query();
+        $query = SubSalon::query();
 
-    if ($user->isSuperAdmin()) {
-        $salons = Salon::all();
-        $subsalons = $query->get();
-    } elseif ($user->isOwner()) {
-        $salon = Salon::find($user->salons_id);
-        if (!$salon) {
-            abort(404, 'Salon not found');
+        $salons = null;
+
+        if ($user->isSuperAdmin()) {
+            $salons = Salon::all();
+            $subsalons = $query->get();
+        } elseif ($user->isOwner()) {
+            $salon = Salon::find($user->salons_id);
+            if (!$salon) {
+                abort(404, 'Salon not found');
+            }
+
+            $subsalons = $salon->subsalon;
+        } else {
+            abort(403, 'Unauthorized access.');
         }
 
-        $subsalons = $salon->subsalon;
-    } else {
-        abort(403, 'Unauthorized access.');
+        if ($search = request('governorate')) {
+            $subsalons = $subsalons->filter(function($subsalon) use ($search) {
+                return stripos($subsalon->address, $search) !== false;
+            });
+        }
+
+        return view('dashboard.subsalon.index', compact('subsalons', 'salons'));
     }
 
-    if ($search = request('governorate')) {
-        $subsalons = $subsalons->filter(function($subsalon) use ($search) {
-            return stripos($subsalon->address, $search) !== false;
-        });
-    }
-
-    return view('dashboard.subsalon.index', compact('subsalons', 'salons'));
-}
 
 
         public function create()
@@ -230,7 +233,7 @@ class SubSalonController extends Controller
     public function edit($id)
     {
         $subsalon = SubSalon::findOrFail($id);
-        $Images = Image::where('sub_salons_id', $subsalon->id)->get(); 
+        $Images = Image::where('sub_salons_id', $subsalon->id)->get();
         $salons = Salon::all();
         $workingDays = $subsalon->working_days;
 
