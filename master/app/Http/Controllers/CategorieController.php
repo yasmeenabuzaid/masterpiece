@@ -59,33 +59,25 @@ class CategorieController extends Controller
 
     public function create()
     {
-        // الحصول على المستخدم الحالي
         $user = auth()->user();
 
-        // تحضير المتغيرات
-        $categories = collect();  // لتخزين الفئات
-        $subSalon = collect();   // لتخزين الصالونات الفرعية
+        $categories = collect();
+        $subSalon = collect();  // type of array to save object or array
 
-        // إذا كان المستخدم SuperAdmin
         if ($user->isSuperAdmin()) {
-            // الحصول على جميع الـ SubSalons
             $subSalon = SubSalon::all();
         } elseif ($user->isOwner()) {
-            // إذا كان المستخدم Owner
-            $salon = $user->salon; // الحصول على الصالون المرتبط بالمستخدم
+            $salon = $user->salon;
 
-            // تأكد من أن الصالون يحتوي على صالونات فرعية
             if ($salon && $salon->subsalon->isNotEmpty()) {
-                $subSalon = $salon->subsalon; // الحصول على جميع الصالونات الفرعية المرتبطة بالصالون
-                // الحصول على الفئات المرتبطة بالصـالونات الفرعية
+                $subSalon = $salon->subsalon;
                 $categories = Categorie::whereIn('sub_salons_id', $subSalon->pluck('id'))->get();
+                 // pluck is a method in laravel to git 1 item or more into collection
             } else {
-                // إذا لم يوجد صالونات فرعية
-                $subSalon = collect();  // إعادة تعيينها إلى مجموعة فارغة
+                $subSalon = collect(); // array[ ]
             }
         }
 
-        // إعادة البيانات إلى العرض
         return view('dashboard.category.create', compact('categories', 'subSalon'));
     }
 
@@ -118,52 +110,39 @@ class CategorieController extends Controller
 
     public function edit($id)
 {
-    // الحصول على المستخدم الحالي
     $user = auth()->user();
 
-    // الحصول على الفئة (Category) التي نريد تعديلها
     $category = Categorie::findOrFail($id);
 
-    // تحضير المتغيرات الأساسية
-    $subSalon = collect();  // متغير لحفظ الصالونات الفرعية
+    $subSalon = collect();
 
-    // إذا كان المستخدم SuperAdmin
     if ($user->isSuperAdmin()) {
-        // الحصول على جميع الـ SubSalons
         $subSalon = SubSalon::all();
     } elseif ($user->isOwner()) {
-        // إذا كان المستخدم Owner، نعرض فقط الـ SubSalons المرتبطة بالصالون
         $salon = $user->salon;
 
-        // تأكد من أن الصالون يحتوي على SubSalons
         if ($salon && $salon->subSalon) {
-            $subSalon = $salon->subSalon; // الحصول على الـ SubSalons الخاصة بالصالون
+            $subSalon = $salon->subSalon;
         } else {
-            // إذا لم يكن هناك SubSalons
-            $subSalon = collect(); // قم بتعيينها إلى مجموعة فارغة
+            $subSalon = collect();
         }
     }
 
-    // إعادة البيانات إلى العرض
     return view('dashboard.category.edit', compact('category', 'subSalon'));
 }
 
 public function update(Request $request, $id)
 {
-    // التحقق من البيانات المدخلة
     $validatedData = $request->validate([
         'name' => 'required|string|max:255',
         'description' => 'required|string',
         'sub_salons_id' => 'required|exists:sub_salons,id',
     ]);
 
-    // العثور على الفئة (Category) التي نريد تعديلها
     $category = Categorie::findOrFail($id);
 
-    // تحديث البيانات
     $category->update($validatedData);
 
-    // إعادة التوجيه مع رسالة نجاح
     return redirect()->route('categories.index')->with('success', 'Category updated successfully.');
 }
 

@@ -39,7 +39,6 @@ class ContactController extends Controller
         Contact::create([
             'name'=>$request->input('name'),
             'message'=>$request->input('message'),
-            // 'user_id'=>$request->input('user_id'),
             'email'=>$request->input('email'),
 
         ]);

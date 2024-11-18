@@ -1,7 +1,5 @@
 <?php
 namespace App\Http\Controllers;
-
-use App\Models\Service;
 use App\Models\Booking;
 use App\Models\BookingService;
 use App\Models\SubSalon;
@@ -44,24 +42,28 @@ class BookingController extends Controller
         $openingStart = \Carbon\Carbon::createFromFormat('H:i:s', $subSalon->opening_hours_start);
         $openingEnd = \Carbon\Carbon::createFromFormat('H:i:s', $subSalon->opening_hours_end);
 
-        $date = $request->get('date');  // this date us selected from user
+        $date = $request->get('date');  // هذه التاريخ الذي اختاره المستخدم
 
-        $employeesCount = $subSalon->usersCount();
+        $employeesCount = $subSalon->usersCount();  // عدد الموظفين
 
         $bookedTimes = Booking::where('date', $date)
-            ->pluck('time')->toArray();  // time to arry
+            ->pluck('time')->toArray();  // استخراج الأوقات المحجوزة
 
         $timeCounts = Booking::where('date', $date)
             ->groupBy('time')
             ->selectRaw('time, count(*) as bookings_count')
-            ->pluck('bookings_count', 'time')->toArray(); // count of booking whth his time
+            ->pluck('bookings_count', 'time')->toArray(); // عدد الحجوزات لكل وقت
 
         $availableTimes = [];
 
+        // المرور عبر جميع الأوقات المتاحة
         for ($time = $openingStart->copy(); $time->lte($openingEnd); $time->addMinutes(15)) {
             $timeString = $time->format('H:i');
 
+            // عدد الحجوزات الحالية لهذا الوقت
             $currentBookings = isset($timeCounts[$timeString]) ? $timeCounts[$timeString] : 0;
+
+            // إذا كانت الحجز لهذا الوقت أقل من عدد الموظفين، أضف الوقت كمتاح
             if (!in_array($timeString, $bookedTimes) && $currentBookings < $employeesCount) {
                 $availableTimes[] = $timeString;
             }
@@ -72,12 +74,8 @@ class BookingController extends Controller
 
 
 
-
     public function store(Request $request)
     {
-
-        // dd($request);
-
         $request->validate([
             'date' => 'required|date',
             'time' => 'required|date_format:H:i',
@@ -87,9 +85,21 @@ class BookingController extends Controller
 
         try {
             DB::beginTransaction();
-            //booking is done -> store
-            //booking is  not done ->catch-> roll back changes and not save
 
+            // تحقق من عدد الحجوزات في الوقت المحدد
+            $subSalon = SubSalon::findOrFail($request->sub_salons_id);
+            $employeesCount = $subSalon->usersCount();  // عدد الموظفين
+            $bookedTimes = Booking::where('date', $request->date)
+                ->where('time', $request->time)
+                ->count();
+
+            // إذا كان العدد المحجوز أكبر من أو يساوي عدد الموظفين، فلا يمكن إتمام الحجز
+            if ($bookedTimes >= $employeesCount) {
+                session()->flash('error', 'The selected time is fully booked.');
+                return redirect()->back();
+            }
+
+            // إذا كان الوقت متاحًا، أكمل الحجز
             $booking = new Booking();
             $booking->sub_salons_id = $request->sub_salons_id ?? null;
             $booking->user_id = auth()->id();
@@ -98,7 +108,7 @@ class BookingController extends Controller
             $booking->note = $request->note;
             $booking->save();
 
-            $serviceIds = explode(',', $request->services); // to tern string to array  -> 1,2 -> [1,2]
+            $serviceIds = explode(',', $request->services);  // تحويل السلسلة إلى مصفوفة
 
             $bookingServices = [];
             foreach ($serviceIds as $serviceId) {
@@ -112,20 +122,19 @@ class BookingController extends Controller
 
             BookingService::insert($bookingServices);
 
-            DB::commit(); // to save changes to database
+            DB::commit();
 
             session()->flash('success', 'Booking completed successfully!');
             return redirect()->back();
 
         } catch (\Exception $e) {
-            DB::rollBack(); //  to roll back changes
-
-            Log::error("Error saving booking: " . $e->getMessage()); //to log error message in laravel
-
+            DB::rollBack();
+            Log::error("Error saving booking: " . $e->getMessage());
             session()->flash('error', 'An error occurred during booking. Please try again.');
             return redirect()->back();
         }
     }
+
 
 
 

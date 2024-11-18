@@ -692,6 +692,7 @@ textarea.form-control {
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" onclick="submitBooking()">Confirm Booking</button>
+        <a href="{{ route('subsalons.categories-services', $subsalon) }}" class="btn btn-primary" >cancel</a>
       </div>
     </div>
   </div>

@@ -36,13 +36,12 @@ class HomeController extends Controller
 
         $bookingCount = Booking::count();
         $subsalonCount = SubSalon::count();
-        $testimonial=Testimonial::all();
         $subsalons =SubSalon::all();
         $salons =Salon::all();
         $users =User::all();
         $bookings =Booking::all();
         $bookingServices  =BookingService::all();
-        return view('user_side\landing ',['salons'=>$salons ,'testimonial'=>$testimonial ,'subsalons'=>$subsalons ,'users'=>$users ,'bookings'=>$bookings,'allSubsalons'=>$allSubsalons,'bookingCount'=>$bookingCount,'userCount'=>$userCount,'salonCount'=>$salonCount ,'subsalonCount'=>$subsalonCount]);
+        return view('user_side\landing ',['salons'=>$salons  ,'subsalons'=>$subsalons ,'users'=>$users ,'bookings'=>$bookings,'allSubsalons'=>$allSubsalons,'bookingCount'=>$bookingCount,'userCount'=>$userCount,'salonCount'=>$salonCount ,'subsalonCount'=>$subsalonCount]);
     }
     public function show()
     {
@@ -53,12 +52,11 @@ class HomeController extends Controller
         $allSubsalons = SubSalon::all();
 
         $bookingCount = Booking::count();
-        $testimonial=Testimonial::all();
         $subsalons =SubSalon::all();
         $salons =Salon::all();
         $users =User::all();
         $bookings =Booking::all();
         $bookingServices  =BookingService::all();
-        return view('user_side\about ',['salons'=>$salons ,'testimonial'=>$testimonial ,'subsalons'=>$subsalons ,'users'=>$users ,'bookings'=>$bookings,'allSubsalons'=>$allSubsalons,'bookingCount'=>$bookingCount,'userCount'=>$userCount,'salonCount'=>$salonCount ,'subsalonCount'=>$subsalonCount]);
+        return view('user_side\about ',['salons'=>$salons ,'subsalons'=>$subsalons ,'users'=>$users ,'bookings'=>$bookings,'allSubsalons'=>$allSubsalons,'bookingCount'=>$bookingCount,'userCount'=>$userCount,'salonCount'=>$salonCount ,'subsalonCount'=>$subsalonCount]);
     }
 }

@@ -36,9 +36,5 @@ public function subsalon()
 }
 
 
-    public function chatMessage(){ //many
-        return $this->hasMany(ChatMessage::class,'chatMessage_id');
-       }
-
 
 }

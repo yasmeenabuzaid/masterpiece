@@ -24,12 +24,9 @@ class DashboardController extends Controller
         $feedbacks = Feed::all() ?? [];
         $subsalons = SubSalon::with('bookings')->get();  // تحميل الحجزات لكل SubSalon
         $categories = Categorie::all() ?? [];
-        $customers = Castomor::all() ?? [];
         $bookings = Booking::all() ?? [];
-        $employees = Employee::all() ?? [];
         $services = Service::all() ?? [];
         $salons = Salon::all() ?? [];
-        $owners = Owner::all() ?? [];
 
         // إحصائيات المستخدمين
         $superAdminsCount = User::where('usertype', 'super_admin')->count();
@@ -48,11 +45,8 @@ class DashboardController extends Controller
             'feedbacks' => $feedbacks,
             'subsalons' => $subsalons,
             'categories' => $categories,
-            'customers' => $customers,
             'bookings' => $bookings,
-            'employees' => $employees,
             'services' => $services,
-            'owners' => $owners,
             'superAdminsCount' => $superAdminsCount,
             'ownersCount' => $ownersCount,
             'employeesCount' => $employeesCount,

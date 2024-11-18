@@ -60,15 +60,12 @@ class ImageController extends Controller
      */
     public function destroy($id)
     {
-        // العثور على الصورة باستخدام المعرف
         $image = Image::findOrFail($id);
 
-        // حذف الصورة من النظام
         if (file_exists(public_path($image->image))) {
-            unlink(public_path($image->image)); // حذف الملف من السيرفر
+            unlink(public_path($image->image));
         }
 
-        // حذف السجل من قاعدة البيانات
         $image->delete();
 
         return redirect()->back()->with('success', 'Image deleted successfully.');
