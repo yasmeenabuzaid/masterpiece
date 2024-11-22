@@ -1,13 +1,12 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Models\Categorie;
 use App\Models\SubSalon;
-use App\Models\Service;
 use App\Models\Salon;
 use App\Models\User;
 use App\Models\Feed;
 use App\Models\Image;
+use App\Models\Categorie;
 use App\Models\Booking;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -15,33 +14,38 @@ use Illuminate\Support\Facades\File;
 
 class SubSalonController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $user = auth()->user();
 
-        $query = SubSalon::query();
+        $query = SubSalon::query(); // Create the base query
 
         $salons = null;
 
+        // Handling access based on user role
         if ($user->isSuperAdmin()) {
             $salons = Salon::all();
-            $subsalons = $query->get();
+            $subsalons = $query->get();  // Get all sub salons for SuperAdmin
         } elseif ($user->isOwner()) {
             $salon = Salon::find($user->salons_id);
             if (!$salon) {
                 abort(404, 'Salon not found');
             }
 
-            $subsalons = $salon->subsalon;
+            $subsalons = $salon->subsalon;  // Get sub salons for the salon of the owner
         } else {
             abort(403, 'Unauthorized access.');
         }
 
-        if ($search = request('governorate')) {
-            $subsalons = $subsalons->filter(function($subsalon) use ($search) {
-                return stripos($subsalon->address, $search) !== false;
+        // Apply filtering if the 'governorate' request parameter is filled
+        if ($request->filled('governorate')) {
+            $query->whereHas('salon', function($q) use ($request) {
+                $q->where('location', 'LIKE', '%' . $request->governorate . '%');
             });
         }
+
+        // Execute the query to get the filtered sub salons
+        $subsalons = $query->get();
 
         return view('dashboard.subsalon.index', compact('subsalons', 'salons'));
     }
@@ -317,10 +321,10 @@ class SubSalonController extends Controller
 
                     $images[] = [
                         'image' => 'uploads/subsalons/' . $filename,
-                        'sub_salons_id' => $subsalon->id, // ربط الصورة بالصالون الفرعي
+                        'sub_salons_id' => $subsalon->id,
                     ];
                 } else {
-                    // تسجيل رسالة خطأ
+
                     Log::error('Invalid image file: ' . $file->getClientOriginalName());
                 }
             }
@@ -346,11 +350,23 @@ class SubSalonController extends Controller
     }
 
 //   ----------------------------------------------------delete------------------------------------
-    public function destroy(SubSalon $subsalon)
-    {
-        $subsalon->delete();
+public function destroy(SubSalon $subsalon)
+{
+    $subsalon->images()->delete();
 
-        return redirect()->route('subsalons.index')->with('success', 'SubSalon deleted successfully.');
+    $subsalon->feeds()->delete();
+
+    $categories = $subsalon->categories;
+    foreach ($categories as $category) {
+        $category->services()->delete();
+        $category->delete();
     }
+
+    $subsalon->delete();
+
+    return redirect()->route('subsalons.index')->with('success', 'SubSalon deleted successfully.');
+}
+
+
 }
 

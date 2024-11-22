@@ -30,7 +30,7 @@
                             <label for="sub_salons_id">Select SubSalon Address</label>
                             <select class="form-control form-control-sm" name="sub_salons_id" id="sub_salons_id" required>
                                 @foreach ($subSalon as $subsalon)
-                                    <option value="{{ $subsalon->id }}">{{ $subsalon->address }}</option>
+                                    <option value="{{ $subsalon->id }}">{{ $subsalon->location }}</option>
                                 @endforeach
                             </select>
                         </div>

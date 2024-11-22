@@ -9,7 +9,7 @@
             </div>
 
             <div class="col-md-6 p-0">
-                <h2 class="text-uppercase font-weight-bold mb-4 text-primary">
+                <h2 class="text-uppercase font-weight-bold mb-4 ">
                     About Us - {{ $subsalon->salon->name }}
                 </h2>
                 <p class="text-muted mb-4">{{ $subsalon->salon->description }}</p>
@@ -19,15 +19,18 @@
                     <div class="col-md-6">
                         <ul class="list-unstyled">
                             <li><i class="fas fa-map-marker-alt text-primary"></i> <strong>Location:</strong> {{ $subsalon->location }}</li>
-                            <li><i class="fas fa-map-signs text-primary"></i> <strong>Address:</strong> {{ $subsalon->adress }}</li>
+                            <li><i class="fas fa-map-signs text-primary"></i> <strong>Address:</strong> {{ $subsalon->address }}</li>
                             <li><i class="fas fa-cogs text-primary"></i> <strong>Salon Type:</strong> {{ $subsalon->type }}</li>
                         </ul>
                     </div>
                     <div class="col-md-6">
                         <ul class="list-unstyled">
                             <li><i class="fas fa-calendar-week text-primary"></i> <strong>Working Days:</strong> {{ implode(', ', $subsalon->working_days) }}</li>
-                            <li><i class="fas fa-clock text-primary"></i> <strong>Working Hours:</strong> {{ $subsalon->opening_hours_start }} - {{ $subsalon->opening_hours_end }}</li>
-                        </ul>
+                            <li><i class="fas fa-clock text-primary"></i> <strong>Working Hours:</strong>
+                                {{ \Carbon\Carbon::parse($subsalon->opening_hours_start)->format('H:i') }} -
+                                {{ \Carbon\Carbon::parse($subsalon->opening_hours_end)->format('H:i') }}
+                            </li>
+                                                    </ul>
                     </div>
                 </div>
 

@@ -2,8 +2,7 @@
 
 @section('content')
 <div class="container mt-4">
-    <h4 class="card-title">Show More Details for Sub Salon:</h4>
-    <h3 class="mb-4">{{ $subsalon->salon->name }}</h3>
+    <h4 class="card-title">Show More Details for {{ $subsalon->salon->name }} </h4>
     <hr>
 
     <div class="row mb-4">
@@ -22,7 +21,8 @@
             @endforeach
         @endif
     </div>
-
+    <hr>
+ <br>
     <div class="row mb-4">
         <div class="col-md-12">
             <h3>Details</h3>

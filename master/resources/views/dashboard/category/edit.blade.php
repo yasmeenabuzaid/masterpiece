@@ -32,7 +32,7 @@
                             <select class="form-control form-control-sm" name="sub_salons_id" id="sub_salons_id" required>
                                 @foreach ($subSalon as $subsalon)
                                     <option value="{{ $subsalon->id }}" {{ $subsalon->id == $category->sub_salons_id ? 'selected' : '' }}>
-                                        {{ $subsalon->address }}
+                                        {{ $subsalon->location }}
                                     </option>
                                 @endforeach
                             </select>

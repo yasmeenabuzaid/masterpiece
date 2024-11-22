@@ -9,7 +9,7 @@ return new class extends Migration
     {
         Schema::create('salons', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->id();  // id هنا سيكون من نوع unsignedBigInteger
+            $table->id();
             $table->string('name');
             $table->string('description');
             $table->string('image')->nullable();

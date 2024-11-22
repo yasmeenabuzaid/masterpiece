@@ -1,7 +1,7 @@
 <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row" style="background-color: rgb(59, 56, 67); color: #fff;">
     <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center" style="background-color: rgb(59, 56, 67); color: #fff;">
         <a class="navbar-brand brand-logo" href="index.html">
-            <img src="logoindash.png" alt="logo" style="width: 180px; height:50px"/>
+            <img src="{{asset('logoindash.png')}}" alt="logo" style="width: 180px; height:50px"/>
         </a>
         <a class="navbar-brand brand-logo-mini" href="index.html">
             <img src="s-logo2.png" alt="logo" style="width: 80px; height:40px"/>

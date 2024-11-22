@@ -2,8 +2,8 @@
 
 @section('content')
 <div class="container">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h3><i class="fas fa-comments me-2"></i> - All Feedbacks (Total: {{ $feeds->count() }})</h3>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3><i class="fas fa-comments me-2"></i> All Feedbacks (Total: {{ $feeds->count() }})</h3>
     </div>
 
     <div class="mb-4">
@@ -16,12 +16,12 @@
     </div>
 
     <div class="table-responsive">
-        <table class="table table-striped table-bordered">
-            <thead>
+        <table class="table table-bordered table-hover">
+            <thead class="thead-dark">
                 <tr>
                     <th>ID</th>
                     <th>User Name</th>
-                    <th>Sub Salon Name</th>
+                    <th>Sub Salon address</th>
                     <th>Feedback</th>
                     <th>Rating</th>
                     <th>Date</th>
@@ -48,8 +48,8 @@
                             <td>{{ $feed->created_at->format('Y-m-d') }}</td>
                             @if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->isOwner()))
                                 <td>
-                                    <button type="button" class="btn btn-danger" onclick="confirmDeletion(event, '{{ route('feeds.destroy', $feed->id) }}')">
-                                        <i class="fa-solid fa-trash"></i> Delete
+                                    <button type="button" class="btn btn-icon btn-youtube" onclick="confirmDeletion(event, '{{ route('feeds.destroy', $feed->id) }}')">
+                                        <i class="fa-solid fa-trash"></i>
                                     </button>
                                 </td>
                             @endif
@@ -64,6 +64,7 @@
 <!-- Custom Confirmation Modal for Deletion -->
 <div id="confirmationModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); justify-content: center; align-items: center; z-index: 1000;">
     <div style="background: #fff; padding: 20px; border-radius: 5px; text-align: center;">
+        <h3><i class="fas fa-trash" style="font-size: 2rem; color: #dc3545;"></i></h3>
         <p>Are you sure you want to delete this feedback?</p>
         <button id="confirmButton" class="btn btn-danger">Confirm</button>
         <button id="cancelButton" class="btn btn-secondary">Cancel</button>
@@ -76,33 +77,45 @@
         var modal = document.getElementById('confirmationModal');
         var confirmButton = document.getElementById('confirmButton');
         var cancelButton = document.getElementById('cancelButton');
-
         modal.style.display = 'flex';
 
+        // Confirm button click
         confirmButton.onclick = function() {
             var form = document.createElement('form');
             form.method = 'POST';
             form.action = url;
 
+            // Add CSRF Token
             var csrfToken = document.createElement('input');
             csrfToken.type = 'hidden';
             csrfToken.name = '_token';
             csrfToken.value = '{{ csrf_token() }}';
             form.appendChild(csrfToken);
 
+            // Add DELETE method
             var methodField = document.createElement('input');
             methodField.type = 'hidden';
             methodField.name = '_method';
             methodField.value = 'DELETE';
             form.appendChild(methodField);
 
+            // Submit the form
             document.body.appendChild(form);
             form.submit();
         };
 
+        // Cancel button click
         cancelButton.onclick = function() {
             modal.style.display = 'none';
         };
+
+        // Close modal if clicked outside
+        window.onclick = function(event) {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        };
     }
 </script>
+
 @endsection

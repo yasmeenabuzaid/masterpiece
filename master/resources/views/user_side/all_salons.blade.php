@@ -153,15 +153,15 @@
                                         <br>
 
                                         <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between;">
-                                        <span>{{ $subsalon->salon->name ?? 'No Salon Available' }}</span>
-                                        <span><strong>Location:</strong> {{ $subsalon->location ?? 'Not Available' }}</span>
+                                        <span><strong>{{ $subsalon->salon->name ?? 'No Salon Available' }}</strong> </span>
+                                        <span>Location:{{ $subsalon->location ?? 'Not Available' }}</span>
                                     </div>
                                 </div>
                                 <br>
                                 <div style="margin-top: 15px">
                                 <span class="meta-post">{{ $subsalon->type}} salon</span>
 
-                                    <p>{{ Str::limit($subsalon->description, 100) }}</p>
+                                    <p>{{ Str::limit($subsalon->description, 35) }}</p>
                                 </div>
 
                                     <p class="clearfix" >
@@ -173,7 +173,7 @@
                     @endforeach
                 </div>
             @empty
-                <div class="col-12 text-center d-flex justify-content-center align-items-center" style="height: 300px; margin-top: 40px;">
+                <div class="col-12 text-center d-flex justify-content-center align-items-center" style="height: 400px;">
                     <div class="no-salons-content">
                         <img src="https://unsplash-assets.imgix.net/empty-states/photos.png" alt="No salons found" class="no-salons-image" style="max-width: 50%; height: auto;">
                         <p class="no-salons-message" style="font-size: 18px; color: #666;">No salons found. But don't worry, there are many other amazing salons waiting for you!</p>

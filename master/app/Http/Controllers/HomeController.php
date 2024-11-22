@@ -33,15 +33,18 @@ class HomeController extends Controller
 
         $salonCount = Salon::count();
         $allSubsalons = SubSalon::all();
+        $usersCount = User::where('usertype', 'user')->count();
 
         $bookingCount = Booking::count();
         $subsalonCount = SubSalon::count();
         $subsalons =SubSalon::all();
         $salons =Salon::all();
         $users =User::all();
+        $ownersCount = User::where('usertype', 'owner')->count();
+
         $bookings =Booking::all();
         $bookingServices  =BookingService::all();
-        return view('user_side\landing ',['salons'=>$salons  ,'subsalons'=>$subsalons ,'users'=>$users ,'bookings'=>$bookings,'allSubsalons'=>$allSubsalons,'bookingCount'=>$bookingCount,'userCount'=>$userCount,'salonCount'=>$salonCount ,'subsalonCount'=>$subsalonCount]);
+        return view('user_side\landing ',['salons'=>$salons  ,'subsalons'=>$subsalons ,'users'=>$users ,'bookings'=>$bookings,'allSubsalons'=>$allSubsalons,'bookingCount'=>$bookingCount,'userCount'=>$userCount,'salonCount'=>$salonCount ,'subsalonCount'=>$subsalonCount ,'usersCount'=>$usersCount ,'ownersCount'=>$ownersCount]);
     }
     public function show()
     {

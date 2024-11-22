@@ -13,18 +13,14 @@ class ServiceController extends Controller
      */
     public function index()
 {
-    // الحصول على جميع الفئات لتكون موجودة في الـ view
     $categories = Categorie::all();
 
-    // الحصول على قيمة البحث من الـ request
     $search = request('search');
 
-    // استعلام للحصول على الخدمات مع تطبيق فلتر البحث إذا كان موجودًا
     $services = Service::when($search, function ($query) use ($search) {
         return $query->where('name', 'like', '%' . $search . '%');
     })->get();
 
-    // تمرير البيانات إلى الـ view
     return view('dashboard.services_salon.index', [
         'services' => $services,
         'categories' => $categories
@@ -113,10 +109,8 @@ public function update(Request $request, Service $service)
         'price' => 'required|numeric|min:0',
     ]);
 
-    // حساب المدة
     $duration = ($request->input('hours', 0) * 60) + $request->input('minutes', 0);
 
-    // تحديث الخدمة
     $service->update($request->only(['name', 'description', 'categories_id', 'price']) + ['duration' => $duration]);
 
     return redirect()->route('services.index')->with('success', 'Service updated successfully.');

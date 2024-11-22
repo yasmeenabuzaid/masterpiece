@@ -1,13 +1,10 @@
 <?php
 
 namespace App\Models;
-
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use App\Http\Controllers\UserController;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -47,14 +44,6 @@ class User extends Authenticatable
 
 
 
-    // public function bookings()
-    // {
-    //     return $this->hasMany(Booking::class, ' user_id');
-    // }
-
-       public function massage(){ //many
-        return $this->hasMany(massage::class,'massage_id');
-       }
 
     /**
      * The attributes that are mass assignable.

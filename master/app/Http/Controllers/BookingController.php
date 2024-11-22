@@ -42,9 +42,9 @@ class BookingController extends Controller
         $openingStart = \Carbon\Carbon::createFromFormat('H:i:s', $subSalon->opening_hours_start);
         $openingEnd = \Carbon\Carbon::createFromFormat('H:i:s', $subSalon->opening_hours_end);
 
-        $date = $request->get('date');  // هذه التاريخ الذي اختاره المستخدم
+        $date = $request->get('date');
 
-        $employeesCount = $subSalon->usersCount();  // عدد الموظفين
+        $employeesCount = $subSalon->usersCount();
 
         $bookedTimes = Booking::where('date', $date)
             ->pluck('time')->toArray();  // استخراج الأوقات المحجوزة
@@ -76,6 +76,11 @@ class BookingController extends Controller
 
     public function store(Request $request)
     {
+        if (!auth()->check()) {
+            // session(['from_productFeedback' => true, 'product_id' => $request->input('product_id')]);
+
+            return redirect()->route('login')->with('error', 'Please log in to submit your review.');
+        }
         $request->validate([
             'date' => 'required|date',
             'time' => 'required|date_format:H:i',
@@ -140,26 +145,25 @@ class BookingController extends Controller
 
     public function get(Request $request)
     {
+        // التأكد من أن المستخدم مسجل دخول
         if (!Auth::check()) {
-            return redirect()->route('login')->with('error', 'please login first');
+            return redirect()->route('login')->with('error', 'Please login first.');
         }
 
-        $query = Booking::where('user_id', Auth::id())->with('subSalon');
-
-
-
-        if ($request->has('salon_name') && $request->salon_name != '') {
-            $query->whereHas('subSalon.salon', function($q) use ($request) {
-                $q->where('name', 'like', '%' . $request->salon_name . '%');
-            });
-        }
-
-        $userBookings = Booking::where('user_id', auth()->id())
-        ->where('time', '>', now())
+        // استرجاع جميع الحجوزات للمستخدم مع الصالون الفرعي المرتبط
+        $userBookings = Booking::where('user_id', Auth::id())
+        ->with('subSalon')  // جلب الصالون الفرعي المرتبط
         ->get();
 
+
+        // تفقد الحجوزات المسترجعة
+        // dd($userBookings); // هذه السطر سيتوقف ويعرض البيانات
+
+        // تمرير الحجوزات إلى العرض
         return view('user_side.user_profile.my_booking', compact('userBookings'));
     }
+
+
 
     public function destroy($id)
     {
@@ -173,6 +177,6 @@ class BookingController extends Controller
         $booking->services()->delete();
         $booking->delete();
 
-        return redirect()->route('bookings.index')->with('success', 'Booking successfully deleted.');
+        return redirect()->route(route: 'bookings.index')->with('success', 'Booking successfully deleted.');
     }
 }

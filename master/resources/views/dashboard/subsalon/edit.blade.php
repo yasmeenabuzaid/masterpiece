@@ -12,7 +12,7 @@
                     <form action="{{ route('images.destroy', $Image->id) }}" method="POST" title="Delete">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger" aria-label="Delete Image"
+                        <button type="submit" class="btn btn-icon btn-youtube" aria-label="Delete Image"
                             onclick="confirmDeletion(event, '{{ route('images.destroy', $Image->id) }}')"
                             style="margin: 10px;">
                             <i class="fa-solid fa-trash"></i>
@@ -215,7 +215,7 @@
                         </div>
 
                         <!-- Submit -->
-                        <button type="submit" class="btn btn-gradient-success btn-fw">Update</button>
+                        <button type="submit" class="btn btn-custom ">Update</button>
                         <button type="button" class="btn btn-light" onclick="window.history.back();">Back to
                             List</button>
 

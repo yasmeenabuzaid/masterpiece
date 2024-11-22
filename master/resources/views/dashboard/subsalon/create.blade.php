@@ -139,7 +139,7 @@
                         <input type="checkbox" id="is_available" name="is_available" value="1">
                     </div>
 
-                    <button type="submit" class="btn btn-gradient-success btn-fw">Save</button>
+                    <button type="submit" class="btn btn-custom ">Save</button>
                     <button type="button" class="btn btn-light" onclick="window.history.back();">Back to List</button>
 
                     @if ($errors->any())

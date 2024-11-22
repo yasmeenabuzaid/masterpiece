@@ -147,11 +147,14 @@ public function update(Request $request, $id)
 }
 
 
-    public function destroy($id)
-    {
-        $categorie = Categorie::findOrFail($id);
-        $categorie->delete();
+public function destroy($id)
+{
+    $categorie = Categorie::findOrFail($id);
 
-        return redirect()->route('categories.index')->with('success', 'Category deleted successfully.');
-    }
+    $categorie->services()->delete(); 
+    $categorie->delete();
+
+    return redirect()->route('categories.index')->with('success', 'Category deleted successfully.');
+}
+
 }

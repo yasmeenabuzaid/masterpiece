@@ -89,16 +89,24 @@
 
                     <div>
                         <div class="media d-block media-custom text-left">
-                            <img src="{{ $subsalon->image}}" alt="Image Placeholder" class="img-fluid" style="width: 400px; height: 400px; object-fit: cover;">
-                            <div class="media-body">
+                            @if ($subsalon && $subsalon->image)
+                            <img src="{{ $subsalon->image }}" alt="Image Placeholder" class="img-fluid" style="width: 400px; height: 400px; object-fit: cover;">
+                        @else
+                            <img src="default-image-path.jpg" alt="Default Image" class="img-fluid" style="width: 400px; height: 400px; object-fit: cover;">
+                        @endif
+                                                    <div class="media-body">
                                 <div style="display: flex; align-items: center; justify-content:start;">
                                     <a href="#" class="text-black" style="display: flex; align-items: center;">
+                                        @if ($subsalon->salon)
                                         <img src="{{ $subsalon->salon->image }}" alt="Salon Logo" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover; margin-right: 15px;">
-                                    </a>
+                                    @else
+                                        <img src="default-image-path.jpg" alt="Default Salon Logo" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover; margin-right: 15px;">
+                                    @endif
+                                                                        </a>
                                     <br>
                                     <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between;">
-                                    <span>{{ $subsalon->salon->name ?? 'No Salon Available' }}</span>
-                                    <span><strong>Location:</strong> {{ $subsalon->location ?? 'Not Available' }}</span>
+                                    <span><strong>{{ $subsalon->salon->name ?? 'No Salon Available' }}</strong></span>
+                                    <span>Location: {{ $subsalon->location ?? 'Not Available' }}</span>
                                 </div>
                             </div>
                              <br>
@@ -241,16 +249,24 @@
                 @foreach ($allSubsalons->slice(0,6) as $subsalon)
                     <div>
                         <div class="media d-block media-custom text-left">
-                            <img src="{{ $subsalon->image}}" alt="Image Placeholder" class="img-fluid" style="width: 400px; height: 400px; object-fit: cover;">
-                            <div class="media-body">
+                            @if ($subsalon && $subsalon->image)
+                            <img src="{{ $subsalon->image }}" alt="Image Placeholder" class="img-fluid" style="width: 400px; height: 400px; object-fit: cover;">
+                        @else
+                            <img src="default-image-path.jpg" alt="Default Image" class="img-fluid" style="width: 400px; height: 400px; object-fit: cover;">
+                        @endif
+                                                    <div class="media-body">
                                 <div style="display: flex; align-items: center; justify-content:start;">
                                     <a href="#" class="text-black" style="display: flex; align-items: center;">
+                                        @if ($subsalon->salon)
                                         <img src="{{ $subsalon->salon->image }}" alt="Salon Logo" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover; margin-right: 15px;">
-                                    </a>
+                                    @else
+                                        <img src="default-image-path.jpg" alt="Default Salon Logo" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover; margin-right: 15px;">
+                                    @endif
+                                                                        </a>
                                     <br>
                                     <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between;">
-                                    <span>{{ $subsalon->salon->name ?? 'No Salon Available' }}</span>
-                                    <span><strong>Location:</strong> {{ $subsalon->location ?? 'Not Available' }}</span>
+                                    <span><strong>{{ $subsalon->salon->name ?? 'No Salon Available' }}</strong></span>
+                                    <span>Location: {{ $subsalon->location ?? 'Not Available' }}</span>
                                 </div>
                             </div>
                              <br>
@@ -289,7 +305,6 @@
                         <p class="price">$29.99/month</p>
                         <ul class="list-unstyled">
                             <li><i class="fas fa-check-circle"></i> Basic salon listing</li>
-                            <li><i class="fas fa-check-circle"></i> Limited booking options</li>
                             <li><i class="fas fa-check-circle"></i> Basic support</li>
                         </ul>
                         <a href="{{route('subscribe')}}" class="btn btn-outline-primary">Subscribe</a>
@@ -304,7 +319,6 @@
                         <p class="price">$49.99/month</p>
                         <ul class="list-unstyled">
                             <li><i class="fas fa-check-circle"></i> Priority salon listing</li>
-                            <li><i class="fas fa-check-circle"></i> Unlimited bookings</li>
                             <li><i class="fas fa-check-circle"></i> Advanced support</li>
                             <li><i class="fas fa-check-circle"></i> Performance analytics</li>
                         </ul>
@@ -441,9 +455,10 @@
 </section>
 
 {{-- ---------------------------------------------Success/Error Alert Section --------------------------------- --}}
-@if (session('success'))
+@push('scripts')
     <script>
-        window.onload = function() {
+        // SweetAlert success/error logic
+        @if (session('success'))
             Swal.fire({
                 icon: 'success',
                 title: 'Success!',
@@ -451,23 +466,18 @@
                 showConfirmButton: false,
                 timer: 2000
             });
-        };
-    </script>
-@endif
-
-@if ($errors->has('email'))
-    <script>
-        window.onload = function() {
+        @elseif (session('error'))
             Swal.fire({
                 icon: 'error',
                 title: 'Error!',
-                text: 'Check your email.',
+                text: '{{ session('error') }}',
                 showConfirmButton: false,
                 timer: 2000
             });
-        };
+        @endif
     </script>
-@endif
+@endpush
+
 {{-- --------------------------------------------- end  Success/Error Alert Section --------------------------------- --}}
 
 @endsection

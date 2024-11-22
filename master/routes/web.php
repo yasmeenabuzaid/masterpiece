@@ -17,9 +17,11 @@ Auth::routes();
 Route::get('/logout', function () {
     return view('user_side/landing');
 })->name('user_landing');
+Route::get('/about', function () {
+    return view('user_side/about');
+})->name('about');
 Route::post('/logout', [Controller::class, 'logout'])->name('logout');
 
-Route::get('/about', action: [HomeController::class, 'show'])->name('about');
 Route::get('/home', action: [HomeController::class, 'index']);
 
 
@@ -70,9 +72,9 @@ Route::get('salon/{subsalon}', [SubSalonController::class, 'show'])->name('singl
 
 Route::get('/subsalons/{subsalonId}/categories', action: [CategorieController::class, 'showCategoriesBySalon'])->name('subsalon.categories');
 
-Route::get('/dash', function () {
-    return view('dashboard\index');
-})->name('dashbourd');
+// Route::get('/dash', function () {
+//     return view('dashboard\index');
+// })->name('dashbourd');
 Route::get('/subscribe', function () {
     return view('user_side.subscribe');
 })->name('subscribe');
@@ -118,7 +120,8 @@ Route::post('salons/{id}/restore', [SalonController::class, 'restore'])->name('s
 Route::delete('salons/{id}/force-delete', [SalonController::class, 'forceDelete'])->name('salons.forceDelete');
 Route::get('salons/trashed', [SalonController::class, 'trashed'])->name('salons.trashed');
 Route::resource('subsalons', SubSalonController::class);
-Route::get('/show-subsalons/{id}', [SubSalonController::class, 'viewSubSalon'])->name('subsalons.view');
+Route::get('/show-subsalon/{id}', [SubSalonController::class, 'viewSubSalon'])->name('subsalons.view');
+Route::get('/showsalon/{id}', [SalonController::class, 'view_Salon'])->name('salons.view');
 Route::delete('/images/{id}',   [ImageController::class, 'destroy'])->name('images.destroy');
 Route::delete('bookings/{id}', [BookingController::class, 'destroy'])->name('bookings.destroy');
 Route::resource('users', UserController::class);

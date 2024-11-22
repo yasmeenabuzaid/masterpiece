@@ -7,7 +7,6 @@ use App\Models\Service;
 use App\Models\Categorie;
 use App\Models\User;
 use App\Models\Booking;
-use App\Models\WorkingHour;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -39,7 +38,7 @@ class SubSalon extends Model
 
     public function images()
     {
-        return $this->hasMany(Image::class, 'sub_salons_id');
+        return $this->hasMany(Image::class, foreignKey: 'sub_salons_id');
     }
 
 
@@ -69,10 +68,7 @@ public function users()
         return $this->hasMany(Categorie::class, 'sub_salons_id');
     }
 
-    public function workingHours()
-    {
-        return $this->hasMany(WorkingHour::class, 'sub_salons_id');
-    }
+
 
     public function getWorkingDaysAttribute($value)
     {
@@ -99,11 +95,7 @@ public function users()
     {
         return $this->status == 1;
     }
-    // In SubSalon.php
-// public function bookings()
-// {
-//     return $this->hasManyThrough(Booking::class, Service::class);
-// }
+
 public function feeds()
 {
     return $this->hasMany(Feed::class, 'sub_salons_id');

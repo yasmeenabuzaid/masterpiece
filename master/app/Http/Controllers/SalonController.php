@@ -58,6 +58,10 @@ class SalonController extends Controller
         $salon->description = $validatedData['description'];
 
         if ($request->hasFile('image')) {
+            if ($salon->image && File::exists(public_path($salon->image))) {
+                File::delete(public_path($salon->image));
+            }
+
             $file = $request->file('image');
             $filename = time() . '.' . $file->getClientOriginalExtension();
             $path = public_path('uploads/salon/');
@@ -133,9 +137,23 @@ class SalonController extends Controller
     }
 
 // -------------------------------------------------------------------
+public function view_Salon($id)
+{
+    $salon = Salon::find($id);
+
+    if (!$salon) {
+        return redirect()->route('salons.index')->with('error', 'Salon not found');
+    }
+
+    return view('dashboard.salon.show', [
+        'salon' => $salon,
+    ]);
+}
+
+// -------------------------------------------------------------------
 
     public function restore($id)
-    {
+    { // زي سلة المحذوفات
         $salon = Salon::withTrashed()->find($id);
         if ($salon) {
             $salon->restore();
@@ -146,22 +164,36 @@ class SalonController extends Controller
     }
 // -------------------------------------------------------------------
 
-    public function forceDelete($id)
-    {
-        $salon = Salon::with('subSalons.feeds')->onlyTrashed()->find($id);
+public function forceDelete($id)
+{
+    $salon = Salon::with(['subsalon.feeds'])->onlyTrashed()->find($id);
 
-        if (!$salon) {
-            return redirect()->route('salons.trashed')->with('error', 'Salon not found.'); // لا يزال لا ينجح
-        }
-
-        foreach ($salon->subSalons as $subSalon) {
-            $subSalon->feeds()->delete();
-        }
-
-        $salon->forceDelete();
-
-        return redirect()->route('salons.index')->with('success', 'Salon deleted successfully.');
+    // Check if the salon exists
+    if (!$salon) {
+        return redirect()->route('salons.trashed')->with('error', 'Salon not found.');
     }
+
+    // Ensure that $salon->subsalons is not null and is iterable
+    if ($salon->subsalons) {
+        foreach ($salon->subsalons as $subsalon) {
+            // Delete associated feeds
+            $subsalon->feeds()->delete();
+        }
+
+        // Force delete the subsalons
+        foreach ($salon->subsalons as $subsalon) {
+            $subsalon->forceDelete();
+        }
+    }
+
+    // Force delete the salon itself
+    $salon->forceDelete();
+
+    return redirect()->route('salons.index')->with('success', 'Salon deleted successfully.');
+}
+
+
+
     // -------------------------------------------------------------------
     public function trashed(Request $request)
     {

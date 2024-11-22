@@ -16,7 +16,7 @@ class Controller extends BaseController
     public function logout(Request $request)
     {
         Auth::logout();
-        return redirect()->route('user_side.landing');
+        return redirect()->route('all_subsalons');
     }
 
     public function changeLanguage($locale)

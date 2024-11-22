@@ -47,9 +47,16 @@ class LoginController extends Controller
      */
     protected function authenticated($request, $user)
     {
-        if ($user->usertype == 'super_admin' || $user->usertype == 'owner' || $user->usertype == 'employee') {
+        if ($user->usertype == 'super_admin' ) {
             return redirect('/dashboard');
-        } else {
+        }elseif( $user->usertype == 'owner'){
+            return redirect('/subsalons');
+        }
+        elseif( $user->usertype == 'employee'){
+            return redirect('/bookings');
+
+        }
+         else {
             return redirect('/home');
         }
     }

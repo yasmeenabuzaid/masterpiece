@@ -633,8 +633,8 @@ textarea.form-control {
                         @foreach($categorie->services as $service)
                         <li class="service-item" id="service-{{ $service->id }}">
                             <div class="service-details">
-                                <strong>{{ $service->name }}</strong> - ${{ $service->price }}<br>
-                                <span>{{ $service->description }}</span><br>
+                                <strong><i class="fa fa-dot-circle"></i> {{ $service->name }}</strong> - ${{ $service->price }}<br>
+                                <p style="padding-right: 10px">{{ $service->description }}</p><br>
                                 <span>Duration: {{ $service->duration }}</span>
                             </div>
                             <button onclick="addService('{{ $service->id }}', '{{ $service->name }}', {{ $service->price }})">+</button>
@@ -674,6 +674,7 @@ textarea.form-control {
             <div class="form-group">
                 <label for="date">Date</label>
                 <input type="date" name="date" id="modal-date" class="form-control" required min="{{ now()->toDateString() }}">
+                {{-- funtion to git new date and git dete (time no) --}}
             </div>
             <div class="form-group">
                 <label class="text-black" for="available_time">Available Time</label>
@@ -692,8 +693,8 @@ textarea.form-control {
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" onclick="submitBooking()">Confirm Booking</button>
-        <a href="{{ route('subsalons.categories-services', $subsalon) }}" class="btn btn-primary" >cancel</a>
-      </div>
+        <a href="{{ route('subsalons.categories-services', $subsalon) }}" class="btn btn-secondary" style="height: 43px">Cancel</a>
+    </div>
     </div>
   </div>
 </div>
@@ -767,10 +768,18 @@ function removeService(serviceId, servicePrice) {
 // -----------------------if user dont select any servies--------------------------------------------------------------------------------------
 
 function showModal() {
-    if (selectedServices.size === 0) {
+    var isLoggedIn = {{ auth()->check() ? 'true' : 'false' }};
+    if (!isLoggedIn) {
+        alert("You need to log in to confirm your booking. You will be redirected to the login page.");
+        window.location.href = "/login";
+
+    } else {
+        if (selectedServices.size === 0) {
         alert("Please select at least one service.");
         return;
     }
+    }
+
 // -------------------------------------------------------------------------------------------------------------
 // ---------------------------view selected ser in model----------------------------------------------------------------------------------
 

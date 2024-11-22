@@ -27,9 +27,10 @@ class UserController extends Controller
 
             $subSalonsForOwner = SubSalon::where('salon_id', $salonId)->get();
 
-            if ($subSalonsForOwner->isNotEmpty()) {
+            if ($subSalonsForOwner->isNotEmpty()) { //method used to check whether a given variable
                 $usersQuery = User::whereIn('sub_salons_id', $subSalonsForOwner->pluck('id'))
-                                  ->where('usertype', 'employee'); // نعرض فقط الموظفين
+                //method is used to extract a single column's value
+                                  ->where('usertype', 'employee');
 
                 $users = $usersQuery->get();
 
@@ -61,7 +62,6 @@ class UserController extends Controller
         $customersCount = User::where('usertype', 'customer')->count();
         $superAdminsCount = User::where('usertype', 'super_admin')->count();
 
-        // تأكد من أن القيم ليست فارغة
         $ownersCount = $ownersCount ?: 0;
         $employeesCount = $employeesCount ?: 0;
         $customersCount = $customersCount ?: 0;
@@ -127,12 +127,10 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-   // في دالة store() أو update()
 
    public function store(Request $request)
    {
-       // طباعة البيانات المرسلة من النموذج
-    //    dd($request->all());
+
     $validatedData = $request->validate([
         'name' => 'required|string|max:255',
         'email' => 'required|email|unique:users,email',
@@ -152,21 +150,19 @@ class UserController extends Controller
 
         // إذا كان المستخدم من نوع "owner"، خزّن الصالون
         if ($validatedData['usertype'] === 'owner') {
-            $user->salons_id = $validatedData['salons_id'];  // حفظ الـ salon_id
+            $user->salons_id = $validatedData['salons_id'];
         } else {
-            $user->salons_id = null;  // تعيين null إذا لم يكن owner
+            $user->salons_id = null;
         }
 
-        // إذا كان المستخدم من نوع "employee"، خزّن السب صالون
         if ($validatedData['usertype'] === 'employee') {
-            $user->sub_salons_id = $validatedData['sub_salons_id'];  // حفظ الـ sub_salons_id
+            $user->sub_salons_id = $validatedData['sub_salons_id'];
         } else {
-            $user->sub_salons_id = null;  // تعيين null إذا لم يكن employee
+            $user->sub_salons_id = null;
         }
 
-        // تشفير كلمة المرور
         $user->password = bcrypt($validatedData['password']);
-
+ //خوارزميه لتخزين كلمه السر بشكل امن
         // إذا كان هناك صورة، قم بتحميلها
         if ($request->hasFile('image')) {
             $file = $request->file('image');
@@ -207,7 +203,6 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        // التحقق من القيم المدخلة
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $id,
@@ -218,41 +213,34 @@ class UserController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        // استرجاع المستخدم
         $user = User::findOrFail($id);
 
-        // تحديث بيانات المستخدم
         $user->name = $validatedData['name'];
         $user->email = $validatedData['email'];
         $user->usertype = $validatedData['usertype'];
 
-        // تحديث salons_id فقط إذا كان نوع المستخدم "owner"
         if ($validatedData['usertype'] === 'owner') {
             $user->salons_id = $validatedData['salons_id'] ?? null;
         } else {
-            $user->salons_id = null;  // إذا لم يكن Owner، تعيينه null
+            $user->salons_id = null;
         }
 
-        // تحديث sub_salons_id فقط إذا كان نوع المستخدم "employee"
         if ($validatedData['usertype'] === 'employee') {
             $user->sub_salons_id = $validatedData['sub_salons_id'] ?? null;
         } else {
-            $user->sub_salons_id = null;  // تعيينه null إذا لم يكن Employee
+            $user->sub_salons_id = null;
         }
 
-        // تحديث كلمة المرور إذا كانت موجودة في الطلب
         if ($request->filled('password')) {
             $user->password = bcrypt($validatedData['password']);
         }
 
-        // إذا كانت هناك صورة جديدة، تحميلها
         if ($request->hasFile('image')) {
             // حذف الصورة القديمة إذا كانت موجودة
             if ($user->image && file_exists(public_path($user->image))) {
                 @unlink(public_path($user->image));
             }
 
-            // رفع الصورة الجديدة
             $file = $request->file('image');
             $filename = time() . '.' . $file->getClientOriginalExtension();
             $path = public_path('uploads/user/');
@@ -260,10 +248,8 @@ class UserController extends Controller
             $user->image = 'uploads/user/' . $filename;
         }
 
-        // حفظ البيانات
         $user->save();
 
-        // إعادة التوجيه مع رسالة نجاح
         return redirect()->route('users.index')->with('success', 'User updated successfully.');
     }
 
@@ -279,7 +265,6 @@ class UserController extends Controller
     }
     public function updateProfile(Request $request)
     {
-        // التحقق من البيانات المدخلة
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . auth()->id(),
@@ -287,26 +272,20 @@ class UserController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        // استرجاع المستخدم الحالي
         $user = auth()->user();
 
-        // تحديث بيانات المستخدم (اسم المستخدم والبريد الإلكتروني)
         $user->name = $validatedData['name'];
         $user->email = $validatedData['email'];
 
-        // تحديث كلمة المرور إذا كانت موجودة
         if ($request->filled('password')) {
             $user->password = bcrypt($validatedData['password']);
         }
 
-        // تحديث الصورة إذا كانت موجودة
         if ($request->hasFile('image')) {
-            // حذف الصورة القديمة إذا كانت موجودة
             if ($user->image && file_exists(public_path($user->image))) {
                 @unlink(public_path($user->image));
             }
 
-            // رفع الصورة الجديدة
             $file = $request->file('image');
             $filename = time() . '.' . $file->getClientOriginalExtension();
             $path = public_path('uploads/user/');
@@ -314,10 +293,8 @@ class UserController extends Controller
             $user->image = 'uploads/user/' . $filename;
         }
 
-        // حفظ التحديثات
         $user->save();
 
-        // إعادة التوجيه مع رسالة نجاح
         return redirect()->route('users.profile')->with('success', 'Profile updated successfully.');
     }
 
@@ -352,35 +329,27 @@ public function showProfile()
 
     public function updateProfileUser(Request $request)
     {
-        $user = Auth::user(); // الحصول على المستخدم الحالي
-
-        // التحقق من البيانات المدخلة وتحديثها
-        $request->validate([
+          $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+            'email' => 'required|email|unique:users,email,' . auth()->id(),
+            'password' => 'nullable|string|min:6',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'password' => 'nullable|string|min:8|confirmed',  // فقط التحقق من كلمة المرور إذا كانت موجودة
         ]);
 
-        // تحديث الاسم والبريد الإلكتروني
-        $user->name = $request->name;
-        $user->email = $request->email;
+        $user = auth()->user();
 
-        // إذا تم إدخال كلمة مرور جديدة
+        $user->name = $validatedData['name'];
+        $user->email = $validatedData['email'];
+
         if ($request->filled('password')) {
-            // تشفير كلمة المرور الجديدة
-            $user->password = bcrypt($request->password);
+            $user->password = bcrypt($validatedData['password']);
         }
 
-        // تحديث الصورة إذا كانت موجودة
-          // تحديث الصورة إذا كانت موجودة
-          if ($request->hasFile('image')) {
-            // حذف الصورة القديمة إذا كانت موجودة
+        if ($request->hasFile('image')) {
             if ($user->image && file_exists(public_path($user->image))) {
                 @unlink(public_path($user->image));
             }
 
-            // رفع الصورة الجديدة
             $file = $request->file('image');
             $filename = time() . '.' . $file->getClientOriginalExtension();
             $path = public_path('uploads/user/');
@@ -388,12 +357,12 @@ public function showProfile()
             $user->image = 'uploads/user/' . $filename;
         }
 
-        // حفظ التحديثات
         $user->save();
 
-        // إعادة توجيه المستخدم مع رسالة نجاح
+
         return redirect()->back()->with('success', 'Profile updated successfully!');
     }
+
 
 
 
